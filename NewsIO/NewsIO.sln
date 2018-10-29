@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsIO", "NewsIO\NewsIO.csproj", "{5292863E-69C7-465E-B044-75987B9D964F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsIO.Tests", "NewsIO.Tests\NewsIO.Tests.csproj", "{D64A4F1A-3BC6-4301-A62C-F593A949CBF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5292863E-69C7-465E-B044-75987B9D964F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5292863E-69C7-465E-B044-75987B9D964F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5292863E-69C7-465E-B044-75987B9D964F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5292863E-69C7-465E-B044-75987B9D964F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D64A4F1A-3BC6-4301-A62C-F593A949CBF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D64A4F1A-3BC6-4301-A62C-F593A949CBF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D64A4F1A-3BC6-4301-A62C-F593A949CBF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D64A4F1A-3BC6-4301-A62C-F593A949CBF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D47D5D09-5166-4821-A2BE-430E865EB76A}
+	EndGlobalSection
+EndGlobal
