@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsIO.Services", "NewsIO.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsIO.Api", "NewsIO.Api\NewsIO.Api.csproj", "{91B040D1-E29A-443A-A6B6-0F289E9ACD9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsIO.WebApp", "NewsIO.WebApp\NewsIO.WebApp.csproj", "{64C534EA-E098-404D-9414-4179C46E4038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsIO.WebApp", "NewsIO.WebApp\NewsIO.WebApp.csproj", "{64C534EA-E098-404D-9414-4179C46E4038}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsIO.Client", "NewsIO.Client\NewsIO.Client.csproj", "{3F4412B6-4D81-4A06-9157-9A0927F70E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{64C534EA-E098-404D-9414-4179C46E4038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64C534EA-E098-404D-9414-4179C46E4038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64C534EA-E098-404D-9414-4179C46E4038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F4412B6-4D81-4A06-9157-9A0927F70E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F4412B6-4D81-4A06-9157-9A0927F70E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F4412B6-4D81-4A06-9157-9A0927F70E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F4412B6-4D81-4A06-9157-9A0927F70E50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
