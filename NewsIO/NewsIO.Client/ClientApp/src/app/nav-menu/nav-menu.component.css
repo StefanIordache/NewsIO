@@ -1,9 +1,9 @@
-li .glyphicon {
+/*/li .glyphicon {
     margin-right: 10px;
 }
 
 /* Highlighting rules for nav menu items */
-li.link-active a,
+/*/li.link-active a,
 li.link-active a:hover,
 li.link-active a:focus {
     background-color: #4189C7;
@@ -11,7 +11,7 @@ li.link-active a:focus {
 }
 
 /* Keep the nav menu independent of scrolling and on top of other items */
-.main-nav {
+/*/.main-nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -21,7 +21,7 @@ li.link-active a:focus {
 
 @media (min-width: 768px) {
     /* On small screens, convert the nav menu to a vertical sidebar */
-    .main-nav {
+    /*/.main-nav {
         height: 100%;
         width: calc(25% - 20px);
     }
@@ -51,9 +51,17 @@ li.link-active a:focus {
     }
     .navbar a {
         /* If a menu item's text is too long, truncate it */
-        width: 100%;
+       /* width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    */
+.my-pointer {
+  cursor: pointer;
 }
+.ceva{
+  padding-top:5px;
+  padding-right:5px;
+}
+
