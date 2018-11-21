@@ -19,9 +19,35 @@ namespace NewsIO.Services.Implementations
             Context = context;
         }
 
+        public int CountEntries<T>() where T : Entity
+        {
+            return Context.Set<T>().Count();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync<T>() where T : Entity
         {
             return await Context.Set<T>().ToListAsync();
+        }
+
+        public async Task<(IEnumerable<T>, int)> GetWithPaginationAsync<T>(int pageSize, int pageNo) where T : Entity
+        {
+            if (pageSize > 0)
+            {
+                int offset = (pageNo - 1) * pageSize;
+
+                int totalNoOfEntries = CountEntries<T>();
+
+                if (offset > totalNoOfEntries)
+                {
+                    return (null, 0);
+                }
+
+                IEnumerable<T> returnList = await Context.Set<T>().Skip(offset).Take(pageSize).ToListAsync();
+
+                return (returnList, totalNoOfEntries);
+            }
+
+            return (null, 0);         
         }
 
         public IQueryable<T> Set<T>() where T : Entity

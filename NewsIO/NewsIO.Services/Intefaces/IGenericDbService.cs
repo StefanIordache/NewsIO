@@ -9,7 +9,11 @@ namespace NewsIO.Services.Intefaces
 {
     public interface IGenericDbService
     {
+        int CountEntries<T>() where T : Entity;
+
         Task<IEnumerable<T>> GetAllAsync<T>() where T : Entity;
+
+        Task<(IEnumerable<T>, int)> GetWithPaginationAsync<T>(int pageSize, int pageNo) where T : Entity;
 
         IQueryable<T> Set<T>() where T : Entity;
 
