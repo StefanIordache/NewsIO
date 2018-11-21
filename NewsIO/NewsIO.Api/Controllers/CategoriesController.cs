@@ -13,7 +13,8 @@ using static NewsIO.Api.Utils.Models;
 namespace NewsIO.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class CategoriesController : Controller
+    [ApiController]
+    public class CategoriesController : ControllerBase
     {
         public ICategoryService CategoryService { get; set; }
 
@@ -24,7 +25,6 @@ namespace NewsIO.Api.Controllers
 
         // GET - /api/Categories/{pageSize?}/{pageNo?}
         [HttpGet]
-        [Route("categories/{pageSize:int?}/{pageNo:int?}")]
         public async Task<IActionResult> GetCategoriesAsync(int pageSize = 0, int pageNo = 0)
         {
             try
@@ -77,7 +77,7 @@ namespace NewsIO.Api.Controllers
         }
 
         // POST - /api/Categories/addNewCategory
-        [HttpPost("addNewCategory")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddNewCategory([FromBody] Category category)
         {
             try
