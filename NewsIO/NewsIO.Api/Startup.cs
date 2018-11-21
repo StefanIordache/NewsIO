@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.SpaServices;
 using NewsIO.Api.Extensions;
+using NewsIO.Api.Utils;
+using NewsIO.Data.Contexts;
 
 namespace NewsIO.Api
 {
@@ -27,6 +29,8 @@ namespace NewsIO.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddCookieOptions()
                 .AddDbServices();
 
@@ -34,8 +38,10 @@ namespace NewsIO.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
+            applicationContext.Database.EnsureCreated();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

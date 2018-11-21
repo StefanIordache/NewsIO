@@ -34,7 +34,7 @@ namespace NewsIO.Api.Extensions
         public static IServiceCollection AddDbServices(this IServiceCollection services)
         {
             services
-                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(""));
+                .AddDbContext<ApplicationContext>(options => options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOApplication;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
 
             services
                 .AddTransient<ICategoryService, CategoryService>();
