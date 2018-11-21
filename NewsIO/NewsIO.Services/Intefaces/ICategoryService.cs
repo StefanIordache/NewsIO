@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NewsIO.Services.Intefaces
 {
-    public interface ICategoryService :IGenericDbService
+    public interface ICategoryService : IGenericDbService
     {
     }
 }
