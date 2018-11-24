@@ -24,7 +24,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\app.router.module.ts" />
+    <None Remove="ClientApp\src\app\login-form\login.service.ts" />
+    <None Remove="ClientApp\src\app\login-form\user.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\app.router.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\login-form\login.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\login-form\user.model.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -7,12 +7,15 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginService } from './login-form/login.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -22,7 +25,7 @@ import { HomeComponent } from './home/home.component';
       { path: '', component: HomeComponent, pathMatch: 'full' }
     ])
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
