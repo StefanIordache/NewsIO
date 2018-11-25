@@ -1,4 +1,5 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,6 +7,7 @@ import { Component,OnInit } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  constructor() { }
-  ngOnInit() {}
+  constructor(private route: ActivatedRoute, private router: Router) { }
+  ngOnInit() { }
+ 
 }

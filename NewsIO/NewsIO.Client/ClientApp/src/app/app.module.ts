@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { LoginService } from './login-form/login.service';
+import { AppRouterModule } from './app.router.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { LoginService } from './login-form/login.service';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    AppRouterModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' }
     ])
