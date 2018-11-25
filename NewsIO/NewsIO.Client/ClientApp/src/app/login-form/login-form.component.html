@@ -1,36 +1,32 @@
 <div class="container">
+ 
   <div class="title">
-    <div class="subtitle">
-      <h2>Log in</h2>
-      <span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-globe" aria-hidden="true"></span>
-      </div>
-  </div>
+   <h2 class="subtitle text-secondary">Log in</h2>
+   <span style="color:#1d5cf9;" class="brand glyphicon glyphicon-globe" aria-hidden="true"></span>
+   </div>
   <form>
-    <div class="row">
-      <div class="input-group" id="username">
-        <label>
-        <span  style="color:#1d5cf9;" class="glyphicon glyphicon-user" aria-hidden="true"></span></label>
-        <input type="text" placeholder="Username">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-user" aria-hidden="true"></span></span>
+        <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
+               id="username-input" />
       </div>
-    </div>
-    <div class="row">
-      <div class="input-group">
-        <label><span style="color:#1d5cf9;" class="glyphicon glyphicon-lock" aria-hidden="true"></span></label>
-        <input type="password" placeholder="Password">
-      </div>
-    </div>
-    <div class="row">
-      <div class="forgotpassword">
-        <a href="#">I forgot password?</a>
-      </div>
-    </div>
-    <div class="row">
-      <button>LOGIN </button>
-    </div>
-  </form>
+      <div class="input-group input-group-lg paddingTop">
+        <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+        <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
+               id="password-input" />
+        </div>
+        <div class="row">
+          <div class="forgotpassword">
+            <a href="#">I forgot password?</a>
+          </div>
+        </div>
+        <div class="row">
+          <button>LOGIN <span style="color:white;" class=" brand glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+        </div>
+</form>
   <div class="row">
     <div class="singup">
-      Don't have an account? <a target="_blank" href="/signup">Sign up</a>
+      Don't have an account? <a  routerLink="/signup">Sign up</a>
     </div>
   </div>
 </div>

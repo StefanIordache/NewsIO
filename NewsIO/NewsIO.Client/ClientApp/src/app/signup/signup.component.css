@@ -6,9 +6,12 @@ body {
   min-height: calc(100vh - 20px);
   font-family: 'Mukta', sans-serif;
 }
-.paddingTop{
-  padding-top:25px;
+
+
+.paddingTop {
+  padding-top: 25px;
 }
+
 a {
   text-decoration: none;
   color: #444;
@@ -22,7 +25,7 @@ a {
 
 .subtitle {
   font-weight: 300;
- 
+  
 }
 
 .brand {
@@ -59,10 +62,12 @@ form {
   margin-top: 60px;
 }
 
-/*.row {
+.row {
   width: 100%;
 }
-  */
+
+
+
 .row input {
   width: 100%;
   font-size: 14px;
@@ -76,7 +81,7 @@ form {
     outline: none;
   }
 
-#username svg, #username input {
+.bb-none svg, .bb-none input {
   border-bottom: none;
 }
 
@@ -91,7 +96,8 @@ button {
   position: relative;
   left: 25%;
   box-shadow: 0 15px 40px #add6f9;
-  margin: 35px 0;
+  margin-top: 70px;
+  margin-bottom: 25px;
   cursor: pointer;
   font-weight: 300;
 }
@@ -102,15 +108,10 @@ button {
 
   button svg {
     position: absolute;
-    top: 24%;
+    top: 25%;
     width: 15px;
     margin-left: 10px;
   }
-
-.forgotpassword {
-  text-align: center;
-  margin-top: 35px;
-}
 
 .singup {
   margin-top: 50px;
