@@ -14,13 +14,13 @@ namespace NewsIO.Data.Contexts
 
         virtual public void CreateUserModel(ref ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<User>().Ignore(t => t.Roles)
+            modelBuilder.Entity<User>();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //CreateUserModel(ref modelBuilder);
+            CreateUserModel(ref modelBuilder);
         }
     }
 }
