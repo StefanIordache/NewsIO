@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NewsIO.Data.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace NewsIO.Api.Extensions
 {
     public static class AccountExtensions
     {
-        /*public static async Task<SignInResult> PasswordEmailSignInAsync(this SignInManager<User> signInManager, string email, string password, bool isPersistent, bool shouldLockout, UserManager<User> userManager)
+        public static async Task<SignInResult> PasswordEmailSignInAsync(this SignInManager<User> signInManager, string email, string password, bool isPersistent, bool shouldLockout, UserManager<User> userManager)
         {
             var user = await userManager.FindByEmailAsync(email);
             return await signInManager.PasswordSignInAsync(user.UserName, password, isPersistent, shouldLockout);
@@ -31,8 +32,8 @@ namespace NewsIO.Api.Extensions
                     foreach (var role in roles)
                         if (role.Value != null && !roleManager.RoleExistsAsync(role.Value).Result)
                         {
-                            var adminRole = new UserRole(role.Value);
-                            await roleManager.CreateAsync(adminRole);
+                            var newRole = new UserRole(role.Value);
+                            await roleManager.CreateAsync(newRole);
                         }
                 }
                 return app;
@@ -41,6 +42,6 @@ namespace NewsIO.Api.Extensions
             {
                 return app;
             }
-        }*/
+        }
     }
 }

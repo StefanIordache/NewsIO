@@ -31,15 +31,17 @@ namespace NewsIO.Api
         {
             //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddCookieOptions()
-                .AddDbServices();
+            services.AddAuthServices()
+                    .AddCookieOptions()
+                    .AddDbServices();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, UserContext userContext, ApplicationContext applicationContext)
         {
+            userContext.Database.EnsureCreated();
             applicationContext.Database.EnsureCreated();
 
             if (env.IsDevelopment())
@@ -52,6 +54,8 @@ namespace NewsIO.Api
             }
 
             app.UseAuthentication();
+            await app.EnsureRolesCreatedAsync(Configuration);
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
