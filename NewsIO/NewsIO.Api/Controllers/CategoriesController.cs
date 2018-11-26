@@ -56,7 +56,7 @@ namespace NewsIO.Api.Controllers
         }
 
         // GET - /api/Categories/{id}
-        [HttpGet("{Id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
             try
@@ -76,7 +76,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // POST - /api/Categories/addNewCategory
+        // POST - /api/Categories/add
         [HttpPost("add")]
         public async Task<IActionResult> AddNewCategory([FromBody] Category category)
         {
@@ -93,13 +93,13 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // POST - /api/Categories/edit/{categoryId}
-        [HttpPost("edit/{categoryId}")]
-        public async Task<IActionResult> EditCategory(int categoryId, [FromBody] Category category)
+        // PUT - /api/Categories/edit/{id}
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> EditCategory(int id, [FromBody] Category category)
         {
             try
             {
-                await CategoryService.UpdateAsync(categoryId, category);
+                await CategoryService.UpdateAsync(id, category);
                 return Ok(new Response { Status = ResponseType.Successful,
                                         Value = category });
             }
