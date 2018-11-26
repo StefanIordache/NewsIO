@@ -42,7 +42,16 @@ namespace NewsIO.Services.Implementations
                     return (null, 0);
                 }
 
-                IEnumerable<T> returnList = await Context.Set<T>().Skip(offset).Take(pageSize).ToListAsync();
+                IEnumerable<T> returnList;
+
+                if (totalNoOfEntries < offset + pageSize)
+                {
+                    returnList = await Context.Set<T>().Skip(offset).Take(totalNoOfEntries - offset).ToListAsync();
+                }
+                else
+                {
+                    returnList = await Context.Set<T>().Skip(offset).Take(pageSize).ToListAsync();
+                }
 
                 return (returnList, totalNoOfEntries);
             }
