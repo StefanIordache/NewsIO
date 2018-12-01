@@ -11,6 +11,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { LoginService } from './login-form/login.service';
 import { AppRouterModule } from './app.router.module';
 import { SignupComponent } from './signup/signup.component';
+import { HomeService } from './home/home.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { SignupComponent } from './signup/signup.component';
       { path: '', component: HomeComponent, pathMatch: 'full' }
     ])
   ],
-  providers: [LoginService],
+  providers: [LoginService,HomeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
+  { path : '', component: HomeComponent},
   { path: 'login', component: LoginFormComponent },
   { path: 'signup', component: SignupComponent }
  ];
