@@ -152,7 +152,7 @@ namespace NewsIO.Api.Controllers.Authentication
 
                 var userRoles = await UserManager.GetRolesAsync(user);
 
-                if (!userRoles.Any())
+                if (userRoles == null || !userRoles.Any())
                 {
                     return Ok(new Response { Status = ResponseType.Failed, Message = "Failed to retrieve user role!" });
                 }
