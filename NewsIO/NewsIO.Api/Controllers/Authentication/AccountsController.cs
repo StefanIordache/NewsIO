@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Extensions;
-using NewsIO.Api.ViewModesl;
+using NewsIO.Api.ViewModels;
 using NewsIO.Data.Models.User;
 using static NewsIO.Api.Utils.Models;
 
@@ -31,18 +31,20 @@ namespace NewsIO.Api.Controllers.Authentication
         }
 
         [HttpPost("identity")]
-        public IActionResult Identity()
+        public async Task<IActionResult> Identity()
         {
             try
             {
                 var account = UserManager.GetUserAsync(User).Result;
+                var userRoles = await UserManager.GetRolesAsync(account);
+
                 if (account != null)
                 {
-                    return Ok(new User
+                    return Ok(new ViewModels.IdentityResult
                     {
                         UserName = account.UserName,
                         Email = account.Email,
-                        UserRole = account.UserRole,
+                        UserRole = userRoles.First(),
                         Id = account.Id
                     });
                 }
