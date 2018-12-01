@@ -15,7 +15,7 @@ namespace NewsIO.Api
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
-                    .UseUrls("https://localhost:5030")
+                    .UseUrls("http://localhost:5030")
                     .Build()
                     .Run();
         }

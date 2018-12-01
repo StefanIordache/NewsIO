@@ -33,8 +33,11 @@ namespace NewsIO.Api
 
             services.AddAuthServices()
                     .AddCookieOptions()
-                    .AddDbServices();
-
+                    .AddDbServices()
+                    .AddCors(options =>
+                    {
+                        options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5050"));
+                    });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -60,6 +63,7 @@ namespace NewsIO.Api
             app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCors("AllowSpecificOrigin");
         }
     }
 }

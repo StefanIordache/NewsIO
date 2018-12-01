@@ -1,19 +1,17 @@
 <div class="container">
- 
-  <div class="title">
+ <div class="title">
    <h2 class="subtitle text-secondary">Log in</h2>
-   <span style="color:#1d5cf9;" class="brand glyphicon glyphicon-globe" aria-hidden="true"></span>
    </div>
-  <form>
-      <div class="input-group input-group-lg">
-        <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-user" aria-hidden="true"></span></span>
-        <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
-               id="username-input" />
+  <form [formGroup]="loginForm">
+      <div class="input-group input-group-lg form-group">
+        
+        <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
+               id="email-input" formControlName="email" />
       </div>
-      <div class="input-group input-group-lg paddingTop">
-        <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+      <div class="input-group input-group-lg paddingTop form-group">
+        
         <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
-               id="password-input" />
+               id="password-input" formControlName="password" />
         </div>
         <div class="row">
           <div class="forgotpassword">
@@ -21,7 +19,7 @@
           </div>
         </div>
         <div class="row">
-          <button>LOGIN <span style="color:white;" class=" brand glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+          <button (click)="onSubmit()">LOGIN <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true" ></span></button>
         </div>
 </form>
   <div class="row">
