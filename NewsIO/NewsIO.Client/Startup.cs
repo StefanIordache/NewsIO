@@ -20,10 +20,11 @@ namespace NewsIO.Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            services.AddCors();
+            /*services.AddCors(options =>
                     {
                         options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5030"));
-                    });
+                    });*/
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -46,11 +47,13 @@ namespace NewsIO.Client
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors(builder => {
+                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+            });
 
             app.UseMvc(routes =>
             {

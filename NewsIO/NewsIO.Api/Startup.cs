@@ -33,11 +33,13 @@ namespace NewsIO.Api
 
             services.AddAuthServices()
                     .AddCookieOptions()
-                    .AddDbServices()
-                    .AddCors(options =>
-                    {
-                        options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5050"));
-                    });
+                    .AddDbServices();
+            /*.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5050"));
+            });*/
+
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -59,9 +61,13 @@ namespace NewsIO.Api
             app.UseAuthentication();
             await app.EnsureRolesCreatedAsync(Configuration);
 
+            app.UseCors(builder => {
+                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+            });
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
             app.UseCors("AllowSpecificOrigin");
         }
