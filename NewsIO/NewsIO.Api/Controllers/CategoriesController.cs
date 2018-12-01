@@ -47,7 +47,7 @@ namespace NewsIO.Api.Controllers
                     return NotFound();
                 }
 
-                return Ok(new PagedResult<Category>(categories, pageSize, pageNo, numberOfRecords));
+                return Ok(categories);
             }
             catch
             {
