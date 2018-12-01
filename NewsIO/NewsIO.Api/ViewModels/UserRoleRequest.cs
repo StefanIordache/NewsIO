@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NewsIO.Api.ViewModesl
+namespace NewsIO.Api.ViewModels
 {
     public class UserRoleRequest
     {
