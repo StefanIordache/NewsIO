@@ -52,7 +52,7 @@ namespace NewsIO.Client
             app.UseSpaStaticFiles();
 
             app.UseCors(builder => {
-                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
 
             app.UseMvc(routes =>

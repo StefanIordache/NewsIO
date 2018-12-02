@@ -62,7 +62,7 @@ namespace NewsIO.Api
             await app.EnsureRolesCreatedAsync(Configuration);
 
             app.UseCors(builder => {
-                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+                builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
 
             app.UseDefaultFiles();
