@@ -1,36 +1,28 @@
 <div class="container">
   <div class="title">
-    
-   <h2 class="subtitle text-secondary">Sign up</h2>
-   <div class="brand">
-     <span class=" brand glyphicon glyphicon-globe"></span>
+    <h2 class="subtitle text-secondary">Sign up</h2>
    </div>
-  </div>
 
-  <form>
+  <form [formGroup]="signupForm">
     <div class="input-group input-group-lg">
-      <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-user" aria-hidden="true"></span></span>
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fa fa-user" aria-hidden="true"></span></span>
       <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
-             id="username-input" />
+             id="username-input" formControlName="username" />
     </div>
     <div class="input-group input-group-lg paddingTop">
-      <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-      <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
-             id="password-input" />
-    </div>
-    <div class="input-group input-group-lg paddingTop">
-      <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-envelope" aria-hidden="true"></span></span>
       <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
-             id="email-input" />
+             id="email-input" formControlName="email" />
     </div>
     <div class="input-group input-group-lg paddingTop">
-      <span class="input-group-addon"><span style="color:#1d5cf9;" class=" brand glyphicon glyphicon-phone" aria-hidden="true"></span></span>
-      <input type="tel" name="phone" class="form-control" placeholder="phone" autocomplete="off"
-             id="email-input" />
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-lock" aria-hidden="true"></span></span>
+      <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
+             id="password-input" formControlName="password" />
     </div>
+
 
     <div class="row">
-      <button>SIGNUP <span style="color:white;" class=" brand glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+      <button (click)="onSubmit()">SIGNUP <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true"></span></button>
     </div>
   </form>
   <div class="row">

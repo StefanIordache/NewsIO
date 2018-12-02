@@ -36,16 +36,20 @@ namespace NewsIO.Api.Controllers.Authentication
             try
             {
                 var account = UserManager.GetUserAsync(User).Result;
+                Console.WriteLine("----------------Hellooooo------------------------");
+                Console.WriteLine(account);
+                Console.WriteLine("----------------BYEEE------------------------");
                 var userRoles = await UserManager.GetRolesAsync(account);
 
                 if (account != null)
                 {
                     return Ok(new ViewModels.IdentityResult
                     {
+                        Id = account.Id,
                         UserName = account.UserName,
                         Email = account.Email,
-                        UserRole = userRoles.First(),
-                        Id = account.Id
+                        UserRole = userRoles.First()
+                       
                     });
                 }
 

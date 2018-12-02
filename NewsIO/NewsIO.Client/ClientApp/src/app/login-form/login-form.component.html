@@ -3,16 +3,16 @@
    <h2 class="subtitle text-secondary">Log in</h2>
    </div>
   <form [formGroup]="loginForm">
-      <div class="input-group input-group-lg form-group">
-        
-        <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
-               id="email-input" formControlName="email" />
-      </div>
-      <div class="input-group input-group-lg paddingTop form-group">
-        
-        <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
-               id="password-input" formControlName="password" />
-        </div>
+    <div class="input-group input-group-lg form-group">
+      <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-envelope" aria-hidden="true"></i></span>
+      <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
+             id="email-input" formControlName="email" />
+    </div>
+    <div class="input-group input-group-lg paddingTop form-group">
+      <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-lock" aria-hidden="true"></i></span>
+      <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
+             id="password-input" formControlName="password" />
+    </div>
         <div class="row">
           <div class="forgotpassword">
             <a href="#">I forgot password?</a>

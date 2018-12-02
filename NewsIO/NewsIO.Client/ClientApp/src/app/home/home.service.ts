@@ -14,7 +14,7 @@ export class HomeService extends Service<Category> {
     super();
   }
   getAllCategories(){
-    return this.httpClient.get<Category[]>('https://localhost:5030/api/categories');
+    return this.httpClient.get<Category[]>('http://localhost:5030/api/categories');
   }
 
 }
