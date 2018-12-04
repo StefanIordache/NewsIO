@@ -14,11 +14,25 @@ using Microsoft.AspNetCore.SpaServices;
 using NewsIO.Api.Extensions;
 using NewsIO.Api.Utils;
 using NewsIO.Data.Contexts;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NewsIO.Data.Models.User;
+using NewsIO.Api.Utils.AuthJwtFactory;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 
 namespace NewsIO.Api
 {
     public class Startup
     {
+        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
+
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,18 +43,87 @@ namespace NewsIO.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddDbServices();
 
-            services.AddAuthServices()
-                    .AddCookieOptions()
-                    .AddDbServices();
-            /*.AddCors(options =>
+            services.AddSingleton<IJwtFactory, JwtFactory>();
+
+            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Jwt wire up
+            // Get options from app settings
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions)); // todo: to be moved
+
+            services.Configure<JwtIssuerOptions>(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5050"));
-            });*/
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
 
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = true,
+                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(configureOptions =>
+            {
+                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationParameters;
+                configureOptions.SaveToken = true;
+            });
+
+            // Api user claim policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+            });
+
+            // Add identity
+            var builder = services.AddIdentityCore<User>(u =>
+            {
+                // Configure identity options
+                u.Password.RequireDigit = false;
+                u.Password.RequireLowercase = false;
+                u.Password.RequireUppercase = false;
+                u.Password.RequireNonAlphanumeric = false;
+                u.Password.RequiredLength = 6;
+
+                // Lockout settins
+                u.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                u.Lockout.MaxFailedAccessAttempts = 10;
+                u.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                u.User.RequireUniqueEmail = true;
+            });
+
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
+
+            services.AddAutoMapper();
+
+            services.AddCookieOptions();
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,13 +144,13 @@ namespace NewsIO.Api
             app.UseAuthentication();
             await app.EnsureRolesCreatedAsync(Configuration);
 
-            app.UseCors(builder => {
+            app.UseCors(builder =>
+            {
                 builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            //app.UseHttpsRedirection();
             app.UseMvc();
             app.UseCors("AllowSpecificOrigin");
         }

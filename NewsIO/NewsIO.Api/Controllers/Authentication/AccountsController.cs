@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Extensions;
 using NewsIO.Api.ViewModels;
+using NewsIO.Data.Contexts;
 using NewsIO.Data.Models.User;
 using static NewsIO.Api.Utils.Models;
 
@@ -17,13 +19,70 @@ namespace NewsIO.Api.Controllers.Authentication
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly UserContext UserContext;
+
         private readonly UserManager<User> UserManager;
 
-        private readonly SignInManager<User> SignInManager;
+        private readonly IMapper Mapper;
+
+        public AccountsController(UserContext userContext, UserManager<User> userManager, IMapper mapper)
+        {
+            UserContext = userContext;
+            UserManager = userManager;
+            Mapper = mapper;
+        }
+
+        // POST /api/accounts/register
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterNewUser([FromBody]RegistrationViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var existUser = await UserManager.FindByNameAsync(model.UserName);
+
+                if (existUser != null)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = "Username already exist!" });
+                }
+
+                var userIdentity = Mapper.Map<User>(model);
+
+                var userCreateResp = await UserManager.CreateAsync(userIdentity, model.Password);
+
+                if (!userCreateResp.Succeeded)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = userCreateResp.Errors.FirstOrDefault().Description });
+                }
+
+                await UserContext.AppUsers.AddAsync(new AppUser
+                {
+                    IdentityId = userIdentity.Id,
+                    Location = model.Location
+                });
+                await UserContext.SaveChangesAsync();
+
+                return Ok(new Response { Status = ResponseType.Successful });
+            }
+            catch (Exception e)
+            {
+                return Ok(new Response { Status = ResponseType.Failed, Message = e.ToString() });
+            }
+         
+        }
+
+
+        /*private readonly UserManager<AppUser> UserManager;
+
+        private readonly SignInManager<AppUser> SignInManager;
 
         private readonly RoleManager<UserRole> RoleManager;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManger, RoleManager<UserRole> roleManager)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManger, RoleManager<UserRole> roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManger;
@@ -114,7 +173,7 @@ namespace NewsIO.Api.Controllers.Authentication
                     return Ok(new Response { Status = ResponseType.Failed, Message = "Username already exist!" });
                 }
 
-                var newUser = new User
+                var newUser = new AppUser
                 {
                     UserName = model.UserName,
                     Email = model.Email,
@@ -181,7 +240,7 @@ namespace NewsIO.Api.Controllers.Authentication
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-        }
+        }*/
 
     }
 }

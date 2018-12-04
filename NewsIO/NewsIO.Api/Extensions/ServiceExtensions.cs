@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NewsIO.Api.Utils;
+using NewsIO.Api.Utils.AuthJwtFactory;
 using NewsIO.Data.Contexts;
 using NewsIO.Data.Models.User;
 using NewsIO.Services.Implementations;
@@ -35,40 +37,16 @@ namespace NewsIO.Api.Extensions
 
         public static IServiceCollection AddDbServices(this IServiceCollection services)
         {
-            services
-                .AddDbContext<ApplicationContext>(options => options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOApplication;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
-
-            services
-                .AddTransient<ICategoryService, CategoryService>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddAuthServices(this IServiceCollection services)
-        {
+            services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOApplication;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            });
             services.AddDbContext<UserContext>(options =>
             {
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOUsers;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
-
-            services.AddIdentity<User, UserRole>().AddEntityFrameworkStores<UserContext>();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-
-                // Lockout settins
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings
-                options.User.RequireUniqueEmail = true;
-            });
+            services
+                .AddTransient<ICategoryService, CategoryService>();
 
             return services;
         }

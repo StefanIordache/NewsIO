@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NewsIO.Api.Utils;
 using NewsIO.Api.ViewModels;
 using NewsIO.Data.Models.User;
-using NewsIO.Services.Intefaces;
 
 namespace NewsIO.Api.Controllers
 {
@@ -18,11 +16,8 @@ namespace NewsIO.Api.Controllers
     {
         private readonly RoleManager<UserRole> RoleManager;
 
-        private readonly UserManager<User> UserManager;
-
-        public RolesController(UserManager<User> userManager, RoleManager<UserRole> roleManager)
+        public RolesController(RoleManager<UserRole> roleManager)
         {
-            UserManager = userManager;
             RoleManager = roleManager;
         }
 
