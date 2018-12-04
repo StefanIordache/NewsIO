@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NewsIO.Data.Contexts
 {
-    public class UserContext : IdentityDbContext<User, UserRole, int>
+    public class UserContext : IdentityDbContext<User>
     {
         public UserContext(DbContextOptions<UserContext> options)
             : base(options) { }
@@ -22,5 +22,7 @@ namespace NewsIO.Data.Contexts
             base.OnModelCreating(modelBuilder);
             CreateUserModel(ref modelBuilder);
         }
+
+        public DbSet<AppUser> AppUsers { get; set; }
     }
 }
