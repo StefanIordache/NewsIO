@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.0.101" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.0.101" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NewsIO.Data\NewsIO.Data.csproj" />
   </ItemGroup>
 
