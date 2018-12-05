@@ -35,13 +35,6 @@ namespace NewsIO.Api.Controllers.Authentication
             Mapper = mapper;
         }
 
-        /*public AccountsController(UserContext userContext, UserManager<User> userManager, IMapper mapper)
-        {
-            UserContext = userContext;
-            UserManager = userManager;
-            Mapper = mapper;
-        }*/
-
         // POST /api/accounts/register
         [HttpPost("register")]
         public async Task<IActionResult> RegisterNewUser([FromBody]RegistrationViewModel model)
