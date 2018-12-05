@@ -64,7 +64,8 @@ namespace NewsIO.Api.Controllers.Authentication
             // check the credentials
             if (await UserManager.CheckPasswordAsync(userToVerify, password))
             {
-                return await Task.FromResult(JwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
+                var userRoles = await UserManager.GetRolesAsync(userToVerify);
+                return await Task.FromResult(JwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id, userRoles.First()));
             }
 
             // Credentials are invalid, or account doesn't exist

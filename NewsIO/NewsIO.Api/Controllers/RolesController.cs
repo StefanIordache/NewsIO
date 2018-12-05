@@ -14,9 +14,9 @@ namespace NewsIO.Api.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly RoleManager<UserRole> RoleManager;
+        private readonly RoleManager<IdentityRole> RoleManager;
 
-        public RolesController(RoleManager<UserRole> roleManager)
+        public RolesController(RoleManager<IdentityRole> roleManager)
         {
             RoleManager = roleManager;
         }
@@ -27,8 +27,8 @@ namespace NewsIO.Api.Controllers
         {
             try
             {
-                IEnumerable<UserRole> roles;
-                IList<Role> rolesList = new List<Role>();
+                IEnumerable<IdentityRole> roles;
+                IList<RoleViewModel> rolesList = new List<RoleViewModel>();
 
                 roles = RoleManager.Roles.ToList();
 
@@ -39,7 +39,7 @@ namespace NewsIO.Api.Controllers
 
                 foreach (var role in roles)
                 {
-                    Role newRole = new Role
+                    RoleViewModel newRole = new RoleViewModel
                     {
                         Id = role.Id,
                         Name = role.NormalizedName
@@ -58,15 +58,15 @@ namespace NewsIO.Api.Controllers
 
         // GET - /api/Roles/getById/{id}
         [HttpGet("getById/{id}")]
-        public async Task<IActionResult> GetRoleById(int id)
+        public async Task<IActionResult> GetRoleById(string id)
         {
             try
             {
-                UserRole userRole = await RoleManager.FindByIdAsync(id.ToString());
+                IdentityRole userRole = await RoleManager.FindByIdAsync(id.ToString());
 
                 if (userRole != null)
                 {
-                    return Ok(new Role
+                    return Ok(new RoleViewModel
                     {
                         Id = userRole.Id,
                         Name = userRole.NormalizedName
@@ -87,11 +87,11 @@ namespace NewsIO.Api.Controllers
         {
             try
             {
-                UserRole userRole = await RoleManager.FindByNameAsync(name);
+                IdentityRole userRole = await RoleManager.FindByNameAsync(name);
 
                 if (userRole != null)
                 {
-                    return Ok(new Role
+                    return Ok(new RoleViewModel
                     {
                         Id = userRole.Id,
                         Name = userRole.NormalizedName

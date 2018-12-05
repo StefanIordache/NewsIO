@@ -13,11 +13,11 @@ namespace NewsIO.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly RoleManager<UserRole> RoleManager;
+        private readonly RoleManager<IdentityRole> RoleManager;
 
         private readonly UserManager<User> UserManager;
 
-        public UsersController(RoleManager<UserRole> roleManager, UserManager<User> userManager)
+        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             RoleManager = roleManager;
             UserManager = userManager;

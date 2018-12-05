@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace NewsIO.Api.ViewModels
 {
-    public class Role
+    public class RoleViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
     }

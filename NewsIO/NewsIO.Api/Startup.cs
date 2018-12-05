@@ -91,11 +91,33 @@ namespace NewsIO.Api
             // Api user claim policy
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+                //options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+                options.AddPolicy("AdministratorPolicy", policy => policy.RequireAssertion(context => context.User.IsInRole("Administrator")));
+                options.AddPolicy("ModeratorPolicy", policy => policy.RequireAssertion(context => context.User.IsInRole("Moderator")));
+                options.AddPolicy("MemberPolicy", policy => policy.RequireAssertion(context => context.User.IsInRole("Member")));
             });
 
             // Add identity
-            var builder = services.AddIdentityCore<User>(u =>
+
+            var builder = services.AddIdentity<User, IdentityRole>( u =>
+            { 
+                // Configure identity options
+                u.Password.RequireDigit = false;
+                u.Password.RequireLowercase = false;
+                u.Password.RequireUppercase = false;
+                u.Password.RequireNonAlphanumeric = false;
+                u.Password.RequiredLength = 6;
+
+                // Lockout settins
+                u.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                u.Lockout.MaxFailedAccessAttempts = 10;
+                u.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                u.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
+            /*var builder = services.AddIdentityCore<User>(u =>
             {
                 // Configure identity options
                 u.Password.RequireDigit = false;
@@ -111,9 +133,9 @@ namespace NewsIO.Api
 
                 // User settings
                 u.User.RequireUniqueEmail = true;
-            });
+            });*/
 
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            //builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
 
             services.AddAutoMapper();

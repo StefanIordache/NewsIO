@@ -26,13 +26,13 @@ namespace NewsIO.Api.Extensions
 
                 using (IServiceScope scope = scopeFactory.CreateScope())
                 {
-                    RoleManager<UserRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRole>>();
+                    RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                     var roles = configuration.GetSection("Roles").AsEnumerable();
                     foreach (var role in roles)
                         if (role.Value != null && !roleManager.RoleExistsAsync(role.Value).Result)
                         {
-                            var newRole = new UserRole(role.Value);
+                            var newRole = new IdentityRole(role.Value);
                             await roleManager.CreateAsync(newRole);
                         }
                 }
