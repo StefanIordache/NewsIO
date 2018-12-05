@@ -97,23 +97,23 @@ namespace NewsIO.Api
             });
 
             // Add identity
-            var builder = services.AddIdentity<User, IdentityRole>( u =>
-            { 
+            var builder = services.AddIdentity<User, IdentityRole>(u =>
+           {
                 // Configure identity options
                 u.Password.RequireDigit = false;
-                u.Password.RequireLowercase = false;
-                u.Password.RequireUppercase = false;
-                u.Password.RequireNonAlphanumeric = false;
-                u.Password.RequiredLength = 6;
+               u.Password.RequireLowercase = false;
+               u.Password.RequireUppercase = false;
+               u.Password.RequireNonAlphanumeric = false;
+               u.Password.RequiredLength = 6;
 
                 // Lockout settins
                 u.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-                u.Lockout.MaxFailedAccessAttempts = 10;
-                u.Lockout.AllowedForNewUsers = true;
+               u.Lockout.MaxFailedAccessAttempts = 10;
+               u.Lockout.AllowedForNewUsers = true;
 
                 // User settings
                 u.User.RequireUniqueEmail = true;
-            })
+           });
 
             builder.AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
 
