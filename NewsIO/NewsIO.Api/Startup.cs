@@ -100,7 +100,7 @@ namespace NewsIO.Api
             var builder = services.AddIdentity<User, IdentityRole>(u =>
            {
                 // Configure identity options
-                u.Password.RequireDigit = false;
+               u.Password.RequireDigit = false;
                u.Password.RequireLowercase = false;
                u.Password.RequireUppercase = false;
                u.Password.RequireNonAlphanumeric = false;
