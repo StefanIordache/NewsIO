@@ -14,7 +14,5 @@ namespace NewsIO.Data.Models.User
         public long? FacebookId { get; set; }
 
         public string PictureUrl { get; set; }
-
-        public UserRole UserRole { get; set; }
     }
 }
