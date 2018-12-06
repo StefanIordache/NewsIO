@@ -26,8 +26,7 @@ namespace NewsIO.Api.Utils.AuthJwtFactory
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await JwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(JwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Role),
-                 identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Id)
+                 new Claim(ClaimTypes.Role, identity.FindFirst(ClaimTypes.Role).Value)
              };
 
             // Create the JWT security token and encode it.
@@ -44,12 +43,11 @@ namespace NewsIO.Api.Utils.AuthJwtFactory
             return encodedJwt;
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(string userName, string id, string role)
+        public ClaimsIdentity GenerateClaimsIdentity(string userName, string role)
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
-                new Claim(Constants.Strings.JwtClaimIdentifiers.Id, id),
-                new Claim(Constants.Strings.JwtClaimIdentifiers.Role, role)
+                new Claim(ClaimTypes.Role, role)
             });
         }
 

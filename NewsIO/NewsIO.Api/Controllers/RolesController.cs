@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using NewsIO.Data.Models.User;
 
 namespace NewsIO.Api.Controllers
 {
+    //[Authorize(Policy = "TestPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
@@ -19,6 +22,17 @@ namespace NewsIO.Api.Controllers
         public RolesController(RoleManager<IdentityRole> roleManager)
         {
             RoleManager = roleManager;
+        }
+
+        [HttpGet("claims")]
+        public object Claims()
+        {
+            return User.Claims.Select(c =>
+            new
+            {
+                Type = c.Type,
+                Value = c.Value
+            });
         }
 
         // GET - /api/Roles
