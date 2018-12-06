@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -44,7 +41,7 @@ namespace NewsIO.Api.Controllers.Authentication
             var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
             if (identity == null)
             {
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
+                return BadRequest(Errors.AddErrorToModelState("Login Failure", "Invalid username or password.", ModelState));
             }
 
             var jwt = await Tokens.GenerateJwt(identity, JwtFactory, credentials.UserName, JwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.ViewModels;
-using NewsIO.Data.Models.User;
 
 namespace NewsIO.Api.Controllers
 {
@@ -22,17 +18,6 @@ namespace NewsIO.Api.Controllers
         public RolesController(RoleManager<IdentityRole> roleManager)
         {
             RoleManager = roleManager;
-        }
-
-        [HttpGet("claims")]
-        public object Claims()
-        {
-            return User.Claims.Select(c =>
-            new
-            {
-                Type = c.Type,
-                Value = c.Value
-            });
         }
 
         // GET - /api/Roles

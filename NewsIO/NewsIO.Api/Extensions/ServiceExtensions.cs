@@ -12,8 +12,6 @@ using NewsIO.Data.Models.User;
 using NewsIO.Services.Implementations;
 using NewsIO.Services.Intefaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
