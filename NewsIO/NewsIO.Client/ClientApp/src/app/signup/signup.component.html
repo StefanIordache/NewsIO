@@ -4,25 +4,54 @@
    </div>
 
   <form [formGroup]="signupForm">
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fa fa-user" aria-hidden="true"></span></span>
-      <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
-             id="username-input" formControlName="username" />
-    </div>
-    <div class="input-group input-group-lg paddingTop">
+    <div class="input-group input-group-lg ">
       <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-envelope" aria-hidden="true"></span></span>
       <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
              id="email-input" formControlName="email" />
+      <small style="color:red;" *ngIf="signupForm.get('email').errors">
+        *Email format is not correct. Try again!
+      </small>
+      <div *ngIf="isEmailError">
+        <p style="color:red">{{emailFieldError}}</p>
+      </div>
+    </div>
+    <div class="input-group input-group-lg paddingTop">
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-user-tie" aria-hidden="true"></span></span>
+      <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
+             id="username-input" formControlName="username" required="required" />
+    </div>
+    <div *ngIf="isUsernameError">
+      <p style="color:red">{{usernameFieldError}}</p>
     </div>
     <div class="input-group input-group-lg paddingTop">
       <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-lock" aria-hidden="true"></span></span>
       <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
-             id="password-input" formControlName="password" />
+             id="password-input" formControlName="password"/>
+      <small style="color:red;" *ngIf="signupForm.get('password').errors">
+        *Password must be  8 characters minimum in length
+
+      </small>
+    </div>
+    <div class="input-group input-group-lg paddingTop">
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-user-secret" aria-hidden="true"></span></span>
+      <input type="text" name="firstName" class="form-control" placeholder="first name" autocomplete="off"
+             id="firstName-input" formControlName="firstName" required="required" />
+    </div>
+    <div class="input-group input-group-lg paddingTop">
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fa fa-user" aria-hidden="true"></span></span>
+      <input type="text" name="lastName" class="form-control" placeholder="last name" autocomplete="off"
+             id="lastName-input" formControlName="lastName" required="required" />
+    </div>
+    <div class="input-group input-group-lg paddingTop">
+      <span class="input-group-addon"><span style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-globe" aria-hidden="true"></span></span>
+      <input type="text" name="location" class="form-control" placeholder="location" autocomplete="off"
+             id="location-input" formControlName="location" required="required" />
     </div>
 
 
+
     <div class="row">
-      <button (click)="onSubmit()">SIGNUP <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true"></span></button>
+      <button (click)="onSubmit()" [disabled]="!signupForm.valid">SIGNUP <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true"></span></button>
     </div>
   </form>
   <div class="row">

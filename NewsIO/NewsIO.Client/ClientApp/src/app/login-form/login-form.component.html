@@ -2,26 +2,33 @@
  <div class="title">
    <h2 class="subtitle text-secondary">Log in</h2>
    </div>
-  <form [formGroup]="loginForm">
-    <div class="input-group input-group-lg form-group">
-      <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-envelope" aria-hidden="true"></i></span>
-      <input type="email" name="email" class="form-control" placeholder="email" autocomplete="off"
-             id="email-input" formControlName="email" />
-    </div>
-    <div class="input-group input-group-lg paddingTop form-group">
-      <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-lock" aria-hidden="true"></i></span>
-      <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
-             id="password-input" formControlName="password" />
-    </div>
-        <div class="row">
-          <div class="forgotpassword">
-            <a href="#">I forgot password?</a>
-          </div>
-        </div>
-        <div class="row">
-          <button (click)="onSubmit()">LOGIN <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true" ></span></button>
-        </div>
-</form>
+ <form [formGroup]="loginForm">
+   <div class="input-group input-group-lg form-group">
+     <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fa fa-user" aria-hidden="true"></i></span>
+     <input type="text" name="username" class="form-control" placeholder="username" autocomplete="off"
+            id="email-input" formControlName="username" />
+
+   </div>
+   <div class="input-group input-group-lg paddingTop form-group">
+     <span class="input-group-addon"><i style="color:#1d5cf9;padding-top:10px;" class=" brand fas fa-lock" aria-hidden="true"></i></span>
+     <input type="password" name="password" class="form-control" placeholder="password" autocomplete="off"
+            id="password-input" formControlName="password" />
+     <small style="color:red;" *ngIf="loginForm.get('password').errors">
+       *Password must be  8 characters minimum in length
+     </small>
+   </div>
+   <small style="color:red;" *ngIf="isInvalid">
+     *{{invalid}}
+   </small>
+   <div class="row">
+     <div class="forgotpassword">
+       <a href="#">I forgot password?</a>
+     </div>
+   </div>
+   <div class="row">
+     <button (click)="onSubmit()"  [disabled]="!loginForm.valid">LOGIN <span style="color:white;" class=" brand fas fa-chevron-right" aria-hidden="true"></span></button>
+   </div>
+ </form>
   <div class="row">
     <div class="singup">
       Don't have an account? <a  routerLink="/signup">Sign up</a>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-primary" (click)="checkLoggedUser()">
+<nav class="navbar navbar-dark bg-primary" *ngIf="userService.visible" (click)="checkLoggedUser()">
     <a class="navbar-brand font-weight-bold" href="#">NewsIO</a>
     
     <div class="" id="navbarSupportedContent">

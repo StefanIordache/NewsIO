@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup,FormControl } from '@angular/forms';
+import { FormGroup,FormControl, MinLengthValidator, Validators } from '@angular/forms';
+import { UserService } from '../shared/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-form',
@@ -10,26 +11,42 @@ import { FormGroup,FormControl } from '@angular/forms';
 })
 export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
+  isInvalid = false;
+  invalid: String;
 
-  constructor(private route: ActivatedRoute, private loginService: LoginService, private router: Router) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) {
    }
 
   ngOnInit() {
     this.initForm();
+    this.userService.hide();
   }
   initForm() {
     this.loginForm = new FormGroup({
-      'email': new FormControl(''),
-      'password': new FormControl('')
+      'username': new FormControl(''),
+      'password': new FormControl('',Validators.minLength(8))
     });
   }
   onSubmit() {
-    this.loginService.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value )
+    this.userService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value )
       .subscribe(
-        () => {
-          this.router.navigateByUrl('/')
+      () => {
+        this.resetErrors();
+          this.router.navigateByUrl('/');
+          location.reload(); 
+      },
+      (response: HttpErrorResponse) => {
+        this.resetErrors();
+        if (response.status == 400) {
+          this.isInvalid = true;
+          this.invalid = "Invalid username or password";
         }
-      );
+      }
+    );
+  }
+  private resetErrors() {
+    this.isInvalid = false
+    this.invalid = '';
   }
 
 }

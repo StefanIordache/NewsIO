@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { NavMenuService } from './nav-menu.service';
 import { LoggedUser } from './loggedUser.model';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -12,22 +12,16 @@ export class NavMenuComponent implements OnInit {
   show1: boolean = true;
   show2: boolean = false;
   loggedUser: LoggedUser;
-  constructor(private route: ActivatedRoute, private router: Router, private navMenuService: NavMenuService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
   ngOnInit() { }
   checkLoggedUser() {
-    this.navMenuService.checkLoggedUser().subscribe(
-      //() => {
-        //this.show1 = false;
-        //this.show2 = true;
-     // },
-      (loggedUser: LoggedUser) => { this.loggedUser = loggedUser; }
-    );
-  }
+    if (this.userService.isLoggedIn() === true) {
+      this.show1 = false;
+      this.show2 = true;
+    }
+ }
     logout(){
-      this.navMenuService.logOut().subscribe(
-        () => {
-          this.router.navigateByUrl("/login");
-        });
+      this.userService.logOut();
     }
   }
 

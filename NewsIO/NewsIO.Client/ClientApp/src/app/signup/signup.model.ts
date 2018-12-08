@@ -1,7 +1,11 @@
 export class Signup {
   constructor(public id: number,
-    public username: string,
     public email: string,
-    public password: string
+    public username: string,
+    public password: string,
+    public firstName: string,
+    public lastName: string,
+    public location: string,
+    accessTokens: any[]
   ) { }
 }
