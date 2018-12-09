@@ -15,8 +15,10 @@ export class UserService  {
   authNavStatus$ = this._authNavStatusSource.asObservable();
   visible: boolean;
   message: string;
+  private admin=false;
 
   constructor(public httpClient: Http) {
+    if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
     this.loggedIn = !!localStorage.getItem('auth_token');
     this._authNavStatusSource.next(this.loggedIn);
     this.visible = false;
@@ -39,7 +41,14 @@ export class UserService  {
     return this.httpClient.post('http://localhost:5030/api/auth/login', JSON.stringify({ Username: username, Password: password }), { headers })
       .pipe(map(res => res.json()))
       .pipe(map(res => {
+        if (res.role == 'Administrator') {
+          this.admin = true;
+        }
+        else {
+          this.admin = false;
+        }
         localStorage.setItem('auth_token', res.auth_token);
+        localStorage.setItem('role', res.role);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
         return true;
@@ -48,6 +57,8 @@ export class UserService  {
   }
   logOut() {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('role');
+    this.admin = false;
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
     location.reload(); 
@@ -55,5 +66,12 @@ export class UserService  {
   isLoggedIn() {
     return this.loggedIn;
   }
+  isAdmin() {
+    console.log("-----------");
+    console.log(this.admin);
+    return this.admin;
+    
+  }
+ 
 
 }

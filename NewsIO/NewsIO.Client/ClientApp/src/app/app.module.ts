@@ -13,6 +13,7 @@ import { AppRouterModule } from './app.router.module';
 import { SignupComponent } from './signup/signup.component';
 import { HomeService } from './home/home.service';
 import { UserService } from './shared/services/user.service';
+import { UsersComponent } from './users/users.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { UserService } from './shared/services/user.service';
     NavMenuComponent,
     HomeComponent,
     LoginFormComponent,
-    SignupComponent
+    SignupComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

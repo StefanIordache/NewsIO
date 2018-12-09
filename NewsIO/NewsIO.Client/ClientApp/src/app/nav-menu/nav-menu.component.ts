@@ -11,17 +11,35 @@ import { UserService } from '../shared/services/user.service';
 export class NavMenuComponent implements OnInit {
   show1: boolean = true;
   show2: boolean = false;
+  show3: boolean = false;
   loggedUser: LoggedUser;
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.userService.isLoggedIn() === true) {
+      this.show1 = false;
+      this.show2 = true;
+    }
+
+    if (this.userService.isAdmin() === true) {
+      this.show3 = true;
+    }
+  }
   checkLoggedUser() {
     if (this.userService.isLoggedIn() === true) {
       this.show1 = false;
       this.show2 = true;
     }
+
+    if (this.userService.isAdmin()===true) {
+      this.show3 = true;
+    }
+    console.log(this.show3);
+   
  }
     logout(){
       this.userService.logOut();
-    }
+      this.router.navigateByUrl('');
+  }
+  
   }
 

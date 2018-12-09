@@ -1,26 +1,15 @@
-<div class="container">
-  <div id="myCarousel2" class="carousel slide">
-    <!-- Carousel items -->
-    <div class="carousel-inner">
-
-      <div class="item active">
-        <div class="row text-center">
-          <div *ngFor="let category of categories;">
-          <!-- ITEM-->
-          <div class="item">
-            <div class="thumbnail product-item">
-              <i style="font-size:40px;" class="fas fa-hospital"></i>
-              <h3>{{category.title}}</h3>
-            </div>
-            
-          </div>
-        </div>
+<div class="container" style="padding-left:10px;margin-left:0px;">
+<div class="dropdown row text-left" style="padding-top:20px;padding-left:0px;margin-left:0px;">
+  <a  class="dropdown-toggle btn btn-primary btn-lg float-left" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Categories    <i class="far fa-newspaper"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <div *ngFor="let category of categories;">
+      <div>
+        <a class="dropdown-item text-primary" routerLink="">{{category.title}}</a>
+        <div class="dropdown-divider"></div>
       </div>
-        </div>
-    </div><!-- /INNER-->
-    <!-- Carousel nav -->
-    <a class="carousel-control left prev" href="#myCarousel2" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
-    <a class="carousel-control right next" href="#myCarousel2" data-slide="next"><i class="fas fa-chevron-right"></i></a>
+    </div>
   </div>
-
-</div><!-- /CONTAINER -->
+  </div>
+  </div>
