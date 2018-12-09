@@ -29,8 +29,6 @@ namespace NewsIO.Api
 
             JwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
-            services.AddJwtService();
-
             services.AddIdentityService();
 
             services.AddAutoMapper();
@@ -41,6 +39,8 @@ namespace NewsIO.Api
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddJwtService();
 
             services.AddAuthorizationPolicyService();
         }
@@ -70,6 +70,7 @@ namespace NewsIO.Api
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
             app.UseMvc();
             app.UseCors("AllowSpecificOrigin");
         }
