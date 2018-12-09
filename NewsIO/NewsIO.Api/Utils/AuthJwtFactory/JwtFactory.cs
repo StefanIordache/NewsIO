@@ -20,7 +20,7 @@ namespace NewsIO.Api.Utils.AuthJwtFactory
         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
         {
             var claims = new[]
-         {
+            {
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await JwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(JwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
@@ -41,10 +41,12 @@ namespace NewsIO.Api.Utils.AuthJwtFactory
             return encodedJwt;
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(string userName, string role)
+        public ClaimsIdentity GenerateClaimsIdentity(string userName, string userId, string role)
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
+                new Claim("UserName", userName),
+                new Claim("UserId", userId),
                 new Claim(ClaimTypes.Role, role)
             });
         }

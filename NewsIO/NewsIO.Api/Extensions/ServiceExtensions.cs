@@ -12,6 +12,7 @@ using NewsIO.Data.Models.User;
 using NewsIO.Services.Implementations;
 using NewsIO.Services.Intefaces;
 using System;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,7 +105,7 @@ namespace NewsIO.Api.Extensions
 
         public static IServiceCollection AddAuthorizationPolicyService(this IServiceCollection services)
         {
-            services.AddAuthorization(options =>
+            /*services.AddAuthorization(options =>
             {
                 options.AddPolicy("MemberRolePolicy", policy =>
                 {
@@ -124,6 +125,15 @@ namespace NewsIO.Api.Extensions
                     policy.RequireClaim(ClaimTypes.Role);
                     policy.RequireRole("Administrator");
                 });
+            });*/
+
+            services.AddAuthorization(options =>
+            {
+                // Here I stored necessary permissions/roles in a constant
+                foreach (var prop in typeof(ClaimTypes).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
+                {
+                    options.AddPolicy(prop.GetValue(null).ToString(), policy => policy.RequireClaim(ClaimTypes.Role, prop.GetValue(null).ToString()));
+                }
             });
 
             return services;

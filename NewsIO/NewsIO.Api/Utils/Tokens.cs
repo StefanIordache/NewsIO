@@ -13,6 +13,8 @@ namespace NewsIO.Api.Utils
             var response = new
             {
                 role = identity.Claims.Single(c => c.Type == ClaimTypes.Role).Value,
+                username = identity.Claims.Single(c => c.Type == "UserName").Value,
+                user_id = identity.Claims.Single(c => c.Type == "UserId").Value,
                 auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
                 expires_in = (int)jwtOptions.ValidFor.TotalSeconds
             };
