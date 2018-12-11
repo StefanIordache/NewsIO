@@ -53,8 +53,6 @@ namespace NewsIO.Api.Extensions
             {
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOUsers;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
-            services
-                .AddTransient<ICategoryService, CategoryService>();
 
             return services;
         }

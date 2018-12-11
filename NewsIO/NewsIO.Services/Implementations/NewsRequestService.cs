@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NewsIO.Services.Implementations
 {
-    class NewsRequestService : GenericDbService, INewsRequestService
+    public class NewsRequestService : GenericDbService, INewsRequestService
     {
         public NewsRequestService(ApplicationContext context)
             : base(context)
