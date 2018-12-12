@@ -16,9 +16,9 @@ namespace NewsIO.Api.Controllers
     {
         public ICategoryService CategoryService { get; set; }
 
-        public CategoriesController(ICategoryService _categoriesService)
+        public CategoriesController(ICategoryService categoriesService)
         {
-            CategoryService = _categoriesService;
+            CategoryService = categoriesService;
         }
 
         // GET - /api/Categories/{pageSize?}/{pageNo?}
@@ -81,8 +81,11 @@ namespace NewsIO.Api.Controllers
             try
             {
                 await CategoryService.AddAsync(category);
-                return Ok(new Response { Status = ResponseType.Successful,
-                                        Value = category});
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful,
+                    Value = category
+                });
 
             }
             catch
@@ -98,12 +101,15 @@ namespace NewsIO.Api.Controllers
             try
             {
                 await CategoryService.UpdateAsync(id, category);
-                return Ok(new Response { Status = ResponseType.Successful,
-                                        Value = category });
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful,
+                    Value = category
+                });
             }
             catch
             {
-                return Ok(new Response { Status = ResponseType.Failed});
+                return Ok(new Response { Status = ResponseType.Failed });
             }
         }
     }

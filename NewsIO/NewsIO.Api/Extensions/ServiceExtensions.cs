@@ -40,6 +40,12 @@ namespace NewsIO.Api.Extensions
                 };
             });
 
+            services.AddTransient<IAppUserService, AppUserService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<INewsRequestService, NewsRequestService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IRoleService, RoleService>();
+
             return services;
         }
 
@@ -103,31 +109,8 @@ namespace NewsIO.Api.Extensions
 
         public static IServiceCollection AddAuthorizationPolicyService(this IServiceCollection services)
         {
-            /*services.AddAuthorization(options =>
-            {
-                options.AddPolicy("MemberRolePolicy", policy =>
-                {
-                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireClaim(ClaimTypes.Role);
-                    policy.RequireRole("Member");
-                });
-                options.AddPolicy("ModeratorRolePolicy", policy =>
-                {
-                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireClaim(ClaimTypes.Role);
-                    policy.RequireRole("Moderator");
-                });
-                options.AddPolicy("AdministratorRolePolicy", policy =>
-                {
-                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireClaim(ClaimTypes.Role);
-                    policy.RequireRole("Administrator");
-                });
-            });*/
-
             services.AddAuthorization(options =>
             {
-                // Here I stored necessary permissions/roles in a constant
                 foreach (var prop in typeof(ClaimTypes).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
                 {
                     options.AddPolicy(prop.GetValue(null).ToString(), policy => policy.RequireClaim(ClaimTypes.Role, prop.GetValue(null).ToString()));

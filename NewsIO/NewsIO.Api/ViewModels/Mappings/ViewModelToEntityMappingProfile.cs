@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using NewsIO.Data.Models.User;
 
 namespace NewsIO.Api.ViewModels.Mappings
@@ -8,6 +9,24 @@ namespace NewsIO.Api.ViewModels.Mappings
         public ViewModelToEntityMappingProfile()
         {
             CreateMap<RegistrationViewModel, User>().ForMember(u => u.UserName, map => map.MapFrom(vm => vm.UserName));
+
+            CreateMap<AppUser, AppUserViewModel>().ReverseMap();
+
+            CreateMap<User, AppUserViewModel>().ReverseMap();
+
+            CreateMap<IdentityRole, AppUserViewModel>()
+                .ForMember(u => u.RoleId, map => map.MapFrom(vm => vm.Id))
+                .ForMember(u => u.RoleName, map => map.MapFrom(vm => vm.Name))
+                .ReverseMap();
+
+            CreateMap<RoleViewModel, IdentityRole>().ReverseMap();
+
+                /*.ForMember(u => u.Gender, map => map.MapFrom(vm => vm.Gender))
+                .ForMember(u => u.Location, map => map.MapFrom(vm => vm.Location))
+                .ForMember(u => u.IdentityId, map => map.MapFrom(vm => vm.IdentityId))
+                .ForMember(u => u.Identity.Email, map => map.MapFrom(vm => vm.Email))
+                .ForMember(u => u.Identity.EmailConfirmed, map => map.MapFrom(vm => vm.EmailConfirmed))
+                .ForMember(u => u.Identity.Email, map => map.MapFrom(vm => vm.Email))*/
         }
     }
 }

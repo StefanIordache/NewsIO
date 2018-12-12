@@ -1,25 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.ViewModels;
+using NewsIO.Services.Intefaces;
 
 namespace NewsIO.Api.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     [Route("api/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> RoleManager;
 
-        public RolesController(RoleManager<IdentityRole> roleManager)
+        public IRoleService RoleService { get; set; }
+
+        private readonly IMapper Mapper;
+
+        public RolesController(RoleManager<IdentityRole> roleManager, IRoleService roleService, IMapper mapper)
         {
             RoleManager = roleManager;
+            RoleService = roleService;
+            Mapper = mapper;
         }
 
         // GET - /api/Roles
@@ -31,7 +38,7 @@ namespace NewsIO.Api.Controllers
                 IEnumerable<IdentityRole> roles;
                 IList<RoleViewModel> rolesList = new List<RoleViewModel>();
 
-                roles = RoleManager.Roles.ToList();
+                roles = RoleService.GetAllRoles();
 
                 if (roles == null || !roles.Any())
                 {
@@ -40,11 +47,7 @@ namespace NewsIO.Api.Controllers
 
                 foreach (var role in roles)
                 {
-                    RoleViewModel newRole = new RoleViewModel
-                    {
-                        Id = role.Id,
-                        Name = role.NormalizedName
-                    };
+                    var newRole = Mapper.Map<RoleViewModel>(role);
 
                     rolesList.Add(newRole);
                 }
@@ -67,11 +70,9 @@ namespace NewsIO.Api.Controllers
 
                 if (userRole != null)
                 {
-                    return Ok(new RoleViewModel
-                    {
-                        Id = userRole.Id,
-                        Name = userRole.NormalizedName
-                    });
+                    var result = Mapper.Map<RoleViewModel>(userRole);
+
+                    return Ok(result);
                 }
 
                 return NotFound();
@@ -92,11 +93,9 @@ namespace NewsIO.Api.Controllers
 
                 if (userRole != null)
                 {
-                    return Ok(new RoleViewModel
-                    {
-                        Id = userRole.Id,
-                        Name = userRole.NormalizedName
-                    });
+                    var result = Mapper.Map<RoleViewModel>(userRole);
+
+                    return Ok(result);
                 }
 
                 return NotFound();
