@@ -10,5 +10,6 @@ namespace NewsIO.Services.Intefaces
 {
     public interface IAppUserService : IGenericDbService
     {
+        Task<User> GetByEmailAsync(string email);
     }
 }

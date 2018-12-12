@@ -14,14 +14,28 @@ namespace NewsIO.Services.Implementations
 {
     public class AppUserService : GenericDbService, IAppUserService
     {
-        public AppUserService(UserContext context)
+        private readonly UserManager<User> UserManager;
+
+        public AppUserService(UserContext context, UserManager<User> userManager)
             : base(context)
-        { }
+        {
+            UserManager = userManager;
+        }
 
         public override async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            var returnList = await Context.Set<AppUser>().Include(ap => ap.Identity).ToListAsync();
+            var returnList = await Context.Set<User>().Include(ap => ap.Identity).ToListAsync();
             return (IEnumerable<T>)returnList;
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            User appUser;
+            User identityUser;
+
+            identityUser = await UserManager.FindByEmailAsync(email);
+
+            return null;
         }
 
         public override async Task<(IEnumerable<T>, int)> GetWithPaginationAsync<T>(int pageSize, int pageNo)
@@ -30,22 +44,22 @@ namespace NewsIO.Services.Implementations
             {
                 int offset = (pageNo - 1) * pageSize;
 
-                int totalNoOfEntries = CountEntries<AppUser>();
+                int totalNoOfEntries = CountEntries<User>();
 
                 if (offset > totalNoOfEntries)
                 {
                     return (null, 0);
                 }
 
-                IEnumerable<AppUser> returnList;
+                IEnumerable<User> returnList;
 
                 if (totalNoOfEntries < offset + pageSize)
                 {
-                    returnList = await Context.Set<AppUser>().Include(ap => ap.Identity).Skip(offset).Take(totalNoOfEntries - offset).ToListAsync();
+                    returnList = await Context.Set<User>().Include(ap => ap.Identity).Skip(offset).Take(totalNoOfEntries - offset).ToListAsync();
                 }
                 else
                 {
-                    returnList = await Context.Set<AppUser>().Include(ap => ap.Identity).Skip(offset).Take(pageSize).ToListAsync();
+                    returnList = await Context.Set<User>().Include(ap => ap.Identity).Skip(offset).Take(pageSize).ToListAsync();
                 }
 
                 return ((IEnumerable<T>)returnList, totalNoOfEntries);
@@ -53,5 +67,7 @@ namespace NewsIO.Services.Implementations
 
             return (null, 0);
         }
+
+        
     }
 }
