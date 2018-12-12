@@ -19,17 +19,17 @@ namespace NewsIO.Services.Implementations
             Context = context;
         }
 
-        public int CountEntries<T>() where T : Entity
+        public virtual int CountEntries<T>() where T : Entity
         {
             return Context.Set<T>().Count();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync<T>() where T : Entity
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : Entity
         {
             return await Context.Set<T>().ToListAsync();
         }
 
-        public async Task<(IEnumerable<T>, int)> GetWithPaginationAsync<T>(int pageSize, int pageNo) where T : Entity
+        public virtual async Task<(IEnumerable<T>, int)> GetWithPaginationAsync<T>(int pageSize, int pageNo) where T : Entity
         {
             if (pageSize > 0)
             {
@@ -59,23 +59,23 @@ namespace NewsIO.Services.Implementations
             return (null, 0);         
         }
 
-        public IQueryable<T> Set<T>() where T : Entity
+        public virtual IQueryable<T> Set<T>() where T : Entity
         {
             return Context.Set<T>();
         }
 
-        public async Task<T> GetByIdAsync<T>(int id) where T : Entity
+        public virtual async Task<T> GetByIdAsync<T>(int id) where T : Entity
         {
             return await Context.Set<T>().FindAsync(id);
         }
 
-        public async Task AddAsync<T>(T entry) where T : Entity
+        public virtual async Task AddAsync<T>(T entry) where T : Entity
         {
             await Context.Set<T>().AddAsync(entry);
             await Context.SaveChangesAsync();
         }
 
-        public async Task AddRangeAsync<T>(IEnumerable<T> entries) where T : Entity
+        public virtual async Task AddRangeAsync<T>(IEnumerable<T> entries) where T : Entity
         {
             await Context.Set<T>().AddRangeAsync(entries);
             await Context.SaveChangesAsync();
