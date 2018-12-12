@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NewsIO.Data.Models.User;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace NewsIO.Data.Models.Application
@@ -18,18 +20,20 @@ namespace NewsIO.Data.Models.Application
 
         public string ExternalUrl { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public DateTime PublishDate { get; set; }
 
-        public int PublishedBy { get; set; }
+        public AppUser PublishedBy { get; set; }
 
         public DateTime? LastEditDate { get; set; }
 
-        public int? LastEditBy { get; set; }
+        public virtual AppUser LastEditedyBy { get; set; }
 
         public bool FromRequest { get; set; }
 
-        public NewsRequest NewsRequest { get; set; }
+        public virtual NewsRequest NewsRequest { get; set; }
+
+        public virtual IEnumerable<Comment> Comments { get; set; }
     }
 }
