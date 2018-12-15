@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NewsIO.Data.Contexts;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using NewsIO.Services.Intefaces;
 using System;
 using System.Collections.Generic;
@@ -31,12 +31,12 @@ namespace NewsIO.Services.Implementations
 
         public int CountUsers()
         {
-            return UserContext.Users.Count();
+            return UserManager.Users.Count();
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await UserContext.Users.ToListAsync();
+            return await UserManager.Users.ToListAsync();
         }
 
         public async Task<User> GetByEmailAsync(string email)

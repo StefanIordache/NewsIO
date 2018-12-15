@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.ViewModels;
 using NewsIO.Data.Contexts;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using static NewsIO.Api.Utils.Models;
 
 namespace NewsIO.Api.Controllers.Authentication
@@ -57,12 +57,6 @@ namespace NewsIO.Api.Controllers.Authentication
                 {
                     return Ok(new Response { Status = ResponseType.Failed, Message = userCreateResp.Errors.FirstOrDefault().Description });
                 }
-
-                await UserContext.AppUsers.AddAsync(new AppUser
-                {
-                    IdentityId = userIdentity.Id,
-                    Location = model.Location
-                });
 
                 var role = await RoleManager.FindByNameAsync("Member");
 

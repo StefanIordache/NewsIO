@@ -48,8 +48,9 @@ namespace NewsIO.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, IHostingEnvironment env, UserContext userContext, ApplicationContext applicationContext)
         {
-            userContext.Database.EnsureCreated();
+            //userContext.Database.EnsureCreated();
             applicationContext.Database.EnsureCreated();
+            userContext.Database.EnsureCreated();
 
             if (env.IsDevelopment())
             {

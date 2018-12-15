@@ -17,10 +17,6 @@ namespace NewsIO.Api.ViewModels
 
         public string UserName { get; set; }
 
-        public string Location { get; set; }
-
-        public string Gender { get; set; }
-
         public Guid RoleId { get; set; }
 
         public string RoleName { get; set; }

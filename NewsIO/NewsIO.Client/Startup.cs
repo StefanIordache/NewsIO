@@ -21,10 +21,7 @@ namespace NewsIO.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            /*services.AddCors(options =>
-                    {
-                        options.AddPolicy("AllowSpecificOrigin",builder => builder.WithOrigins("http://localhost:5030"));
-                    });*/
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory

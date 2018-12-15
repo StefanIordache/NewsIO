@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;

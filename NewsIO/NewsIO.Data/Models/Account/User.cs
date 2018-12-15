@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsIO.Data.Models.User
+namespace NewsIO.Data.Models.Account
 {
     public class User : IdentityUser
     {

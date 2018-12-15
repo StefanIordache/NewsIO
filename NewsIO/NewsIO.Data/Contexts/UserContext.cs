@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace NewsIO.Data.Contexts
 {
+    //public class UserContext : IdentityDbContext<User>
     public class UserContext : IdentityDbContext<User>
     {
         public UserContext(DbContextOptions<UserContext> options)
@@ -22,7 +23,5 @@ namespace NewsIO.Data.Contexts
             base.OnModelCreating(modelBuilder);
             CreateUserModel(ref modelBuilder);
         }
-
-        public DbSet<AppUser> AppUsers { get; set; }
     }
 }

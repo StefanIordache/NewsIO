@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using NewsIO.Api.Utils;
 using NewsIO.Api.Utils.AuthJwtFactory;
 using NewsIO.Api.ViewModels;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using Newtonsoft.Json;
 
 namespace NewsIO.Api.Controllers.Authentication

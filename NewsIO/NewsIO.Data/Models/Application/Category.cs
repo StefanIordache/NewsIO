@@ -1,4 +1,4 @@
-﻿using NewsIO.Data.Models.User;
+﻿using NewsIO.Data.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,11 +14,11 @@ namespace NewsIO.Data.Models.Application
 
         public DateTime PublishDate { get; set; }
 
-        public AppUser PublishedBy { get; set; }
+        public int PublishedById { get; set; }
 
         public DateTime? LastEditDate { get; set; }
 
-        public virtual AppUser LastEditedyBy { get; set; }
+        public int? LastEditedyById { get; set; }
 
         public virtual IEnumerable<News> News { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NewsIO.Data.Contexts;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using NewsIO.Services.Intefaces;
 using System;
 using System.Collections.Generic;

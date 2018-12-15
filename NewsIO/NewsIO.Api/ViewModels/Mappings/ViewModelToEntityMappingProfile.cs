@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 
 namespace NewsIO.Api.ViewModels.Mappings
 {
@@ -11,7 +11,7 @@ namespace NewsIO.Api.ViewModels.Mappings
             CreateMap<RegistrationViewModel, User>()
                 .ForMember(u => u.UserName, map => map.MapFrom(vm => vm.UserName));
 
-            CreateMap<AppUser, AppUserViewModel>()
+            CreateMap<User, AppUserViewModel>()
                 .ReverseMap();
 
             CreateMap<User, AppUserViewModel>()

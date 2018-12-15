@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

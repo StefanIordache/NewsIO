@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using NewsIO.Api.Utils;
 using NewsIO.Api.Utils.AuthJwtFactory;
 using NewsIO.Data.Contexts;
-using NewsIO.Data.Models.User;
+using NewsIO.Data.Models.Account;
 using NewsIO.Services.Implementations;
 using NewsIO.Services.Intefaces;
 using System;
@@ -40,11 +40,11 @@ namespace NewsIO.Api.Extensions
                 };
             });
 
-            services.AddTransient<IAppUserService, AppUserService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<INewsRequestService, NewsRequestService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IUserService, UserService>();
 
             return services;
         }
@@ -53,11 +53,11 @@ namespace NewsIO.Api.Extensions
         {
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOApplication;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIO_Data;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
             services.AddDbContext<UserContext>(options =>
             {
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIOUsers;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NewsIO_Identity;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
 
             return services;
