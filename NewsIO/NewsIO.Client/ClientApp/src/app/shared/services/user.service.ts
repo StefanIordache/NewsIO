@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { User } from "../../login-form/user.model";
 import { Signup } from "../../signup/signup.model";
 import { map } from 'rxjs/operators';
+import { UserList } from "../../users/user-list.model";
 
 
 
@@ -17,7 +18,7 @@ export class UserService  {
   message: string;
   private admin=false;
 
-  constructor(public httpClient: Http) {
+  constructor(public httpClient: Http, public httpi: HttpClient) {
     if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
     this.loggedIn = !!localStorage.getItem('auth_token');
     this._authNavStatusSource.next(this.loggedIn);
@@ -72,6 +73,11 @@ export class UserService  {
     return this.admin;
     
   }
- 
+  getAllUsers(): Observable<UserList[]> {
+    return this.httpi.get<UserList[]>('http://localhost:5030/api/Users');
+  }
+  changeRole(id: string, roleName: string) {
+    return this.httpClient.post('http://localhost:5030/api/Users/changeRole/' + id + '/' + roleName, {})
+  }
 
 }

@@ -22,17 +22,50 @@
     </thead>
     <tbody class="table-hover">
       <tr *ngFor="let user of users;">
-        <td>{{user.username}}</td>
+        <td>{{user.userName}}</td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.email}}</td>
         <td>{{user.phoneNumber}}</td>
-        <td>{{user.userRole | lowercase}}</td>
+        <td>{{user.roleName}}</td>
         <td>
-          <i class="fas fa-pencil-alt" <!--[routerLink]="'/management-users/edit/' + user.id"--> ></i>&nbsp;
+          <i class="fas fa-pencil-alt" (click)="prepareEdit(user)" data-toggle="modal" data-target="#changeRoleModal"></i>
           <i class="fas fa-trash-alt"></i>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+<!--Modal-->
+<div class="modal" id="changeRoleModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit role</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="changeRoleForm">
+            <div class="form-group">
+              <label for="roleName">Role</label>
+              <input type="text" required="required" id="roleName" class="form-control" formControlName="roleName"/>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140" 
+                  data-dismiss="modal" (click)="changeRole()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
