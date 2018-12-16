@@ -12,9 +12,7 @@ namespace NewsIO.Api.ViewModels.Mappings
                 .ForMember(u => u.UserName, map => map.MapFrom(vm => vm.UserName));
 
             CreateMap<User, AppUserViewModel>()
-                .ReverseMap();
-
-            CreateMap<User, AppUserViewModel>()
+                .ForMember(u => u.IdentityId, map => map.MapFrom(vm => vm.Id))
                 .ReverseMap();
 
             CreateMap<IdentityRole, AppUserViewModel>()
