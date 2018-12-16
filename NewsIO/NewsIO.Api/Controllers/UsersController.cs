@@ -10,6 +10,7 @@ using NewsIO.Api.Utils;
 using NewsIO.Api.ViewModels;
 using NewsIO.Data.Models.Account;
 using NewsIO.Services.Intefaces;
+using static NewsIO.Api.Utils.Models;
 
 namespace NewsIO.Api.Controllers
 {
@@ -79,11 +80,93 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // GET - /api/AppUsers/getByEmail/{email}
+        // GET - /api/Users/getByEmail/{email}
         [HttpGet("getByEmail/{email}")]
-        public async Task<IActionResult> GetUserByEmail(string email)
+        public async Task<IActionResult> GetUserByEmailAsync(string email)
         {
-            return NotFound();
+            try
+            {
+                User user;
+
+                user = await UserService.GetByEmailAsync(email);
+
+                if (user != null)
+                {
+                    var userVM = Mapper.Map<User, AppUserViewModel>(user);
+
+                    return Ok(userVM);
+                }
+
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+
+        // GET - /api/Users/getById/{id}
+        [HttpGet("getById/{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                User user;
+
+                user = await UserService.GetByIdAsync(id);
+
+                if (user != null)
+                {
+                    var userVM = Mapper.Map<User, AppUserViewModel>(user);
+
+                    return Ok(userVM);
+                }
+
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+
+        // POST - /api/Users/changeRole/{identity}
+        [HttpPost("changeRole/{identity}/{roleName}")]
+        public async Task<IActionResult> ChangeUserRoleAsync(string identity, string roleName)
+        {
+            try
+            {
+                User user;
+
+                user = await UserService.GetByIdAsync(identity);
+
+                //Try and get user by email
+                if (user == null)
+                {
+                    user = await UserService.GetByEmailAsync(identity);
+                }
+
+                if (user != null)
+                {
+                    var roleChanged = await UserService.ChangeRoleAsync(user, roleName);
+
+                    if (roleChanged )
+                    {
+                        return Ok(new Response { Status = ResponseType.Successful });
+                    }
+
+                    return Ok(new Response { Status = ResponseType.Failed });
+                }
+
+                return NotFound();
+            }
+
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

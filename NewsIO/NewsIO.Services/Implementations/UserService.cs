@@ -82,7 +82,7 @@ namespace NewsIO.Services.Implementations
             return await Task.FromResult(false);
         }
 
-        public async Task<bool> ChangeRole(User user, string roleName)
+        public async Task<bool> ChangeRoleAsync(User user, string roleName)
         {
             if (user != null)
             {
@@ -119,7 +119,7 @@ namespace NewsIO.Services.Implementations
             return await Task.FromResult(false);
         }
 
-        public async Task<IdentityRole> GetRole(User user)
+        public async Task<IdentityRole> GetRoleAsync(User user)
         {
             var userRoles = await UserManager.GetRolesAsync(user);
 

@@ -26,8 +26,8 @@ namespace NewsIO.Services.Intefaces
 
         Task<bool> UpdateAsync(string id, User entry);
 
-        Task<bool> ChangeRole(User user, string roleName);
+        Task<bool> ChangeRoleAsync(User user, string roleName);
 
-        Task<IdentityRole> GetRole(User user);
+        Task<IdentityRole> GetRoleAsync(User user);
     }
 }
