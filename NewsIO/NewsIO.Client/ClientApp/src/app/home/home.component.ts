@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit{
 
   private homeSubscription: Subscription;
   categories: Category[];
+  add: boolean = false;
+  addCategoryForm: FormGroup;
 
   constructor(private route: ActivatedRoute, private homeService: HomeService, private userService: UserService, private router: Router) {
     
@@ -24,6 +26,23 @@ export class HomeComponent implements OnInit{
       (category: Category[]) => { this.categories = category; });
     console.log(this.categories);
     this.userService.show();
+    if (this.userService.isAdmin() === true) {
+      this.add = true;
+    }
+    this.initForm();
+  }
+  initForm() {
+    this.addCategoryForm = new FormGroup({
+      'title': new FormControl(''),
+      'description': new FormControl('')
+    });
+  }
+  addCategory() {
+    this.homeService.addCategory(this.addCategoryForm.controls['title'], this.addCategoryForm.controls['description'], this.userService.identity, Date.now()).subscribe(
+      () => {
+
+        location.reload();
+      });
   }
  
   

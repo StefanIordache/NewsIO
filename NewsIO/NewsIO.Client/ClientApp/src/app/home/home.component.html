@@ -1,15 +1,52 @@
 <div class="container" style="padding-left:10px;margin-left:0px;">
-<div class="dropdown row text-left" style="padding-top:20px;padding-left:0px;margin-left:0px;">
-  <a  class="dropdown-toggle btn btn-primary btn-lg float-left" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Categories    <i class="far fa-newspaper"></i>
-  </a>
-  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-    <div *ngFor="let category of categories;">
-      <div>
-        <a class="dropdown-item text-primary" routerLink="">{{category.title}}</a>
-        <div class="dropdown-divider"></div>
+  <div class="dropdown row text-left" style="padding-top:20px;padding-left:0px;margin-left:0px;">
+    <a class="dropdown-toggle btn btn-primary btn-lg float-left" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Categories    <i class="far fa-newspaper"></i>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <div *ngFor="let category of categories;">
+        <div>
+          <a class="dropdown-item text-primary" routerLink="">{{category.title}}</a>
+          <div class="dropdown-divider"></div>
+        </div>
+      </div>
+      <a class="dropdown-item text-primary" *ngIf="add" data-toggle="modal" data-target="#addCategoryModal">Add category<i style="padding-left:5px;" class="fas fa-plus"></i></a>
+    </div>
+    </div>
+  </div>
+<div class="modal" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add category</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addCategoryForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" required="required" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" required="required" id="title" class="form-control" formControlName="description" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="addCategory()">
+            <span>Save</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-  </div>
+</div>

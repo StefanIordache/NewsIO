@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserList } from './user-list.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
+import { window } from 'rxjs/operator/window';
 
 @Component({
   selector: 'app-users',
@@ -40,7 +41,8 @@ export class UsersComponent implements OnInit {
     this.userService.changeRole(this.id,this.changeRoleForm.controls['roleName'].value)
       .subscribe(
         () => {
-         // this.router.navigateByUrl('/')
+          // this.router.navigateByUrl('/')
+          location.reload();
         }
       );
   }

@@ -16,7 +16,8 @@ export class UserService  {
   authNavStatus$ = this._authNavStatusSource.asObservable();
   visible: boolean;
   message: string;
-  private admin=false;
+  private admin = false;
+  identity: string;
 
   constructor(public httpClient: Http, public httpi: HttpClient) {
     if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
@@ -42,6 +43,7 @@ export class UserService  {
     return this.httpClient.post('http://localhost:5030/api/auth/login', JSON.stringify({ Username: username, Password: password }), { headers })
       .pipe(map(res => res.json()))
       .pipe(map(res => {
+        this.identity = res.user_id;
         if (res.role == 'Administrator') {
           this.admin = true;
         }
