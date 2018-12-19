@@ -81,5 +81,10 @@ export class UserService  {
   changeRole(id: string, roleName: string) {
     return this.httpClient.post('http://localhost:5030/api/Users/changeRole/' + id + '/' + roleName, {})
   }
-
+  addCategory(title: string, description: string, publishedById: string, publishedDate: number) {
+    let body = JSON.stringify({ title, description, publishedById, publishedDate });
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer' + ' ' + localStorage.getItem['auth_token'] });
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/categories/add', body, options);
+  }
 }

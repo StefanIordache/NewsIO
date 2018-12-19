@@ -22,27 +22,31 @@ export class LoginFormComponent implements OnInit {
     this.userService.hide();
   }
   initForm() {
-    this.loginForm = new FormGroup({
-      'username': new FormControl(''),
-      'password': new FormControl('',Validators.minLength(8))
-    });
+    if (this.userService.isLoggedIn() === true)
+      this.router.navigateByUrl('/');
+    else {
+      this.loginForm = new FormGroup({
+        'username': new FormControl(''),
+        'password': new FormControl('', Validators.minLength(8))
+      });
+    }
   }
   onSubmit() {
-    this.userService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value )
+      this.userService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
       .subscribe(
-      () => {
-        this.resetErrors();
+        () => {
+          this.resetErrors();
           this.router.navigateByUrl('/');
-          location.reload(); 
-      },
-      (response: HttpErrorResponse) => {
-        this.resetErrors();
-        if (response.status == 400) {
-          this.isInvalid = true;
-          this.invalid = "Invalid username or password";
+          location.reload();
+        },
+        (response: HttpErrorResponse) => {
+          this.resetErrors();
+          if (response.status == 400) {
+            this.isInvalid = true;
+            this.invalid = "Invalid username or password";
+          }
         }
-      }
-    );
+      );
   }
   private resetErrors() {
     this.isInvalid = false
