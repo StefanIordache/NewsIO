@@ -16,9 +16,7 @@ namespace NewsIO.Data.Models.Application
 
         public int RequestedById { get; set; }
 
-        public DateTime? LastEditDate { get; set; }
-
-        public int? LastEditedyById { get; set; }
+        public string RequestedBy { get; set; }
 
         public virtual Category Category { get; set; }
     }

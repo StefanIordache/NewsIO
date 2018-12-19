@@ -22,14 +22,6 @@ namespace NewsIO.Data.Models.Application
 
         public virtual Category Category { get; set; }
 
-        public DateTime PublishDate { get; set; }
-
-        public int PublishedById { get; set; }
-
-        public DateTime? LastEditDate { get; set; }
-
-        public int? LastEditedyById { get; set; }
-
         public bool FromRequest { get; set; }
 
         public virtual NewsRequest NewsRequest { get; set; }

@@ -12,14 +12,6 @@ namespace NewsIO.Data.Models.Application
 
         public string Description { get; set; }
 
-        public DateTime PublishDate { get; set; }
-
-        public int PublishedById { get; set; }
-
-        public DateTime? LastEditDate { get; set; }
-
-        public int? LastEditedyById { get; set; }
-
         public virtual IEnumerable<News> News { get; set; }
 
         public virtual IEnumerable<NewsRequest> NewsRequests { get; set; }
