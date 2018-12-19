@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Utils;
 using NewsIO.Data.Models.Application;
 using NewsIO.Services.Intefaces;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 using static NewsIO.Api.Utils.Models;
 
 namespace NewsIO.Api.Controllers
@@ -75,12 +78,21 @@ namespace NewsIO.Api.Controllers
         }
 
         // POST - /api/Categories/add
+        [Authorize(Roles = "Administrator")]
         [HttpPost("add")]
         public async Task<IActionResult> AddNewCategory([FromBody] Category category)
         {
             try
             {
-                await CategoryService.AddAsync(category);
+                var tokenString = Request.Headers["Authorization"].ToString();
+
+                int categoryId = await CategoryService.AddAsync(category);
+
+                if (!string.IsNullOrEmpty(tokenString))
+                {
+                    await CategoryService.PublishEntity<Category>(categoryId, JwtHelper.GetUserIdFromJwt(tokenString), JwtHelper.GetUserNameFromJwt(tokenString));
+                }
+
                 return Ok(new Response
                 {
                     Status = ResponseType.Successful,
@@ -111,6 +123,23 @@ namespace NewsIO.Api.Controllers
             {
                 return Ok(new Response { Status = ResponseType.Failed });
             }
+        }
+
+        [Authorize]
+        [HttpGet("token")]
+        public async Task<IActionResult> Token()
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var tokenString = Request.Headers["Authorization"].ToString();
+
+            var token = tokenString.Split(' ').Skip(1).FirstOrDefault();
+
+            var claims = handler.ReadJwtToken(token);
+
+            return Ok(claims.Claims.Where(c => c.Type == "sub").FirstOrDefault().Value);
+
+            return Ok(claims);
+
         }
     }
 }

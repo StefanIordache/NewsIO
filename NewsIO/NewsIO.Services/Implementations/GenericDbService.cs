@@ -69,10 +69,12 @@ namespace NewsIO.Services.Implementations
             return await Context.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task AddAsync<T>(T entry) where T : Entity
+        public virtual async Task<int> AddAsync<T>(T entry) where T : Entity
         {
             await Context.Set<T>().AddAsync(entry);
             await Context.SaveChangesAsync();
+
+            return entry.Id;
         }
 
         public virtual async Task AddRangeAsync<T>(IEnumerable<T> entries) where T : Entity
@@ -106,6 +108,106 @@ namespace NewsIO.Services.Implementations
                         property.SetValue(entryToUpdate, newValue);
                     }
                 }
+
+                Context.Set<T>().Update(entryToUpdate);
+                await Context.SaveChangesAsync();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public virtual async Task PublishEntity<T>(int entityId, string userId, string userName) where T : Entity
+        {
+            try
+            {
+                var entryToUpdate = await GetByIdAsync<T>(entityId);
+
+                if (entryToUpdate ==  null)
+                {
+                    return;
+                }
+
+                var currentTime = DateTime.Now;
+
+                entryToUpdate.PublishDate = currentTime;
+                entryToUpdate.PublishedBy = userName;
+                entryToUpdate.PublishedById = userId;
+
+                entryToUpdate.LastEditDate = currentTime;
+                entryToUpdate.LastEditedBy = userName;
+                entryToUpdate.LastEditedyById = userId;
+
+                Context.Set<T>().Update(entryToUpdate);
+                await Context.SaveChangesAsync();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public virtual async Task UpdateLastEdit<T>(int entityId, string userId, string userName) where T : Entity
+        {
+            try
+            {
+                var entryToUpdate = await GetByIdAsync<T>(entityId);
+
+                if (entryToUpdate == null)
+                {
+                    return;
+                }
+
+                var currentTime = DateTime.Now;
+
+                entryToUpdate.LastEditDate = currentTime;
+                entryToUpdate.LastEditedBy = userName;
+                entryToUpdate.LastEditedyById = userId;
+
+                Context.Set<T>().Update(entryToUpdate);
+                await Context.SaveChangesAsync();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public virtual async Task DeletePublisherId<T>(int entityId) where T : Entity
+        {
+            try
+            {
+                var entryToUpdate = await GetByIdAsync<T>(entityId);
+
+                if (entryToUpdate == null)
+                {
+                    return;
+                }
+
+                entryToUpdate.PublishedById = string.Empty;
+
+                Context.Set<T>().Update(entryToUpdate);
+                await Context.SaveChangesAsync();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public virtual async Task DeleteLastEditorId<T>(int entityId) where T : Entity
+        {
+            try
+            {
+                var entryToUpdate = await GetByIdAsync<T>(entityId);
+
+                if (entryToUpdate == null)
+                {
+                    return;
+                }
+
+                entryToUpdate.LastEditedyById = string.Empty;
 
                 Context.Set<T>().Update(entryToUpdate);
                 await Context.SaveChangesAsync();
