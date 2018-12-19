@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="row padding-top-10-bottom-30">
+    <div class="col-sm-4 offset-sm-4">
+      <div class="text-center">
+        <div>
+          <h1 class="text-muted">Categories</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-secondary" data-toggle="modal" data-target="#addCategoryModal">Add category</button>
+  <table class="table">
+    <thead class="bg-primary text-white">
+      <tr scope="row">
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Publish date</th>
+        <th scope="col">Last Edit Date</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      <tr *ngFor="let category of categories;">
+        <td>{{category.title}}</td>
+        <td>{{category.description}}</td>
+        <td>{{category.publishDate}}</td>
+        <td>{{category.lastEditDate}}</td>
+        <td>
+          <i class="fas fa-pencil-alt" (click)="prepareEdit(user)" data-toggle="modal" data-target="#changeRoleModal"></i>
+          <i class="fas fa-trash-alt"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--Modal-->
+<!--<div class="modal" id="changeRoleModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit role</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="changeRoleForm">
+          <div class="form-group">
+            <label for="roleName">Role</label>
+            <input type="text" required="required" id="roleName" class="form-control" formControlName="roleName" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="changeRole()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    -->
+<div class="modal" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add category</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addCategoryForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" required="required" id="title" class="form-control" placeholder="title" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" required="required" id="title" class="form-control" placeholder="description" formControlName="description" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="addCategory()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->

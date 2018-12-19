@@ -19,10 +19,14 @@ export class UsersComponent implements OnInit {
   constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.userSubscription = this.userService.getAllUsers().subscribe(
-      (user: UserList[]) => { this.users = user; });
-    this.userService.show();
-    this.initForm()
+    if (this.userService.isLoggedIn() === false || this.userService.isAdmin() === false)
+      this.router.navigateByUrl('/');
+    else {
+      this.userSubscription = this.userService.getAllUsers().subscribe(
+        (user: UserList[]) => { this.users = user; });
+      this.userService.show();
+      this.initForm()
+    }
   }
   initForm() {
     this.changeRoleForm = new FormGroup({

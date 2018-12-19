@@ -3,6 +3,6 @@ export class Category {
     public title: string,
     public description: string,
     public publishDate: Date,
-    public PublishedById: number
+    public lastEditDate: Date
     ) { }
 }
