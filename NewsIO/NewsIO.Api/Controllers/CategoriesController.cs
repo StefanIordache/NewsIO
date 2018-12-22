@@ -107,12 +107,22 @@ namespace NewsIO.Api.Controllers
         }
 
         // PUT - /api/Categories/edit/{id}
+        [Authorize(Roles = "Administrator")]
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditCategory(int id, [FromBody] Category category)
         {
             try
             {
+                var tokenString = Request.Headers["Authorization"].ToString();
+
                 await CategoryService.UpdateAsync(id, category);
+
+                if (!string.IsNullOrEmpty(tokenString))
+                {
+                    await CategoryService.UpdateLastEdit<Category>(id, JwtHelper.GetUserIdFromJwt(tokenString), JwtHelper.GetUserNameFromJwt(tokenString));
+                }
+
+
                 return Ok(new Response
                 {
                     Status = ResponseType.Successful,

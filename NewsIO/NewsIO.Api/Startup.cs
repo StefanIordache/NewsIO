@@ -8,6 +8,7 @@ using NewsIO.Api.Utils;
 using NewsIO.Data.Contexts;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using System;
 
 namespace NewsIO.Api
 {
@@ -48,7 +49,6 @@ namespace NewsIO.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, IHostingEnvironment env, UserContext userContext, ApplicationContext applicationContext)
         {
-            //userContext.Database.EnsureCreated();
             applicationContext.Database.EnsureCreated();
             userContext.Database.EnsureCreated();
 
@@ -61,14 +61,17 @@ namespace NewsIO.Api
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+
             await app.EnsureRolesCreatedAsync(Configuration);
+            await app.SeedApplication(Configuration);    
 
             app.UseCors(builder =>
             {
                 builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
 
-            app.UseAuthentication();
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

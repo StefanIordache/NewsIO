@@ -26,6 +26,6 @@ namespace NewsIO.Data.Models.Application
 
         public virtual NewsRequest NewsRequest { get; set; }
 
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        //public virtual IEnumerable<Comment> Comments { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace NewsIO.Data.Models.Application
 
         public string Description { get; set; }
 
-        public DateTime RequestDate { get; set; }
+        public DateTime? RequestDate { get; set; }
 
-        public int RequestedById { get; set; }
+        public string RequestedById { get; set; }
 
         public string RequestedBy { get; set; }
 
