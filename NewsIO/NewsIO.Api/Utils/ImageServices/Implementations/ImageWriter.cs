@@ -41,6 +41,11 @@ namespace NewsIO.Api.Utils.ImageServices.Implementations
 
                 fileName = Guid.NewGuid().ToString() + extension; 
 
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images"));
+                }
+
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", fileName);
 
                 using (var bits = new FileStream(path, FileMode.Create))
