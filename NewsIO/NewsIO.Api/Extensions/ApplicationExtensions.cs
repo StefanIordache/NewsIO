@@ -48,7 +48,7 @@ namespace NewsIO.Api.Extensions
 
                                 if (userCreateResp.Succeeded)
                                 {
-                                    var addedToRoleResp = await userManager.AddToRoleAsync(user, "Member");
+                                    var addedToRoleResp = await userManager.AddToRoleAsync(user, roleName);
                                 }
                             }
                         }

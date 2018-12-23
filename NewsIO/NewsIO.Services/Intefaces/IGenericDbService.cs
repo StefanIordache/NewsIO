@@ -25,12 +25,14 @@ namespace NewsIO.Services.Intefaces
 
         Task UpdateAsync<T>(int id, T entry) where T : Entity;
 
-        Task PublishEntity<T>(int entityId, string userId, string userName) where T : Entity;
+        Task Delete<T>(int id) where T : Entity;
 
-        Task UpdateLastEdit<T>(int entityId, string userId, string userName) where T : Entity;
+        Task PublishEntity<T>(int entryId, string userId, string userName) where T : Entity;
 
-        Task DeletePublisherId<T>(int entityId) where T : Entity;
+        Task UpdateLastEdit<T>(int entryId, string userId, string userName) where T : Entity;
 
-        Task DeleteLastEditorId<T>(int entityId) where T : Entity;
+        Task DeletePublisherId<T>(int entryId) where T : Entity;
+
+        Task DeleteLastEditorId<T>(int entryId) where T : Entity;
     }
 }

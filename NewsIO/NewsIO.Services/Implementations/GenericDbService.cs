@@ -118,11 +118,11 @@ namespace NewsIO.Services.Implementations
             }
         }
 
-        public virtual async Task PublishEntity<T>(int entityId, string userId, string userName) where T : Entity
+        public virtual async Task PublishEntity<T>(int entryId, string userId, string userName) where T : Entity
         {
             try
             {
-                var entryToUpdate = await GetByIdAsync<T>(entityId);
+                var entryToUpdate = await GetByIdAsync<T>(entryId);
 
                 if (entryToUpdate ==  null)
                 {
@@ -148,11 +148,11 @@ namespace NewsIO.Services.Implementations
             }
         }
 
-        public virtual async Task UpdateLastEdit<T>(int entityId, string userId, string userName) where T : Entity
+        public virtual async Task UpdateLastEdit<T>(int entryId, string userId, string userName) where T : Entity
         {
             try
             {
-                var entryToUpdate = await GetByIdAsync<T>(entityId);
+                var entryToUpdate = await GetByIdAsync<T>(entryId);
 
                 if (entryToUpdate == null)
                 {
@@ -174,11 +174,11 @@ namespace NewsIO.Services.Implementations
             }
         }
 
-        public virtual async Task DeletePublisherId<T>(int entityId) where T : Entity
+        public virtual async Task DeletePublisherId<T>(int entryId) where T : Entity
         {
             try
             {
-                var entryToUpdate = await GetByIdAsync<T>(entityId);
+                var entryToUpdate = await GetByIdAsync<T>(entryId);
 
                 if (entryToUpdate == null)
                 {
@@ -196,11 +196,11 @@ namespace NewsIO.Services.Implementations
             }
         }
 
-        public virtual async Task DeleteLastEditorId<T>(int entityId) where T : Entity
+        public virtual async Task DeleteLastEditorId<T>(int entryId) where T : Entity
         {
             try
             {
-                var entryToUpdate = await GetByIdAsync<T>(entityId);
+                var entryToUpdate = await GetByIdAsync<T>(entryId);
 
                 if (entryToUpdate == null)
                 {
@@ -210,6 +210,22 @@ namespace NewsIO.Services.Implementations
                 entryToUpdate.LastEditedyById = string.Empty;
 
                 Context.Set<T>().Update(entryToUpdate);
+                await Context.SaveChangesAsync();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public virtual async Task Delete<T>(int entryId) where T : Entity
+        {
+            try
+            {
+                var entryToDelete = await GetByIdAsync<T>(entryId);
+
+                Context.Remove(entryToDelete);
+
                 await Context.SaveChangesAsync();
             }
             catch

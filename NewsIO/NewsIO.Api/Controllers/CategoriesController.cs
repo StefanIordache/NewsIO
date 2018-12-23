@@ -135,21 +135,24 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("token")]
-        public async Task<IActionResult> Token()
+        // POST - api/Categories/Delete/{id}
+        [Authorize(Roles = "Administrator")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            var handler = new JwtSecurityTokenHandler();
-            var tokenString = Request.Headers["Authorization"].ToString();
+            try
+            {
+                await CategoryService.Delete<Category>(id);
 
-            var token = tokenString.Split(' ').Skip(1).FirstOrDefault();
-
-            var claims = handler.ReadJwtToken(token);
-
-            return Ok(claims.Claims.Where(c => c.Type == "sub").FirstOrDefault().Value);
-
-            return Ok(claims);
-
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
         }
     }
 }
