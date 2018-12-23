@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using NewsIO.Api.Utils;
 using NewsIO.Api.Utils.AuthJwtFactory;
+using NewsIO.Api.Utils.ImageServices.Implementations;
+using NewsIO.Api.Utils.ImageServices.Interfaces;
 using NewsIO.Data.Contexts;
 using NewsIO.Data.Models.Account;
 using NewsIO.Services.Implementations;
@@ -27,6 +29,20 @@ namespace NewsIO.Api.Extensions
 
         private readonly static SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
+        public static IServiceCollection AddOtherServices(this IServiceCollection services)
+        {
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<INewsRequestService, NewsRequestService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IImageHandler, ImageHandler>();
+            services.AddTransient<IImageWriter, ImageWriter>();
+
+            return services;
+        }
+
         public static IServiceCollection AddCookieOptions(this IServiceCollection services)
         {
             services.ConfigureApplicationCookie(options =>
@@ -39,12 +55,6 @@ namespace NewsIO.Api.Extensions
                     return Task.FromResult(0);
                 };
             });
-
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<INewsRequestService, NewsRequestService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

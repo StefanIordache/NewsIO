@@ -9,6 +9,8 @@ using NewsIO.Data.Contexts;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using System;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace NewsIO.Api
 {
@@ -35,6 +37,7 @@ namespace NewsIO.Api
             services.AddAutoMapper();
 
             services.AddCookieOptions();
+            services.AddOtherServices();
             services.AddCors();
 
             services.AddMvc()
@@ -64,18 +67,20 @@ namespace NewsIO.Api
             app.UseAuthentication();
 
             await app.EnsureRolesCreatedAsync(Configuration);
-            await app.SeedApplication(Configuration);    
+            await app.SeedApplication(Configuration);
 
             app.UseCors(builder =>
             {
                 builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
 
-            
+
             app.UseDefaultFiles();
+
             app.UseStaticFiles();
 
             app.UseMvc();
+
             app.UseCors("AllowSpecificOrigin");
         }
     }
