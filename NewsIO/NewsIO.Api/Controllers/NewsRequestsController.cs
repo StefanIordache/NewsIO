@@ -63,7 +63,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // GET - /api/NewsRequest/{id}
+        // GET - /api/NewsRequests/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetNewsRequestById(int id)
         {
@@ -87,13 +87,13 @@ namespace NewsIO.Api.Controllers
         // POST - /api/NewsRequests/add
         [Authorize(Roles = "Administrator, Moderator, Member")]
         [HttpPost("add")]
-        public async Task<IActionResult> AddNewNewsRequest([FromBody] NewsRequestViewModel newsRequestVM)
+        public async Task<IActionResult> AddNewsRequest([FromBody] NewsRequestViewModel newsRequestVM)
         {
             try
             {
-                var tokenString = Request.Headers["Authorization"].ToString();
-                var userName = JwtHelper.GetUserNameFromJwt(tokenString);
-                var userId = JwtHelper.GetUserIdFromJwt(tokenString);
+                var token = Request.Headers["Authorization"].ToString();
+                var userName = JwtHelper.GetUserNameFromJwt(token);
+                var userId = JwtHelper.GetUserIdFromJwt(token);
 
                 try
                 {
@@ -108,10 +108,11 @@ namespace NewsIO.Api.Controllers
                         newsRequest.RequestedById = userId;
                         newsRequest.Category = category;
                         newsRequest.Status = "New";
+                        newsRequest.IsClosed = false;
 
                         int newsRequestId = await NewsRequestService.AddAsync(newsRequest);
 
-                        if (!string.IsNullOrEmpty(tokenString))
+                        if (!string.IsNullOrEmpty(token))
                         {
                             await NewsRequestService.PublishEntity<NewsRequest>(newsRequestId, userId, userName);
                         }
@@ -129,6 +130,173 @@ namespace NewsIO.Api.Controllers
                 {
                     return Ok(new Response { Status = ResponseType.Failed, Message = e.Message });
                 }
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - /api/NewsRequests/close/{id}
+        [Authorize(Roles = "Administrator, Moderator, Member")]
+        [HttpPost("close/{id}")]
+        public async Task<IActionResult> CloseNewsRequest(int id)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var newsRequest = await NewsRequestService.GetByIdAsync<NewsRequest>(id);
+
+                if (newsRequest == null)
+                {
+                    return NotFound();
+                }
+
+                if (JwtHelper.CheckIfUserIsMember(token)  && newsRequest.RequestedById != JwtHelper.GetUserIdFromJwt(token))
+                {
+                    return Forbid();
+                }
+
+                bool updateResult = false;
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    updateResult = await NewsRequestService.CloseNewsRequestAsync(newsRequest);
+                    await NewsRequestService.PublishEntity<NewsRequest>(newsRequest.Id, JwtHelper.GetUserIdFromJwt(token), JwtHelper.GetUserNameFromJwt(token));
+                }
+
+                if (updateResult)
+                {
+                    return Ok(new Response { Status = ResponseType.Successful });
+                }
+
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - /api/NewsRequests/open/{id}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("open/{id}")]
+        public async Task<IActionResult> OpenNewsRequest(int id)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var newsRequest = await NewsRequestService.GetByIdAsync<NewsRequest>(id);
+
+                if (newsRequest == null)
+                {
+                    return NotFound();
+                }
+
+                bool updateResult = false;
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    updateResult = await NewsRequestService.OpenNewsRequestAsync(newsRequest);
+                    await NewsRequestService.PublishEntity<NewsRequest>(newsRequest.Id, JwtHelper.GetUserIdFromJwt(token), JwtHelper.GetUserNameFromJwt(token));
+                }
+
+                if (updateResult)
+                {
+                    return Ok(new Response { Status = ResponseType.Successful });
+                }
+
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - /api/NewsRequests/editInfo/{id}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> EditNewsRequest(int id, [FromBody] NewsRequest newsRequest)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                await NewsRequestService.UpdateAsync(id, newsRequest);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    await NewsRequestService.UpdateLastEdit<NewsRequest>(id, JwtHelper.GetUserIdFromJwt(token), JwtHelper.GetUserNameFromJwt(token));
+                }
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful,
+                    Value = newsRequest
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - api/NewsRequests/Delete/{id}
+        [Authorize(Roles = "Administrator")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteNewsRequest(int id)
+        {
+            try
+            {
+                await NewsRequestService.Delete<NewsRequest>(id);
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - api/NewsRequests/changeCategory/{newsRequestId}/{categoryId}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("changeCategory")]
+        public async Task<IActionResult> ChangeNewsRequestCategory(int newsRequestId, int categoryId)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var newsRequest = await NewsRequestService.GetByIdAsync<NewsRequest>(newsRequestId);
+
+                var category = await CategoryService.GetByIdAsync<Category>(categoryId);
+
+                if (category == null)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = "Category not found" });
+                }
+                if (newsRequest == null)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = "News Request not found" });
+                }
+
+                var result = await NewsRequestService.ChangeNewsRequestCategoryAsync(newsRequest, category);
+
+                if (!result)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed });
+                }
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful
+                });
             }
             catch
             {

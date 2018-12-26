@@ -14,11 +14,15 @@ namespace NewsIO.Data.Models.Application
 
         public string Status { get; set; }
 
+        public bool? IsClosed { get; set; }
+
         public DateTime? RequestDate { get; set; }
 
         public string RequestedById { get; set; }
 
         public string RequestedBy { get; set; }
+
+        public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
     }
