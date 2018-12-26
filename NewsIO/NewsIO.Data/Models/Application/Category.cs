@@ -11,9 +11,5 @@ namespace NewsIO.Data.Models.Application
         public string Title { get; set; }
 
         public string Description { get; set; }
-
-        //public virtual IEnumerable<News> News { get; set; }
-
-        //public virtual IEnumerable<NewsRequest> NewsRequests { get; set; }
     }
 }

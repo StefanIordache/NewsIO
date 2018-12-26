@@ -122,7 +122,6 @@ namespace NewsIO.Api.Controllers
                     await CategoryService.UpdateLastEdit<Category>(id, JwtHelper.GetUserIdFromJwt(tokenString), JwtHelper.GetUserNameFromJwt(tokenString));
                 }
 
-
                 return Ok(new Response
                 {
                     Status = ResponseType.Successful,

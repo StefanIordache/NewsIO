@@ -103,5 +103,56 @@ namespace NewsIO.Api.Utils
                 return null;
             }
         }
+
+        public static bool CheckIfUserIsMember(string bearerToken)
+        {
+            try
+            {
+                if (GetUserRoleFromJwt(bearerToken).Equals("Member"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool CheckIfUserIsModerator(string bearerToken)
+        {
+            try
+            {
+                if (GetUserRoleFromJwt(bearerToken).Equals("Moderator"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool CheckIfUserIsAdministrator(string bearerToken)
+        {
+            try
+            {
+                if (GetUserRoleFromJwt(bearerToken).Equals("Administrator"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
