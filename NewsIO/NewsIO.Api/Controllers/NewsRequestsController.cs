@@ -31,7 +31,7 @@ namespace NewsIO.Api.Controllers
             Mapper = mapper;
         }
 
-        // GET - /api/NewsRequests/newdId/{pageSize?}/{pageNo?}
+        // GET - /api/NewsRequests/{pageSize?}/{pageNo?}
         [HttpGet]
         public async Task<IActionResult> GetNewsRequestAsync(int pageSize = 0, int pageNo = 0)
         {
@@ -84,7 +84,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // POST - /api/Categories/add
+        // POST - /api/NewsRequests/add
         [Authorize(Roles = "Administrator, Moderator, Member")]
         [HttpPost("add")]
         public async Task<IActionResult> AddNewNewsRequest([FromBody] NewsRequestViewModel newsRequestVM)

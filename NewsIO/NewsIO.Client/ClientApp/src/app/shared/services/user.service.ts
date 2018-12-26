@@ -89,7 +89,7 @@ export class UserService  {
   addCategory(title: string, description: string) {
     let body = JSON.stringify({ title, description});
     let headers = new Headers();
-    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers});
@@ -105,6 +105,7 @@ export class UserService  {
   }
   deleteCategory(id: number) {
     let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });

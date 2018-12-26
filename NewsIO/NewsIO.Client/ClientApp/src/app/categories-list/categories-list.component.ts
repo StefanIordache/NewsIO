@@ -61,8 +61,10 @@ export class CategoriesListComponent implements OnInit {
     this.delCateg = category.id;
   }
   deleteCategory() {
-    this.userService.deleteCategory(this.delCateg).subscribe(() => {
-      location.reload();
-    });
+    this.userService.deleteCategory(this.delCateg).subscribe(
+      //() => {
+      //location.reload();
+      //}
+    );
   }
 }
