@@ -26,26 +26,30 @@
         <td>{{category.publishDate}}</td>
         <td>{{category.lastEditDate}}</td>
         <td>
-          <i class="fas fa-pencil-alt" (click)="prepareEdit(user)" data-toggle="modal" data-target="#changeRoleModal"></i>
-          <i class="fas fa-trash-alt"></i>
+          <i class="fas fa-pencil-alt" (click)="prepCategEdit(category)" data-toggle="modal" data-target="#editCategoryModal"></i>
+          <i class="fas fa-trash-alt" (click)="prepareDelete(category)" data-toggle="modal" data-target="#deleteCategoryModal"></i>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 <!--Modal-->
-<!--<div class="modal" id="changeRoleModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+<div class="modal" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Edit role</h2>
+        <h2>Edit category</h2>
       </div>
       <div class="modal-body">
-        <form [formGroup]="changeRoleForm">
+        <form [formGroup]="editCategoryForm">
           <div class="form-group">
-            <label for="roleName">Role</label>
-            <input type="text" required="required" id="roleName" class="form-control" formControlName="roleName" />
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" class="form-control" formControlName="description" />
           </div>
         </form>
       </div>
@@ -58,7 +62,7 @@
         <div class="col-6">
           <button type="submit"
                   class="btn btn-primary btn-sm float-right btn-width-140"
-                  data-dismiss="modal" (click)="changeRole()">
+                  data-dismiss="modal" (click)="editCategory()">
             <span>Save</span>
           </button>
         </div>
@@ -66,7 +70,7 @@
     </div>
   </div>
 </div>
-    -->
+
 <div class="modal" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -104,3 +108,27 @@
   </div>
 </div>
 
+<div class="modal" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Are you sure you want to delete this category?</h2>
+    </div>
+    <div class="modal-footer">
+      <div class="col-6">
+        <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+          <span>Cancel</span>
+        </button>
+      </div>
+      <div class="col-6">
+        <button type="submit"
+                class="btn btn-primary btn-sm float-right btn-width-140"
+                data-dismiss="modal" (click)="deleteCategory()">
+          <span>Yes</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

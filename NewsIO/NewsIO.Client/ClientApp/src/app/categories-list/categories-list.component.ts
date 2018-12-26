@@ -15,6 +15,9 @@ export class CategoriesListComponent implements OnInit {
   private categorySubscription: Subscription;
   categories: Category[];
   addCategoryForm: FormGroup;
+  editCategoryForm: FormGroup;
+  categoryId: number;
+  delCateg: number;
   constructor(private route: ActivatedRoute, private categoryService: HomeService, private userService: UserService) { }
 
   ngOnInit() {
@@ -28,10 +31,38 @@ export class CategoriesListComponent implements OnInit {
       'title': new FormControl(''),
       'description': new FormControl('')
     });
+    this.editCategoryForm = new FormGroup({
+      'title': new FormControl(''),
+      'description': new FormControl('')
+    })
   }
   addCategory() {
-    this.userService.addCategory(this.addCategoryForm.controls['title'].value, this.addCategoryForm.controls['description'].value);
-    //location.reload();
+    this.userService.addCategory(this.addCategoryForm.controls['title'].value, this.addCategoryForm.controls['description'].value)
+      .subscribe();
+    location.reload();
   }
-
+  prepCategEdit(category: Category) {
+    this.editCategoryForm.patchValue({
+      'title': category.title,
+      'description':category.description
+    });
+    this.categoryId = category.id;
+  }
+  editCategory() {
+    this.userService.editCategory(this.categoryId, this.editCategoryForm.controls['title'].value,this.editCategoryForm.controls['description'].value,)
+      .subscribe(
+        () => {
+          // this.router.navigateByUrl('/')
+          location.reload();
+        }
+      );
+  }
+  prepareDelete(category: Category) {
+    this.delCateg = category.id;
+  }
+  deleteCategory() {
+    this.userService.deleteCategory(this.delCateg).subscribe(() => {
+      location.reload();
+    });
+  }
 }

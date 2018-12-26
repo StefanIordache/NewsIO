@@ -92,7 +92,22 @@ export class UserService  {
     console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers: headers, method: 'post' });
+    let options = new RequestOptions({ headers: headers});
     return this.httpClient.post('http://localhost:5030/api/categories/add', body, options);
+  }
+  editCategory(id: number, title: string, description: string) {
+    let body = JSON.stringify({ title, description });
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.put('http://localhost:5030/api/categories/edit/' + id,body,options)
+  }
+  deleteCategory(id: number) {
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.delete('http://localhost:5030/api/categories/delete/'+id,options)
   }
 }
