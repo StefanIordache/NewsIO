@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using NewsIO.Data.Models.Account;
+using NewsIO.Data.Models.Application;
 
 namespace NewsIO.Api.ViewModels.Mappings
 {
@@ -21,6 +22,10 @@ namespace NewsIO.Api.ViewModels.Mappings
                 .ReverseMap();
 
             CreateMap<RoleViewModel, IdentityRole>()
+                .ReverseMap();
+
+            CreateMap<NewsRequest, NewsRequestViewModel>()
+                .ForMember(nr => nr.CategoryId, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

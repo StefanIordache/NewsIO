@@ -12,6 +12,8 @@ namespace NewsIO.Data.Models.Application
 
         public string Description { get; set; }
 
+        public string Status { get; set; }
+
         public DateTime? RequestDate { get; set; }
 
         public string RequestedById { get; set; }
