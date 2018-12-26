@@ -18,12 +18,14 @@ export class UserService  {
   message: string;
   private admin = false;
   identity: string;
+  token: string;
 
   constructor(public httpClient: Http, public httpi: HttpClient) {
     if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
     this.loggedIn = !!localStorage.getItem('auth_token');
     this._authNavStatusSource.next(this.loggedIn);
     this.visible = false;
+    this.token = '';
   }
   hide() { this.visible = false; }
 
@@ -51,11 +53,14 @@ export class UserService  {
           this.admin = false;
         }
         localStorage.setItem('auth_token', res.auth_token);
+        console.log(res.auth_token);
+        this.token = localStorage.getItem('auth_token');
         localStorage.setItem('role', res.role);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
         return true;
       }));
+   
    
   }
   logOut() {
@@ -81,10 +86,13 @@ export class UserService  {
   changeRole(id: string, roleName: string) {
     return this.httpClient.post('http://localhost:5030/api/Users/changeRole/' + id + '/' + roleName, {})
   }
-  addCategory(title: string, description: string, publishedById: string, publishedDate: number) {
-    let body = JSON.stringify({ title, description, publishedById, publishedDate });
-    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer' + ' ' + localStorage.getItem['auth_token'] });
-    let options = new RequestOptions({ headers: headers });
+  addCategory(title: string, description: string) {
+    let body = JSON.stringify({ title, description});
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers, method: 'post' });
     return this.httpClient.post('http://localhost:5030/api/categories/add', body, options);
   }
 }

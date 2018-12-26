@@ -30,8 +30,8 @@ export class CategoriesListComponent implements OnInit {
     });
   }
   addCategory() {
-    this.userService.addCategory(this.addCategoryForm.controls['title'].value, this.addCategoryForm.controls['description'].value, this.userService.identity, Date.now());
-    location.reload();
+    this.userService.addCategory(this.addCategoryForm.controls['title'].value, this.addCategoryForm.controls['description'].value);
+    //location.reload();
   }
 
 }
