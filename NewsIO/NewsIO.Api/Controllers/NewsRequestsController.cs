@@ -107,6 +107,7 @@ namespace NewsIO.Api.Controllers
                         newsRequest.RequestedBy = userName;
                         newsRequest.RequestedById = userId;
                         newsRequest.Category = category;
+                        newsRequest.Status = "New";
 
                         int newsRequestId = await NewsRequestService.AddAsync(newsRequest);
 
