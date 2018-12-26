@@ -6,6 +6,7 @@ import { User } from "../../login-form/user.model";
 import { Signup } from "../../signup/signup.model";
 import { map } from 'rxjs/operators';
 import { UserList } from "../../users/user-list.model";
+import { NewsRequest } from "../../news-requests/newsRequest.model";
 
 
 
@@ -111,4 +112,15 @@ export class UserService  {
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.delete('http://localhost:5030/api/categories/delete/'+id,options)
   }
+  addNewsRequest(title: string, description: string,categoryId:number) {
+    let body = JSON.stringify({ title, description,categoryId });
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/NewsRequests/add', body, options);
+  }
+  getAllNewsRequests(): Observable<NewsRequest[]> {
+    return this.httpi.get<NewsRequest[]>('http://localhost:5030/api/NewsRequests');
+    }
 }

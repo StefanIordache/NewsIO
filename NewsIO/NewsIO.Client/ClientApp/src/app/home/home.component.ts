@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit{
   private homeSubscription: Subscription;
   categories: Category[];
   add: boolean = false;
-  
 
+ 
   constructor(private route: ActivatedRoute, private homeService: HomeService, private userService: UserService, private router: Router) {
     
  }

@@ -15,6 +15,7 @@ import { HomeService } from './home/home.service';
 import { UserService } from './shared/services/user.service';
 import { UsersComponent } from './users/users.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
+import { NewsRequestsComponent } from './news-requests/news-requests.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { CategoriesListComponent } from './categories-list/categories-list.compo
     SignupComponent,
     UsersComponent,
     CategoriesListComponent,
+    NewsRequestsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

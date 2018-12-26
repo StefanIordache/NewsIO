@@ -1,0 +1,27 @@
+<h2 style="padding:25px;">News requets</h2>
+
+<div class="p-3" *ngFor="let news of newsReq;">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title">{{news.title}}</h1>
+      <p class="card-text">
+        Description:
+        {{news.description}}
+      </p>
+      <p class="card-text">
+        Created by:
+        {{news.requestedById}}
+      </p>
+    </div>
+    <div class="card-footer text-muted">
+      <p>
+        Created at:
+        {{news.requestDate}}
+      </p>
+    </div>
+  </div>
+  <div class="m-2">
+    <a class="btn btn-secondary" href="">Close</a>
+    <a class="btn btn-primary" href="">Open</a>
+ </div>
+</div>

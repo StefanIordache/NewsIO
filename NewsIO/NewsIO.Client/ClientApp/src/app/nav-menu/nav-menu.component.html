@@ -2,6 +2,7 @@
   <a class="navbar-brand font-weight-bold" href="#">NewsIO</a>
   <a class="navbar-brand" *ngIf="show3" routerLink="/users">Manage users</a>
   <a class="navbar-brand" *ngIf="show3" routerLink="/categories">Manage categories</a>
+  <a class="navbar-brand" *ngIf="show3" routerLink="/newsRequests">Manage news requests</a>
 
   <div class="" id="navbarSupportedContent">
 
@@ -24,10 +25,54 @@
             <a class="dropdown-item text-primary"> Hello, user!</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item text-primary" (click)="logout()">Log out</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-primary" data-toggle="modal" data-target="#addNewsRequestModal">News request</a>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </nav>
+<div class="modal" id="addNewsRequestModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>New news request</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addNewsRequestForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" class="form-control" formControlName="description" />
+          </div>
+          <div class="form-group">
+            <label for="description">Category</label>
+            <select class="form-control" formControlName="category">
+              <option *ngFor="let category of categories;" value={{category.id}}>{{category.title}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="addNewsRequest()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
