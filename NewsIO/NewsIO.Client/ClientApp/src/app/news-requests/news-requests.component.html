@@ -1,3 +1,11 @@
+<div class="alert alert-success alert-dismissible" role="alert" *ngIf="successo">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  News request successfully opened!!
+</div>
+<div class="alert alert-success alert-dismissible" role="alert" *ngIf="successc">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  News request successfully closed!!
+</div>
 <h2 style="padding:25px;">News requets</h2>
 
 <div class="p-3" *ngFor="let news of newsReq;">
@@ -21,7 +29,7 @@
     </div>
   </div>
   <div class="m-2">
-    <a class="btn btn-secondary" href="">Close</a>
-    <a class="btn btn-primary" href="">Open</a>
+    <a class="btn btn-secondary" (click)="closeNR(news.id)">Close</a>
+    <a class="btn btn-primary" (click)="openNR(news.id)">Open</a>
  </div>
 </div>

@@ -18,11 +18,16 @@ export class UserService  {
   visible: boolean;
   message: string;
   private admin = false;
+  private editor = false;
   identity: string;
   token: string;
+  status: number;
+  statusO: number;
+  statusC: number;
 
   constructor(public httpClient: Http, public httpi: HttpClient) {
     if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
+    if (localStorage.getItem('role') == 'Moderator') { this.editor = true; }
     this.loggedIn = !!localStorage.getItem('auth_token');
     this._authNavStatusSource.next(this.loggedIn);
     this.visible = false;
@@ -53,6 +58,12 @@ export class UserService  {
         else {
           this.admin = false;
         }
+        if (res.role == 'Moderator') {
+          this.editor = true;
+        }
+        else {
+          this.editor = false;
+        }
         localStorage.setItem('auth_token', res.auth_token);
         console.log(res.auth_token);
         this.token = localStorage.getItem('auth_token');
@@ -79,7 +90,9 @@ export class UserService  {
     console.log("-----------");
     console.log(this.admin);
     return this.admin;
-    
+  }
+  isEditor() {
+    return this.editor;
   }
   getAllUsers(): Observable<UserList[]> {
     return this.httpi.get<UserList[]>('http://localhost:5030/api/Users');
@@ -118,9 +131,32 @@ export class UserService  {
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    return this.httpClient.post('http://localhost:5030/api/NewsRequests/add', body, options);
+    return this.httpClient.post('http://localhost:5030/api/NewsRequests/add', body, options).pipe(map((response: Response) => {
+      this.status = response.json()["status"];
+      console.log(this.status);
+    }));
   }
   getAllNewsRequests(): Observable<NewsRequest[]> {
     return this.httpi.get<NewsRequest[]>('http://localhost:5030/api/NewsRequests');
-    }
+  }
+  openNr(id: number) {
+    let body = JSON.stringify({ id });
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/NewsRequests/open/' + id, body, options).pipe(map((response: Response) => {
+      this.statusO = response.json()["status"];
+    }));
+  }
+  closeNr(id: number) {
+    let body = JSON.stringify({ id });
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/NewsRequests/close/' + id, body, options).pipe(map((response: Response) => {
+      this.statusC = response.json()["status"];
+    }));
+  }
 }

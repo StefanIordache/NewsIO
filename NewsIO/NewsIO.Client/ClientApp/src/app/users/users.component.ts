@@ -23,7 +23,8 @@ export class UsersComponent implements OnInit {
       this.router.navigateByUrl('/');
     else {
       this.userSubscription = this.userService.getAllUsers().subscribe(
-        (user: UserList[]) => { this.users = user; });
+        //(user: UserList[]) => { this.users = user; });
+        (user: UserList[]) => { this.users = user.filter(user => user.roleName !== 'Administrator'); });
       this.userService.show();
       this.initForm()
     }

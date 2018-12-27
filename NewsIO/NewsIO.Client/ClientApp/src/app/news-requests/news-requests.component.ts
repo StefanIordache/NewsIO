@@ -11,12 +11,20 @@ import { NewsRequest } from './newsRequest.model';
 export class NewsRequestsComponent implements OnInit {
 
   newsReq: NewsRequest[];
+  successo: boolean = false;
+  successc: boolean = false;
 
   constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
     this.userService.show();
     this.userService.getAllNewsRequests().subscribe((news: NewsRequest[]) => { this.newsReq = news; });
+  }
+  openNR(id: number) {
+    this.userService.openNr(id).subscribe(() => { if (this.userService.statusO===1) this.successo = true; });
+  }
+  closeNR(id: number) {
+    this.userService.closeNr(id).subscribe(() => { if (this.userService.statusC===1) this.successc = true; });
   }
 
 }

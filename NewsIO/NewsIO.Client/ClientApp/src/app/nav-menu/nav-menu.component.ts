@@ -15,6 +15,8 @@ export class NavMenuComponent implements OnInit {
   show1: boolean = true;
   show2: boolean = false;
   show3: boolean = false;
+  show4: boolean = false;
+  succesnr: boolean = false;
   categories: Category[];
   loggedUser: LoggedUser;
   addNewsRequestForm: FormGroup;
@@ -28,6 +30,9 @@ export class NavMenuComponent implements OnInit {
 
     if (this.userService.isAdmin() === true) {
       this.show3 = true;
+    }
+    if (this.userService.isEditor() === true) {
+      this.show4 = true;
     }
      this.homeService.getAllCategories().subscribe(
       (category: Category[]) => { this.categories = category; });
@@ -48,6 +53,9 @@ export class NavMenuComponent implements OnInit {
     if (this.userService.isAdmin()===true) {
       this.show3 = true;
     }
+    if (this.userService.isEditor() === true) {
+      this.show4 = true;
+    }
     console.log(this.show3);
    
  }
@@ -57,7 +65,12 @@ export class NavMenuComponent implements OnInit {
   }
   addNewsRequest() {
     this.userService.addNewsRequest(this.addNewsRequestForm.controls['title'].value, this.addNewsRequestForm.controls['description'].value,
-                                    this.addNewsRequestForm.controls['category'].value).subscribe();
+      this.addNewsRequestForm.controls['category'].value).subscribe(() => {
+        console.log(this.userService.status);
+        if (this.userService.status === 1) {
+          this.succesnr = true;
+        } });
+    
   }
   
   }
