@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 namespace NewsIO.Services.Implementations
 {
     public class NewsRequestService : GenericDbService, INewsRequestService
-    {
-        protected ApplicationContext ApplicationContext { get; set; }
-
+    { 
         public NewsRequestService(ApplicationContext context)
             : base(context)
         { }

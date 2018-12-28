@@ -11,6 +11,8 @@ using FluentValidation.AspNetCore;
 using System;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using NewsIO.Api.Utils.Seed;
+using System.Threading.Tasks;
 
 namespace NewsIO.Api
 {
@@ -50,7 +52,7 @@ namespace NewsIO.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, UserContext userContext, ApplicationContext applicationContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserContext userContext, ApplicationContext applicationContext)
         {
             applicationContext.Database.EnsureCreated();
             userContext.Database.EnsureCreated();
@@ -66,14 +68,12 @@ namespace NewsIO.Api
 
             app.UseAuthentication();
 
-            await app.EnsureRolesCreatedAsync(Configuration);
-            await app.SeedApplication(Configuration);
+            ConfigureAsync(app).Wait();
 
             app.UseCors(builder =>
             {
                 builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             });
-
 
             app.UseDefaultFiles();
 
@@ -82,6 +82,13 @@ namespace NewsIO.Api
             app.UseMvc();
 
             app.UseCors("AllowSpecificOrigin");
+        }
+
+        public async Task ConfigureAsync(IApplicationBuilder app)
+        {
+            await app.SeedApplication(Configuration).ConfigureAwait(false);
+
+            return;
         }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NewsIO.Api.Utils;
+using NewsIO.Api.Utils.Seed;
 using NewsIO.Data.Contexts;
 using NewsIO.Data.Models.Account;
 using NewsIO.Data.Models.Application;
@@ -17,19 +17,33 @@ namespace NewsIO.Api.Extensions
 {
     public static class ApplicationExtensions
     {
-        public static async Task<IApplicationBuilder> SeedApplication(this IApplicationBuilder app, IConfiguration configuration)
+        public static async Task SeedApplication(this IApplicationBuilder app, IConfiguration configuration)
         {
             try
             {
                 IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-
-                SeedHelper seedHelper = new SeedHelper();
 
                 using (IServiceScope scope = scopeFactory.CreateScope())
                 {
                     RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                     UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
                     ApplicationContext applicationContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+                    ICategoryService categoryService = new CategoryService(applicationContext);
+                    INewsRequestService newsRequestService = new NewsRequestService(applicationContext);
+
+                    // Seed roles
+                    try
+                    {
+                        var rolesSeed = SeedHelper.GetRoles();
+                        foreach (var role in rolesSeed)
+                            if (!string.IsNullOrEmpty(role) && !roleManager.RoleExistsAsync(role).Result)
+                            {
+                                var newRole = new IdentityRole(role);
+                                await roleManager.CreateAsync(newRole);
+                            }
+                    }
+                    catch { }
 
                     // Seed users
                     try
@@ -44,47 +58,77 @@ namespace NewsIO.Api.Extensions
                                 && userManager.FindByEmailAsync(user.Email).Result == null
                                 && userManager.FindByNameAsync(user.UserName).Result == null)
                             {
-                                var userCreateResp = await userManager.CreateAsync(user, "Pa55word");
+                                var userCreateResp = userManager.CreateAsync(user, "Pa55word");
 
-                                if (userCreateResp.Succeeded)
+                                if (userCreateResp.Result.Succeeded)
                                 {
-                                    var addedToRoleResp = await userManager.AddToRoleAsync(user, roleName);
+                                    await userManager.AddToRoleAsync(user, roleName);
                                 }
                             }
                         }
                     }
                     catch { }
 
-                    //Get admin user for further seed insert
-                    var adminUser = userManager.FindByEmailAsync("admin@test.com").Result;
+                    //Get users for further seed insert
+                    var admin = userManager.FindByEmailAsync("admin@test.com").Result;
+                    var member = userManager.FindByEmailAsync("member@test.com").Result;
+                    var moderator = userManager.FindByEmailAsync("moderator@test.com").Result;
 
                     //Seed Categories
                     try
                     {
-                        ICategoryService categoryService = new CategoryService(applicationContext);
-
                         var categoriesSeed = SeedHelper.GetCategories();
                         foreach (var entry in categoriesSeed)
                         {
                             if (applicationContext.Categories.FirstOrDefault(c => c.Title.Equals(entry.Title)) == null)
                             {
-                                var entryId = await categoryService.AddAsync(entry);
+                                var entryId = categoryService.AddAsync(entry);
 
-                                if (entryId > 0 && adminUser != null)
+                                if (entryId.Result > 0 && admin != null)
                                 {
-                                    await categoryService.PublishEntity<Category>(entryId, adminUser.Id, adminUser.UserName);
+                                    await categoryService.PublishEntity<Category>(entryId.Result, admin.Id, admin.UserName);
                                 }
                             }
                         }
                     }
                     catch { }
+
+                    //Seed NewsRequests
+                    try
+                    {
+                        var newsRequestsSeed = SeedHelper.GetNewsRequests();
+                        foreach (var entry in newsRequestsSeed)
+                        {
+                            var newsRequest = entry.Key;
+                            var categoryTitle = entry.Value;
+
+                            var category = categoryService.GetByTitle(categoryTitle);
+
+                            if (category != null && applicationContext.NewsRequests.FirstOrDefault(nr => nr.Title.Equals(newsRequest.Title)) == null)
+                            {
+                                newsRequest.Category = category;
+                                newsRequest.RequestDate = DateTime.Now;
+                                newsRequest.RequestedBy = member.UserName;
+                                newsRequest.RequestedById = member.Id;
+
+                                var entryId = newsRequestService.AddAsync(newsRequest);
+
+                                if (entryId.Result > 0 && moderator != null)
+                                {
+                                    await newsRequestService.PublishEntity<NewsRequest>(entryId.Result, moderator.Id, moderator.UserName);
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    { }
                 }
 
-                return app;
+                return;
             }
             catch (Exception e)
             {
-                return app;
+                return;
             }
         }
     }
