@@ -160,12 +160,12 @@ export class UserService  {
     }));
   }
   deleteNR(id: number) {
-    //let headers = new Headers();
+    let headers = new Headers();
     //console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
-    //headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
-    //headers.append('Content-Type', 'application/json');
-    //let options = new RequestOptions({ headers: headers });
-    return this.httpClient.delete('http://localhost:5030/api/NewsRequests/delete/' + id);
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.delete('http://localhost:5030/api/NewsRequests/delete/' + id,options);
   }
   editNR(id: number, title: string, description: string, status: string, isClosed: Boolean, 
     requestDate: Date, requestedById: string, requestedBy: string, categoryId: number) {
@@ -177,6 +177,6 @@ export class UserService  {
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    return this.httpClient.put('http://localhost:5030/api/NewsRequests/edit/' + id, body, options)
+    return this.httpClient.post('http://localhost:5030/api/NewsRequests/edit/' + id, body, options)
   }
 }
