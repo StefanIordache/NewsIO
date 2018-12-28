@@ -245,7 +245,7 @@ namespace NewsIO.Api.Controllers
         }
 
         // POST - api/NewsRequests/Delete/{id}
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles ="Administrator, Moderator")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteNewsRequest(int id)
         {

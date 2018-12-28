@@ -159,4 +159,24 @@ export class UserService  {
       this.statusC = response.json()["status"];
     }));
   }
+  deleteNR(id: number) {
+    //let headers = new Headers();
+    //console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    //headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    //headers.append('Content-Type', 'application/json');
+    //let options = new RequestOptions({ headers: headers });
+    return this.httpClient.delete('http://localhost:5030/api/NewsRequests/delete/' + id);
+  }
+  editNR(id: number, title: string, description: string, status: string, isClosed: Boolean, 
+    requestDate: Date, requestedById: string, requestedBy: string, categoryId: number) {
+    let body = JSON.stringify({id,
+      title, description, status, isClosed, requestDate,requestedBy,requestedById,categoryId
+    });
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.put('http://localhost:5030/api/NewsRequests/edit/' + id, body, options)
+  }
 }
