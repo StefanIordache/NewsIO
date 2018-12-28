@@ -9,6 +9,7 @@ using NewsIO.Api.Utils;
 using NewsIO.Api.Utils.AuthJwtFactory;
 using NewsIO.Api.Utils.ImageServices.Implementations;
 using NewsIO.Api.Utils.ImageServices.Interfaces;
+using NewsIO.Api.Utils.Seed;
 using NewsIO.Data.Contexts;
 using NewsIO.Data.Models.Account;
 using NewsIO.Services.Implementations;

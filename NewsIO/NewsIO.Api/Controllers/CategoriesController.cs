@@ -115,6 +115,13 @@ namespace NewsIO.Api.Controllers
             {
                 var tokenString = Request.Headers["Authorization"].ToString();
 
+                var updatedEntry = await CategoryService.GetByIdAsync<Category>(id);
+
+                if (updatedEntry == null)
+                {
+                    return NotFound();
+                }
+
                 await CategoryService.UpdateAsync(id, category);
 
                 if (!string.IsNullOrEmpty(tokenString))

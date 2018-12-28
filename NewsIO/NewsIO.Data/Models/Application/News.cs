@@ -14,18 +14,18 @@ namespace NewsIO.Data.Models.Application
 
         public string Content { get; set; }
 
-        public string StorageFolder { get; set; }
-
         public string ThumbnailUrl { get; set; }
 
         public string ExternalUrl { get; set; }
+
+        public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
 
         public bool FromRequest { get; set; }
 
-        public virtual NewsRequest NewsRequest { get; set; }
+        public int? NewsRequestId { get; set; }
 
-        //public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual NewsRequest NewsRequest { get; set; }
     }
 }
