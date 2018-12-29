@@ -60,6 +60,13 @@ namespace NewsIO.Api.Utils.Seed
             }, "Member");
             usersSeed.Add(new User
             {
+                Email = "member1@test.com",
+                UserName = "member1",
+                FirstName = "Test",
+                LastName = "Member1",
+            }, "Member");
+            usersSeed.Add(new User
+            {
                 Email = "moderator@test.com",
                 UserName = "moderator",
                 FirstName = "Test",
@@ -67,10 +74,24 @@ namespace NewsIO.Api.Utils.Seed
             }, "Moderator");
             usersSeed.Add(new User
             {
+                Email = "moderator1@test.com",
+                UserName = "moderator1",
+                FirstName = "Test",
+                LastName = "Moderator1",
+            }, "Moderator");
+            usersSeed.Add(new User
+            {
                 Email = "admin@test.com",
                 UserName = "admin",
                 FirstName = "Test",
                 LastName = "Admin",
+            }, "Administrator");
+            usersSeed.Add(new User
+            {
+                Email = "admin1@test.com",
+                UserName = "admin1",
+                FirstName = "Test",
+                LastName = "Admin1",
             }, "Administrator");
         }
 
