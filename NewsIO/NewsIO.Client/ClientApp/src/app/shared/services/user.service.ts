@@ -7,6 +7,8 @@ import { Signup } from "../../signup/signup.model";
 import { map } from 'rxjs/operators';
 import { UserList } from "../../users/user-list.model";
 import { NewsRequest } from "../../news-requests/newsRequest.model";
+import { News } from "../../home/news.model";
+import { Category } from "../../home/category.model";
 
 
 
@@ -179,4 +181,26 @@ export class UserService  {
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/NewsRequests/edit/' + id, body, options)
   }
+
+
+  getAllNews(): Observable<News[]> {
+    return this.httpi.get<News[]>('http://localhost:5030/api/News');
+  }
+
+  getCategoryById(id: number): Observable<Category> {
+    return this.httpi.get<Category>('http://localhost:5030/api/categories/' + id);
+  }
+  getLatestNewsByCategoryId(id: number): Observable<News[]> {
+    return this.httpi.get<News[]>('http://localhost:5030/api/news/getLatestByCategory?categoryId=' + id);
+  }
+  getOldestNewsByCategoryId(id: number): Observable<News[]> {
+    return this.httpi.get<News[]>('http://localhost:5030/api/news/getOldestByCategory?categoryId=' + id);
+  }
+  getAlphabeticalNewsByCategoryId(id: number): Observable<News[]> {
+    return this.httpi.get<News[]>('http://localhost:5030/api/news/getAlphabeticalByCategory?categoryId=' + id);
+  }
+  getNonAlphabeticalNewsByCategoryId(id: number): Observable<News[]> {
+    return this.httpi.get<News[]>('http://localhost:5030/api/news/getNonAlphabeticalByCategory?categoryId=' + id);
+  }
+
 }

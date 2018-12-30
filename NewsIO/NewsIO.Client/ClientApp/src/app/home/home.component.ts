@@ -5,6 +5,7 @@ import { HomeService } from "./home.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { UserService } from '../shared/services/user.service';
+import { News } from './news.model';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit{
   private homeSubscription: Subscription;
   categories: Category[];
   add: boolean = false;
+  bigNews: News[];
 
  
   constructor(private route: ActivatedRoute, private homeService: HomeService, private userService: UserService, private router: Router) {
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit{
     if (this.userService.isAdmin() === true) {
       this.add = true;
     }
+    this.userService.getAllNews().subscribe((news: News[]) => { this.bigNews = news; });
   }
   
 }
