@@ -23,6 +23,8 @@ namespace NewsIO.Api.Extensions
             {
                 IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
 
+
+
                 using (IServiceScope scope = scopeFactory.CreateScope())
                 {
                     RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();

@@ -26,7 +26,7 @@ namespace NewsIO.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<News>, int)> GetAlphabeticalByCategoryWithPaginationAsync<T>(Category category, int pageSize, int pageNo)
+        public async Task<(IEnumerable<News>, int)> GetAlphabeticalByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo)
         {
             if (pageSize > 0)
             {
@@ -85,7 +85,7 @@ namespace NewsIO.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<News>, int)> GetLatestByCategoryWithPaginationAsync<T>(Category category, int pageSize, int pageNo)
+        public async Task<(IEnumerable<News>, int)> GetLatestByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo)
         {
             if (pageSize > 0)
             {
@@ -127,7 +127,7 @@ namespace NewsIO.Services.Implementations
             return (null, 0); ;
         }
 
-        public async Task<(IEnumerable<News>, int)> GetLatestWithPaginationAsync<T>(int pageSize, int pageNo)
+        public async Task<(IEnumerable<News>, int)> GetLatestWithPaginationAsync(int pageSize, int pageNo)
         {
             if (pageSize > 0)
             {
@@ -166,7 +166,7 @@ namespace NewsIO.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<News>, int)> GetNonAlphabeticalByCategoryWithPaginationAsync<T>(Category category, int pageSize, int pageNo)
+        public async Task<(IEnumerable<News>, int)> GetNonAlphabeticalByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo)
         {
             if (pageSize > 0)
             {
@@ -217,7 +217,7 @@ namespace NewsIO.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<(IEnumerable<News>, int)> GetOldestByCategoryWithPaginationAsync<T>(Category category, int pageSize, int pageNo)
+        public async Task<(IEnumerable<News>, int)> GetOldestByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo)
         {
             if (pageSize > 0)
             {

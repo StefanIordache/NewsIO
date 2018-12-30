@@ -23,13 +23,45 @@ namespace NewsIO.Api.Utils.Seed
             PopulateSeed();
         }
 
-        public static ICollection<string> GetRoles() => rolesSeed;
+        public static ICollection<string> GetRoles()
+        {
+            if (!rolesSeed.Any())
+            {
+                PopulateRoles();
+            }
 
-        public static IDictionary<User, string> GetUsers() => usersSeed;
+            return rolesSeed;
+        }
 
-        public static ICollection<Category> GetCategories() => categoriesSeed;
+        public static IDictionary<User, string> GetUsers()
+        {
+            if (!usersSeed.Any())
+            {
+                PopulateUsers();
+            }
 
-        public static IDictionary<NewsRequest, string> GetNewsRequests() => newsRequestsSeed;
+            return usersSeed;
+        }
+
+        public static ICollection<Category> GetCategories()
+        {
+            if (!categoriesSeed.Any())
+            {
+                PopulateCategories();
+            }
+
+            return categoriesSeed;
+        }
+
+        public static IDictionary<NewsRequest, string> GetNewsRequests()
+        {
+            if (!newsRequestsSeed.Any())
+            {
+                PopulateNewsRequests();
+            }
+
+            return newsRequestsSeed;
+        }
 
         private void PopulateSeed()
         {
@@ -42,14 +74,14 @@ namespace NewsIO.Api.Utils.Seed
             PopulateNewsRequests();    
         }
 
-        private void PopulateRoles()
+        private static void PopulateRoles()
         {
             rolesSeed.Add("Administrator");
             rolesSeed.Add("Moderator");
             rolesSeed.Add("Member");
         }
 
-        private void PopulateUsers()
+        private static void PopulateUsers()
         {
             usersSeed.Add(new User
             {
@@ -95,14 +127,14 @@ namespace NewsIO.Api.Utils.Seed
             }, "Administrator");
         }
 
-        private void PopulateCategories()
+        private static void PopulateCategories()
         {
             categoriesSeed.Add(new Category { Title = "Sport", Description = "Sport category" });
             categoriesSeed.Add(new Category { Title = "Politics", Description = "Politics category" });
             categoriesSeed.Add(new Category { Title = "IT&C", Description = "IT&C category" });
         }
 
-        private void PopulateNewsRequests()
+        private static void PopulateNewsRequests()
         {
             newsRequestsSeed.Add(new NewsRequest
             {
