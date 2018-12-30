@@ -16,7 +16,7 @@ namespace NewsIO.Services.Intefaces
 
         Task<(IEnumerable<News>, int)> GetLatestByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo);
 
-        Task<IEnumerable<News>> GetAlpabeticalByCategoryAsync(Category category);
+        Task<IEnumerable<News>> GetAlphabeticalByCategoryAsync(Category category);
 
         Task<(IEnumerable<News>, int)> GetAlphabeticalByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo);
 
@@ -24,7 +24,7 @@ namespace NewsIO.Services.Intefaces
 
         Task<(IEnumerable<News>, int)> GetOldestByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo);
 
-        Task<IEnumerable<News>> GetNonAlpabeticalByCategoryAsync(Category category);
+        Task<IEnumerable<News>> GetNonAlphabeticalByCategoryAsync(Category category);
 
         Task<(IEnumerable<News>, int)> GetNonAlphabeticalByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo);
     }

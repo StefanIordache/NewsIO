@@ -17,7 +17,7 @@ namespace NewsIO.Services.Implementations
         {
         }
 
-        public async Task<IEnumerable<News>> GetAlpabeticalByCategoryAsync(Category category)
+        public async Task<IEnumerable<News>> GetAlphabeticalByCategoryAsync(Category category)
         {
             return await Context
                 .Set<News>()
@@ -157,7 +157,7 @@ namespace NewsIO.Services.Implementations
             return (null, 0);
         }
 
-        public async Task<IEnumerable<News>> GetNonAlpabeticalByCategoryAsync(Category category)
+        public async Task<IEnumerable<News>> GetNonAlphabeticalByCategoryAsync(Category category)
         {
             return await Context
                 .Set<News>()
