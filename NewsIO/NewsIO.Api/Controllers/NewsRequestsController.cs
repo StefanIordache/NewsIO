@@ -216,7 +216,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // POST - /api/NewsRequests/editInfo/{id}
+        // POST - /api/NewsRequests/edit/{id}
         [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost("edit/{id}")]
         public async Task<IActionResult> EditNewsRequest(int id, [FromBody] NewsRequest newsRequest)
@@ -258,6 +258,13 @@ namespace NewsIO.Api.Controllers
         {
             try
             {
+                var deletedEntry = await NewsRequestService.GetByIdAsync<NewsRequest>(id);
+
+                if (deletedEntry == null)
+                {
+                    return NotFound();
+                }
+
                 await NewsRequestService.Delete<NewsRequest>(id);
 
                 return Ok(new Response

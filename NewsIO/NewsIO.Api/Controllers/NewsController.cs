@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Utils;
 using NewsIO.Data.Models.Application;
 using NewsIO.Services.Intefaces;
+using static NewsIO.Api.Utils.Models;
 
 namespace NewsIO.Api.Controllers
 {
@@ -265,6 +267,124 @@ namespace NewsIO.Api.Controllers
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        // POST - /api/News/add
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("add")]
+        public async Task<IActionResult> AddNews([FromBody] News entry)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+                var userName = JwtHelper.GetUserNameFromJwt(token);
+                var userId = JwtHelper.GetUserIdFromJwt(token);
+
+                try
+                {
+                    var category = await CategoryService.GetByIdAsync<Category>(entry.CategoryId);
+
+                    if (category != null)
+                    { 
+                        int entryId = await NewsService.AddAsync(entry);
+
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            await NewsService.PublishEntity<NewsRequest>(entryId, userId, userName);
+                        }
+
+                        return Ok(new Response
+                        {
+                            Status = ResponseType.Successful,
+                            Value = entry
+                        });
+                    }
+
+                    return Ok(new Response { Status = ResponseType.Failed });
+                }
+                catch (Exception e)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = e.Message });
+                }
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - /api/News/edit/{id}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> EditNews(int id, [FromBody] News news)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var updatedEntry = await NewsService.GetByIdAsync<News>(id);
+
+                if (updatedEntry == null)
+                {
+                    return NotFound();
+                }
+
+                if (JwtHelper.CheckIfUserIsModerator(token) && news.PublishedById != JwtHelper.GetUserIdFromJwt(token))
+                {
+                    return Forbid();
+                }
+
+                await NewsService.UpdateAsync(id, news);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    await NewsService.UpdateLastEdit<News>(id, JwtHelper.GetUserIdFromJwt(token), JwtHelper.GetUserNameFromJwt(token));
+                }
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful,
+                    Value = news
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - api/News/Delete/{id}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteNews(int id)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var deletedEntry = await NewsService.GetByIdAsync<News>(id);
+
+                if (deletedEntry == null)
+                {
+                    return NotFound();
+                }
+
+                if (JwtHelper.CheckIfUserIsModerator(token) && deletedEntry.PublishedById != JwtHelper.GetUserIdFromJwt(token))
+                {
+                    return Forbid();
+                }
+
+                await NewsService.Delete<News>(id);
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
             }
         }
     }
