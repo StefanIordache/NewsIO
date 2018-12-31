@@ -6,6 +6,7 @@ import { SignupComponent } from './signup/signup.component';
 import { UsersComponent } from './users/users.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { NewsRequestsComponent } from './news-requests/news-requests.component';
+import { NewsComponent } from './news/news.component';
 
 const routes: Routes = [
   { path : '', component: HomeComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'users', component: UsersComponent },
   { path: 'categories', component: CategoriesListComponent },
-  { path: 'newsRequests', component: NewsRequestsComponent }
+  { path: 'newsRequests', component: NewsRequestsComponent },
+  { path: 'news/category/:id', component: NewsComponent }
  ];
 
 @NgModule({

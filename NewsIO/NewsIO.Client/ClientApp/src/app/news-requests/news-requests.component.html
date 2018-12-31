@@ -22,17 +22,19 @@
       </p>
       <p class="card-text">
         Created by:
-        {{news.requestedById}}
+        {{news.requestedBy}}
       </p>
     </div>
     <div class="card-footer text-muted">
-      <p>
+      <div *ngFor="let category of categories;">
+      <p *ngIf="category.id==news.categoryId">
         Category:
-        {{news.categoryId}}
+        {{category.title}}
       </p>
+      </div>
       <p>
         Created at:
-        {{news.requestDate}}
+        {{news.requestDate | date : 'longDate'}}
       </p>
     </div>
   </div>

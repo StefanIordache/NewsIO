@@ -6,25 +6,35 @@
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
       <div *ngFor="let category of categories;">
         <div>
-          <a class="dropdown-item text-primary" routerLink="">{{category.title}}</a>
+          <a class="dropdown-item text-primary" routerLink="/news/category/{{category.id}}">{{category.title}}</a>
           <div class="dropdown-divider"></div>
         </div>
       </div>
     </div>
-    </div>
   </div>
+</div>
+<div *ngFor="let news of bigNews;">
 <div class="p-3">
-  <div class="card">
-    <div class="card-body">
-      <h1 class="card-title">Titlu</h1>
-      <p class="card-text">
-        Created by:
-        
+<div class="card">
+  <div class="card-body">
+    <h1 class="card-title">{{news.title}}</h1>
+    <h3>Headline:</h3>
+    <p class="card-text">
+    {{news.headline}}
+    </p>
+    <p class="card-text">
+      {{news.content}}
+    </p>
+  </div>
+  <div class="card-footer text-muted">
+    <div *ngFor="let category of categories;">
+      <p *ngIf="category.id==news.categoryId">
+        Category:
+        {{category.title}}
       </p>
     </div>
-    <div class="card-footer text-muted">
-      <p>Creat la</p> 
-    </div>
   </div>
+</div>
+</div>
   </div>
 

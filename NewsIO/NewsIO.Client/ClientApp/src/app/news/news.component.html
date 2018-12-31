@@ -1,0 +1,29 @@
+<div class="row">
+<h2 class="p-4">Category:  {{category.title}}</h2>
+
+<div class="float-right" style="padding-left:1050px;padding-top:20px;">
+  <i class="fas fa-sort-alpha-up p-3 btn-primary" (click)="getAlpha(category.id)"></i>
+  <i class="fas fa-sort-alpha-down p-3 btn-primary" (click)="getNonAlpha(category.id)"></i>
+  <i class="fas fa-sort-numeric-up p-3 btn-primary" (click)="getAsc(category.id)"></i>
+  <i class="fas fa-sort-numeric-down p-3 btn-primary" (click)="getDesc(category.id)"></i>
+</div>
+ </div>
+<div *ngFor="let news of bigNews;">
+  <div class="p-3">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">{{news.title}}</h1>
+        <h3>Headline:</h3>
+        <p class="card-text">
+          {{news.headline}}
+        </p>
+        <p class="card-text">
+          {{news.content}}
+        </p>
+      </div>
+      <div class="card-footer text-muted">
+         
+        </div>
+      </div>
+    </div>
+  </div>

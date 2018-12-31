@@ -171,7 +171,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // GET - /api/News/getAlpabeticalByCategory/{categoryId}/{pageSize?}/{pageNo?}
+        // GET - /api/News/getAlphabeticalByCategory/{categoryId}/{pageSize?}/{pageNo?}
         [HttpGet("getAlphabeticalByCategory")]
         public async Task<IActionResult> GetAlpabeticalNewsByCategoryAsync(int categoryId, int pageSize = 0, int pageNo = 0)
         {
@@ -210,7 +210,7 @@ namespace NewsIO.Api.Controllers
             }
         }
 
-        // GET - /api/News/getNonAlpabeticalByCategory/{categoryId}/{pageSize?}/{pageNo?}
+        // GET - /api/News/getNonAlphabeticalByCategory/{categoryId}/{pageSize?}/{pageNo?}
         [HttpGet("getNonAlphabeticalByCategory")]
         public async Task<IActionResult> GetNonAlpabeticalNewsByCategoryAsync(int categoryId, int pageSize = 0, int pageNo = 0)
         {
