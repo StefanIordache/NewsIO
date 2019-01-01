@@ -17,6 +17,24 @@ namespace NewsIO.Services.Implementations
         {
         }
 
+        public async Task<bool> ChangeNewsCategoryAsync(News news, Category category)
+        {
+            try
+            {
+                news.Category = category;
+
+                Context.Set<News>().Update(news);
+
+                await Context.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<IEnumerable<News>> GetAlphabeticalByCategoryAsync(Category category)
         {
             return await Context

@@ -27,5 +27,7 @@ namespace NewsIO.Services.Intefaces
         Task<IEnumerable<News>> GetNonAlphabeticalByCategoryAsync(Category category);
 
         Task<(IEnumerable<News>, int)> GetNonAlphabeticalByCategoryWithPaginationAsync(Category category, int pageSize, int pageNo);
+
+        Task<bool> ChangeNewsCategoryAsync(News news, Category category);
     }
 }

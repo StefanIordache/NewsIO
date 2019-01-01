@@ -10,6 +10,8 @@ namespace NewsIO.Data.Models.Application
     {
         public string CommentText { get; set; }
 
+        public int NewsId { get; set; }
+
         public virtual News News { get; set; }
     }
 }
