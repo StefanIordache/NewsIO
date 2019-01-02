@@ -33,6 +33,7 @@ namespace NewsIO.Api.Extensions
 
                     ICategoryService categoryService = new CategoryService(applicationContext);
                     INewsRequestService newsRequestService = new NewsRequestService(applicationContext);
+                    NewsService newsService = new NewsService(applicationContext);
 
                     // Seed roles
                     try
@@ -71,12 +72,12 @@ namespace NewsIO.Api.Extensions
                     }
                     catch { }
 
-                    //Get users for further seed insert
+                    // Get users for further seed insert
                     var admin = userManager.FindByEmailAsync("admin@test.com").Result;
                     var member = userManager.FindByEmailAsync("member@test.com").Result;
                     var moderator = userManager.FindByEmailAsync("moderator@test.com").Result;
 
-                    //Seed Categories
+                    // Seed Categories
                     try
                     {
                         var categoriesSeed = SeedHelper.GetCategories();
@@ -95,7 +96,7 @@ namespace NewsIO.Api.Extensions
                     }
                     catch { }
 
-                    //Seed NewsRequests
+                    // Seed NewsRequests
                     try
                     {
                         var newsRequestsSeed = SeedHelper.GetNewsRequests();
@@ -124,6 +125,32 @@ namespace NewsIO.Api.Extensions
                     }
                     catch
                     { }
+
+                    // Seed News
+                    try
+                    {
+                        var newsSeed = SeedHelper.GetNews();
+                        foreach (var entry in newsSeed)
+                        {
+                            var news = entry.Key;
+                            var categoryTitle = entry.Value;
+
+                            var category = categoryService.GetByTitle(categoryTitle);
+
+                            if (category != null && applicationContext.News.FirstOrDefault(nr => nr.Title.Equals(news.Title)) == null)
+                            {
+                                news.Category = category;
+
+                                var entryId = newsService.AddAsync(news);
+
+                                if (entryId.Result > 0 && moderator != null)
+                                {
+                                    await newsService.PublishEntity<News>(entryId.Result, moderator.Id, moderator.UserName);
+                                }
+                            }
+                        }
+                    }
+                    catch { }
                 }
 
                 return;

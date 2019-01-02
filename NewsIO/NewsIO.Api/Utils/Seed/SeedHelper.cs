@@ -18,6 +18,8 @@ namespace NewsIO.Api.Utils.Seed
 
         private static IDictionary<NewsRequest, string> newsRequestsSeed = new Dictionary<NewsRequest, string>();
 
+        private static IDictionary<News, string> newsSeed = new Dictionary<News, string>();
+
         public SeedHelper()
         {
             PopulateSeed();
@@ -61,6 +63,16 @@ namespace NewsIO.Api.Utils.Seed
             }
 
             return newsRequestsSeed;
+        }
+
+        public static IDictionary<News, string> GetNews()
+        {
+            if (!newsSeed.Any())
+            {
+                PopulateNews();
+            }
+
+            return newsSeed;
         }
 
         private void PopulateSeed()
@@ -132,6 +144,7 @@ namespace NewsIO.Api.Utils.Seed
             categoriesSeed.Add(new Category { Title = "Sport", Description = "Sport category" });
             categoriesSeed.Add(new Category { Title = "Politics", Description = "Politics category" });
             categoriesSeed.Add(new Category { Title = "IT&C", Description = "IT&C category" });
+            categoriesSeed.Add(new Category { Title = "Din popor", Description = "De toate" });
         }
 
         private static void PopulateNewsRequests()
@@ -164,6 +177,50 @@ namespace NewsIO.Api.Utils.Seed
                 IsClosed = false,
                 Status = "New"
             }, "Politics");
+        }
+
+        protected static void PopulateNews()
+        {
+            newsSeed.Add(new News
+            {
+                Title = "Dragnea fura",
+                Headline = "Ne mai mira ceva?",
+                Content = "El comandante PSD a furat 3 oua de strut",
+                ThumbnailUrl = null,
+                ExternalUrl = null,
+                FromRequest = false,
+                NewsRequest = null
+            }, "Politics");
+            newsSeed.Add(new News
+            {
+                Title = "Droguri legalizate",
+                Headline = "Da! Da! Da!",
+                Content = "Nu dati banii pe prostii, luati Canabis la copii",
+                ThumbnailUrl = null,
+                ExternalUrl = null,
+                FromRequest = false,
+                NewsRequest = null
+            }, "Din popor");
+            newsSeed.Add(new News
+            {
+                Title = "Cea mai mare sarma din lume",
+                Headline = "Romania detine cea mai mare sarma din lume",
+                Content = "O sarma de 4 metri lungime a fost conceputa in orasul Baicoi",
+                ThumbnailUrl = null,
+                ExternalUrl = null,
+                FromRequest = false,
+                NewsRequest = null
+            }, "Din popor");
+            newsSeed.Add(new News
+            {
+                Title = "Hockey de senzatie",
+                Headline = "Bicicleta a intra direct in poarta",
+                Content = "Simona Halep a marcat cel mai frumos gol din istoria baschetului ploiestean.",
+                ThumbnailUrl = null,
+                ExternalUrl = null,
+                FromRequest = false,
+                NewsRequest = null,
+            }, "Sport");
         }
     }
 }
