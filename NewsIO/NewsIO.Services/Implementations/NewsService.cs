@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NewsIO.Services.Implementations
 {
-    public class NewsService : GenericDbService, INewsService   
+    public class NewsService : GenericDbService, INewsService
     {
         public NewsService(ApplicationContext context)
             : base(context)
@@ -266,6 +266,57 @@ namespace NewsIO.Services.Implementations
                         .Set<News>()
                         .Where(n => n.CategoryId == category.Id)
                         .OrderBy(n => n.LastEditDate)
+                        .Skip(offset)
+                        .Take(pageSize)
+                        .ToListAsync();
+                }
+
+                return (returnList, totalNoOfEntries);
+            }
+
+            return (null, 0);
+        }
+
+        public async Task<IEnumerable<News>> SearchAsync(string input)
+        {
+            return await Context
+                .Set<News>()
+                .Where(n => n.Title.ToUpper().Contains(input.ToUpper()) || n.Headline.ToUpper().Contains(input.ToUpper()))
+                .OrderByDescending(n => n.LastEditDate)
+                .ToListAsync();
+        }
+
+        public async Task<(IEnumerable<News>, int)> SearchWithPaginationAsync(string input, int pageSize, int pageNo)
+        {
+            if (pageSize > 0)
+            {
+                int offset = (pageNo - 1) * pageSize;
+
+                int totalNoOfEntries = CountEntries<News>();
+
+                if (offset > totalNoOfEntries)
+                {
+                    return (null, 0);
+                }
+
+                IEnumerable<News> returnList;
+
+                if (totalNoOfEntries < offset + pageSize)
+                {
+                    returnList = await Context
+                        .Set<News>()
+                        .Where(n => n.Title.ToUpper().Contains(input.ToUpper()) || n.Headline.ToUpper().Contains(input.ToUpper()))
+                        .OrderByDescending(n => n.LastEditDate)
+                        .Skip(offset)
+                        .Take(totalNoOfEntries - offset)
+                        .ToListAsync();
+                }
+                else
+                {
+                    returnList = await Context
+                        .Set<News>()
+                        .Where(n => n.Title.ToUpper().Contains(input.ToUpper()) || n.Headline.ToUpper().Contains(input.ToUpper()))
+                        .OrderByDescending(n => n.LastEditDate)
                         .Skip(offset)
                         .Take(pageSize)
                         .ToListAsync();
