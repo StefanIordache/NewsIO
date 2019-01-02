@@ -20,12 +20,12 @@ namespace NewsIO.Data.Models.Application
 
         public int CategoryId { get; set; }
 
-        public bool FromRequest { get; set; }
+        public virtual Category Category { get; set; }
+
+        public bool? FromRequest { get; set; }
 
         public int? NewsRequestId { get; set; }
 
         public virtual NewsRequest NewsRequest { get; set; }
-
-        public virtual Category Category { get; set; }
     }
 }
