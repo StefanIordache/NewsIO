@@ -540,5 +540,42 @@ namespace NewsIO.Api.Controllers
             }
 
         }
+
+        // GET - /api/News/search/{input}/{pageSize?}/{pageNo?}
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchNewsAsync(string input, int pageSize = 0, int pageNo = 0)
+        {
+            try
+            {
+                IEnumerable<News> news;
+                PagedResult<News> pagedResult = new PagedResult<News>();
+                int numberOfRecords = 0;
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    return NotFound();
+                }
+
+                if (pageSize > 0)
+                {
+                    (news, numberOfRecords) = await NewsService.SearchWithPaginationAsync(input, pageSize, pageNo);
+                }
+                else
+                {
+                    news = await NewsService.SearchAsync(input);
+                }
+
+                if (news == null || !news.Any())
+                {
+                    return NotFound();
+                }
+
+                return Ok(news);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
