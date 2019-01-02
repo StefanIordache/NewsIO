@@ -314,11 +314,8 @@ export class UserService  {
     let uploadData = new FormData();
     uploadData.append('entry', body);
     uploadData.append('thumbnail', file);
-    console.log(uploadData.get('entry'));
     let headers = new Headers();
-    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
-    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/News/addExternal', uploadData, options);
   }
