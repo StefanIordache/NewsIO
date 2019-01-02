@@ -1,0 +1,111 @@
+<h2 style="padding:25px;">Manage news</h2>
+<div class="row" style="padding-top:0px;">
+  <article class="card" *ngFor="let news of bigNews;">
+      <div class="card__wrapper" routerLink="/news/details/{{news.id}}">
+
+        <figure class="card__feature">
+          <img src="https://www.dropbox.com/s/z7gp2vanse5djxf/waves.jpg?raw=1" class="card__img" alt="waves" width="275" height="240">
+        </figure>
+
+        <div class="card__box">
+
+          <header class="card__item card__header">
+            <div *ngFor="let category of categories;">
+              <h6 class="card__item card__item--small card__label" *ngIf="category.id==news.categoryId">{{category.title}}</h6>
+            </div>
+            <h2 class="card__item card__item--small card__title">{{news.title}}</h2>
+          </header>
+
+          <hr class="card__item card__divider">
+
+          <section class="card__item card__body">
+            <p>{{news.headline}}</p>
+          </section>
+
+        </div>
+        <div class="m-3">
+          <a class="btn btn-secondary" data-toggle="modal" (click)="prepareEdit(news)" data-target="#editNewsModal">Edit</a>
+          <a class="btn btn-primary" data-toggle="modal" (click)="prepareDelete(news)" data-target="#deleteNewsModal">Delete</a>
+        </div>
+      </div>
+  </article>
+</div>
+
+<div class="modal" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit news</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editNewsForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="headline">Headline</label>
+            <input type="text" id="headline" class="form-control" formControlName="headline" />
+          </div>
+          <div class="form-group">
+            <label for="status">Content</label>
+            <textarea id="content" class="form-control" formControlName="content"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="description">Category</label>
+            <select class="form-control" formControlName="category">
+
+              <option *ngFor="let category of categories;" value={{category.id}}>{{category.title}}</option>
+
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="editNews()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteNewsModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Are you sure you want to delete this news?</h2>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="deleteNews()">
+            <span>Yes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

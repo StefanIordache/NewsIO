@@ -9,6 +9,7 @@ import { UserList } from "../../users/user-list.model";
 import { NewsRequest } from "../../news-requests/newsRequest.model";
 import { News } from "../../home/news.model";
 import { Category } from "../../home/category.model";
+import { Coment } from "../../news-details/comment.model";
 
 
 
@@ -21,6 +22,7 @@ export class UserService  {
   message: string;
   private admin = false;
   private editor = false;
+  private user = false;
   identity: string;
   token: string;
   status: number;
@@ -30,6 +32,7 @@ export class UserService  {
   constructor(public httpClient: Http, public httpi: HttpClient) {
     if (localStorage.getItem('role') == 'Administrator') { this.admin = true; }
     if (localStorage.getItem('role') == 'Moderator') { this.editor = true; }
+    if (localStorage.getItem('role') == 'Member') { this.user = true; }
     this.loggedIn = !!localStorage.getItem('auth_token');
     this._authNavStatusSource.next(this.loggedIn);
     this.visible = false;
@@ -53,6 +56,7 @@ export class UserService  {
     return this.httpClient.post('http://localhost:5030/api/auth/login', JSON.stringify({ Username: username, Password: password }), { headers })
       .pipe(map(res => res.json()))
       .pipe(map(res => {
+        console.log(res);
         this.identity = res.user_id;
         if (res.role == 'Administrator') {
           this.admin = true;
@@ -66,10 +70,18 @@ export class UserService  {
         else {
           this.editor = false;
         }
+        if (res.role == 'Member') {
+          this.user = true;
+        }
+        else {
+          this.user = false;
+        }
         localStorage.setItem('auth_token', res.auth_token);
         console.log(res.auth_token);
         this.token = localStorage.getItem('auth_token');
         localStorage.setItem('role', res.role);
+        console.log(res.user_id);
+        localStorage.setItem('id', res.user_id);
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
         return true;
@@ -80,7 +92,10 @@ export class UserService  {
   logOut() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('role');
+    localStorage.removeItem('id');
     this.admin = false;
+    this.editor = false;
+    this.user = false;
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
     location.reload(); 
@@ -95,6 +110,12 @@ export class UserService  {
   }
   isEditor() {
     return this.editor;
+  }
+  isUser() {
+    return this.user;
+  }
+  getId() {
+    return this.identity;
   }
   getAllUsers(): Observable<UserList[]> {
     return this.httpi.get<UserList[]>('http://localhost:5030/api/Users');
@@ -163,7 +184,7 @@ export class UserService  {
   }
   deleteNR(id: number) {
     let headers = new Headers();
-    //console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
@@ -184,7 +205,7 @@ export class UserService  {
 
 
   getAllNews(): Observable<News[]> {
-    return this.httpi.get<News[]>('http://localhost:5030/api/News');
+    return this.httpi.get<News[]>('http://localhost:5030/api/News/getLatest');
   }
 
   getCategoryById(id: number): Observable<Category> {
@@ -203,4 +224,63 @@ export class UserService  {
     return this.httpi.get<News[]>('http://localhost:5030/api/news/getNonAlphabeticalByCategory?categoryId=' + id);
   }
 
+  deleteNews(id: number) {
+    let headers = new Headers();
+    //console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.delete('http://localhost:5030/api/News/delete/' + id, options);
+  }
+  editNews(id: number, title: string, headline: string, content: string, categoryId: number, thumbnailUrl: string, externalUrl: string,
+    fromRequest: boolean, newsRequestId: number) {
+    console.log('Categoria este');
+    console.log(categoryId);
+    let body = JSON.stringify({
+      id,
+      title, headline,content,categoryId,thumbnailUrl,externalUrl,fromRequest,newsRequestId
+    });
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/News/edit/' + id, body, options)
+  }
+  getNewsById(id: number): Observable<News> {
+    return this.httpi.get<News>('http://localhost:5030/api/News/' + id);
+  }
+  getCommentsByNewsId(id: number): Observable<Coment[]> {
+    return this.httpi.get<Coment[]>('http://localhost:5030/api/Comments?newsId=' + id);
+  }
+  addComment(commentText: string, newsId: number) {
+    let body = JSON.stringify({ commentText,newsId });
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/Comments/add/'+newsId, body, options);
+  }
+  deleteComment(id: number) {
+    let headers = new Headers();
+    //console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.delete('http://localhost:5030/api/comments/delete/' + id, options);
+  }
+  editComment(id: number, commentText:string,newsId:number) {
+    let body = JSON.stringify({
+      id,commentText,newsId
+    });
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.put('http://localhost:5030/api/Comments/edit/' + id, body, options)
+  }
+  getUserById(id:string): Observable<UserList>{
+    return this.httpi.get<UserList>("http://localhost:5030/api/users/getById/" + id);
+  }
 }

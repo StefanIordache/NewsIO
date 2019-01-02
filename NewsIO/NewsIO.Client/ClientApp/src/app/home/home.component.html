@@ -1,4 +1,4 @@
-<div class="container" style="padding-left:10px;margin-left:0px;">
+<div class="container" style="padding-left:10px;margin-left:0px;padding-bottom:25px;">
   <div class="dropdown row text-left" style="padding-top:20px;padding-left:0px;margin-left:0px;">
     <a class="dropdown-toggle btn btn-primary btn-lg float-left" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Categories    <i class="far fa-newspaper"></i>
@@ -13,28 +13,31 @@
     </div>
   </div>
 </div>
-<div *ngFor="let news of bigNews;">
-<div class="p-3">
-<div class="card">
-  <div class="card-body">
-    <h1 class="card-title">{{news.title}}</h1>
-    <h3>Headline:</h3>
-    <p class="card-text">
-    {{news.headline}}
-    </p>
-    <p class="card-text">
-      {{news.content}}
-    </p>
-  </div>
-  <div class="card-footer text-muted">
-    <div *ngFor="let category of categories;">
-      <p *ngIf="category.id==news.categoryId">
-        Category:
-        {{category.title}}
-      </p>
+<div class="row" style="padding-top:0px;">
+  <article class="card" *ngFor="let news of bigNews;">
+    <div class="card__wrapper" routerLink="/news/details/{{news.id}}">
+
+      <figure class="card__feature">
+        <img src="https://www.dropbox.com/s/z7gp2vanse5djxf/waves.jpg?raw=1" class="card__img" alt="waves" width="275" height="240">
+      </figure>
+
+      <div class="card__box">
+
+        <header class="card__item card__header">
+          <div *ngFor="let category of categories;">
+            <h6 class="card__item card__item--small card__label" *ngIf="category.id==news.categoryId">{{category.title}}</h6>
+          </div>
+          <h2 class="card__item card__item--small card__title">{{news.title}}</h2>
+        </header>
+
+        <hr class="card__item card__divider">
+
+        <section class="card__item card__body">
+          <p>{{news.headline}}</p>
+        </section>
+
+      </div>
     </div>
-  </div>
+  </article>
 </div>
-</div>
-  </div>
 

@@ -7,6 +7,8 @@ import { UsersComponent } from './users/users.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { NewsRequestsComponent } from './news-requests/news-requests.component';
 import { NewsComponent } from './news/news.component';
+import { ManageNewsComponent } from './manage-news/manage-news.component';
+import { NewsDetailsComponent } from './news-details/news-details.component';
 
 const routes: Routes = [
   { path : '', component: HomeComponent},
@@ -15,7 +17,9 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'categories', component: CategoriesListComponent },
   { path: 'newsRequests', component: NewsRequestsComponent },
-  { path: 'news/category/:id', component: NewsComponent }
+  { path: 'news/category/:id', component: NewsComponent },
+  { path: 'manageNews', component: ManageNewsComponent },
+  { path: 'news/details/:id', component: NewsDetailsComponent }
  ];
 
 @NgModule({

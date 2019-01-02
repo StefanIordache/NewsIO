@@ -51,7 +51,7 @@ export class NewsRequestsComponent implements OnInit {
   deleteNR() {
     this.userService.deleteNR(this.delNR).subscribe(
       () => {
-      location.reload();
+      //location.reload();
       }
     );
   }

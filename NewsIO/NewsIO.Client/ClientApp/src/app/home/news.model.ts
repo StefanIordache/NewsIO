@@ -7,6 +7,12 @@ export class News {
     public externalUrl: string,
     public categoryId: number,
     public fromRequest: boolean,
-    public newsRequestId: number
+    public newsRequestId: number,
+    public publishDate: Date,
+    public publishedById: string,
+    public publishedBy: string,
+    public lastEditDate: Date,
+    public lastEditedyById: string,
+    public lastEditedBy: string
   ) { }
 }

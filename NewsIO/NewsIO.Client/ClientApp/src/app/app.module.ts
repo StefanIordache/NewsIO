@@ -17,6 +17,9 @@ import { UsersComponent } from './users/users.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { NewsRequestsComponent } from './news-requests/news-requests.component';
 import { NewsComponent } from './news/news.component';
+import { ManageNewsComponent } from './manage-news/manage-news.component';
+import { NewsDetailsComponent } from './news-details/news-details.component';
+
 
 
 @NgModule({
@@ -29,7 +32,10 @@ import { NewsComponent } from './news/news.component';
     UsersComponent,
     CategoriesListComponent,
     NewsRequestsComponent,
-    NewsComponent
+    NewsComponent,
+    ManageNewsComponent,
+    NewsDetailsComponent
+
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
