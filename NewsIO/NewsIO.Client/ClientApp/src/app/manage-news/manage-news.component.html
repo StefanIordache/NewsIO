@@ -1,9 +1,13 @@
 <h2 style="padding:25px;">Manage news</h2>
+<div class="m-3">
+          <a class="btn btn-primary" data-toggle="modal"  data-target="#addNewsModal">Add news</a>
+          <a class="btn btn-primary" data-toggle="modal"  data-target="#addExternalNewsModal">Add external news</a>
+        </div>
 <div class="row" style="padding-top:0px;">
   <article class="card" *ngFor="let news of bigNews;">
-      <div class="card__wrapper" routerLink="/news/details/{{news.id}}">
+      <div class="card__wrapper">
 
-        <figure class="card__feature">
+        <figure class="card__feature" routerLink="/news/details/{{news.id}}">
           <img src="https://www.dropbox.com/s/z7gp2vanse5djxf/waves.jpg?raw=1" class="card__img" alt="waves" width="275" height="240">
         </figure>
 
@@ -105,7 +109,117 @@
   </div>
 </div>
 
+<div class="modal" id="addNewsModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add news</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editNewsForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="headline">Headline</label>
+            <input type="text" id="headline" class="form-control" formControlName="headline" />
+          </div>
+          <div class="form-group">
+            <label for="status">Content</label>
+            <textarea id="content" class="form-control" formControlName="content"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="description">Category</label>
+            <select class="form-control" formControlName="category">
 
+              <option *ngFor="let category of categories;" value={{category.id}}>{{category.title}}</option>
+
+            </select>
+          </div>
+        </form>
+        <!--<input style="display: none"
+               type="file" (change)="onFileChanged($event)"
+               #fileInput multiple>
+        <button (click)="fileInput.click()">Select Image</button> -->
+        <div>
+          <img *ngFor="let url of urls" [src]="url" class="rounded mb-3" width="180">
+        </div>
+        <input type="file" multiple (change)="detectFiles($event)">
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal" (click)="addNews(); onUpload();">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="addExternalNewsModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add external news</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addExternalNewsForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="headline">Headline</label>
+            <input type="text" id="headline" class="form-control" formControlName="headline" />
+          </div>
+          <div class="form-group">
+            <label for="externalUrl">External Url</label>
+            <input type="text" id="content" class="form-control" formControlName="externalUrl" />
+          </div>
+          <div class="form-group">
+            <label for="description">Category</label>
+            <select class="form-control" formControlName="category">
+
+              <option *ngFor="let category of categories;" value={{category.id}}>{{category.title}}</option>
+
+            </select>
+          </div>
+
+        </form>
+        <input style="display: none"
+               type="file" (change)="onFileChanged($event)"
+               #fileInput>
+        <button (click)="fileInput.click()">Select File</button>
+      </div>
+      <div class="modal-footer">
+        <div class="col-6">
+          <button type="button" class="btn btn-default btn-sm float-left btn-width-140" data-dismiss="modal">
+            <span>Cancel</span>
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="submit"
+                  class="btn btn-primary btn-sm float-right btn-width-140"
+                  data-dismiss="modal"
+                  (click)="addExternalNews()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

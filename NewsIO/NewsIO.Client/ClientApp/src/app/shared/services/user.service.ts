@@ -283,4 +283,44 @@ export class UserService  {
   getUserById(id:string): Observable<UserList>{
     return this.httpi.get<UserList>("http://localhost:5030/api/users/getById/" + id);
   }
-}
+  imageUpload(file: File, newsId: number) {
+    let body = JSON.stringify({file});
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/uploadToNews/' + newsId, body, options);
+  }
+  addNews(title: string, headline: string, content: string, categoryId: number,urls:string[]) {
+    let entry = JSON.stringify({
+      title, headline, content, categoryId
+    });
+    let uploadData = new FormData();
+    uploadData.append('entry', entry);
+    for (var i in urls) {
+      uploadData.append('images', urls[i]);
+    }
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'undefined');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/News/add', uploadData, options)
+  }
+  addExternalNews(title: string, headline: string, externalUrl: string, categoryId: number, file: File) {
+    let body = JSON.stringify({
+      title, headline, externalUrl, categoryId
+    });
+    let uploadData = new FormData();
+    uploadData.append('entry', body);
+    uploadData.append('thumbnail', file);
+    console.log(uploadData.get('entry'));
+    let headers = new Headers();
+    console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.httpClient.post('http://localhost:5030/api/News/addExternal', uploadData, options);
+  }
+  }
+
