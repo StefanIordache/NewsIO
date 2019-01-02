@@ -32,6 +32,6 @@ namespace NewsIO.Api.ViewModels
 
         public virtual NewsRequest NewsRequest { get; set; }
 
-        //public IFormFile Thumbnail { get; set; }
+        public IFormFile Thumbnail { get; set; }
     }
 }
