@@ -18,5 +18,7 @@ namespace NewsIO.Data.Contexts
         public DbSet<NewsRequest> NewsRequests {get; set;}
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Image> Images { get; set; }
     }
 }

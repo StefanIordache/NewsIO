@@ -38,6 +38,7 @@ namespace NewsIO.Api.Extensions
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IImageService, ImageService>();
 
             services.AddTransient<IImageHandler, ImageHandler>();
             services.AddTransient<IImageWriter, ImageWriter>();

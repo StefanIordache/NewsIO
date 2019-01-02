@@ -387,5 +387,50 @@ namespace NewsIO.Api.Controllers
                 return Ok(new Response { Status = ResponseType.Failed });
             }
         }
+
+        // POST - api/News/changeCategory/{newsId}/{categoryId}
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("changeCategory")]
+        public async Task<IActionResult> ChangeNewsCategory(int newsId, int categoryId)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+
+                var news = await NewsService.GetByIdAsync<News>(newsId);
+
+                var category = await CategoryService.GetByIdAsync<Category>(categoryId);
+
+                if (category == null)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = "Category not found" });
+                }
+                if (news == null)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = "News Request not found" });
+                }
+                if (JwtHelper.CheckIfUserIsModerator(token) && news.PublishedById != JwtHelper.GetUserIdFromJwt(token))
+                {
+                    return Forbid();
+                }
+
+                var result = await NewsService.ChangeNewsCategoryAsync(news, category);
+
+                if (!result)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed });
+                }
+
+                return Ok(new Response
+                {
+                    Status = ResponseType.Successful
+                });
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+
+        }
     }
 }

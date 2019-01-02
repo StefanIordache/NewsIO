@@ -9,6 +9,6 @@ namespace NewsIO.Api.Utils.ImageServices.Interfaces
 {
     public interface IImageHandler
     {
-        Task<IActionResult> UploadImage(IFormFile file);
+        Task<string> UploadImage(IFormFile file);
     }
 }

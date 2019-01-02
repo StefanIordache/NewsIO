@@ -17,10 +17,10 @@ namespace NewsIO.Api.Utils.ImageServices.Implementations
             ImageWriter = imageWriter;
         }
 
-        public async Task<IActionResult> UploadImage(IFormFile file)
+        public async Task<string> UploadImage(IFormFile file)
         {
             var result = await ImageWriter.UploadImage(file);
-            return new ObjectResult(result);
+            return result;
         }
     }
 }
