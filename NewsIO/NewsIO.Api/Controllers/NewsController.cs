@@ -301,7 +301,9 @@ namespace NewsIO.Api.Controllers
                     {
                         entry.Category = category;
 
-                        var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
+                        //var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
+
+                        var thumbnailUrl = await ImageHandler.UploadImage(Request.Form.Files["thumbnail"]);
 
                         if (string.IsNullOrEmpty(thumbnailUrl))
                         {
@@ -382,7 +384,9 @@ namespace NewsIO.Api.Controllers
                     {
                         entry.Category = category;
 
-                        var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
+                        var thumbnailUrl = await ImageHandler.UploadImage(Request.Form.Files["thumbnail"]);
+
+                        //var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
 
                         if (string.IsNullOrEmpty(thumbnailUrl))
                         {

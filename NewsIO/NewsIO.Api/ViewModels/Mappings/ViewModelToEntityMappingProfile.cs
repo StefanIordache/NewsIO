@@ -29,7 +29,7 @@ namespace NewsIO.Api.ViewModels.Mappings
                 .ReverseMap();
 
             CreateMap<News, NewsViewModel>()
-                .ForMember(n => n.Thumbnail, opt => opt.Ignore())
+                //.ForMember(n => n.Thumbnail, opt => opt.Ignore())
                 .ReverseMap();
         }
     }
