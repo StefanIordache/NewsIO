@@ -24,15 +24,18 @@ namespace NewsIO.Api.Controllers
 
         private ICategoryService CategoryService { get; set; }
 
-        private  readonly IImageHandler ImageHandler;
+        private readonly IImageHandler ImageHandler;
+
+        private IImageService ImageService { get; set; }
 
         private readonly IMapper Mapper;
 
-        public NewsController(INewsService newsService, ICategoryService categoryService, IImageHandler imageHandler, IMapper mapper)
+        public NewsController(INewsService newsService, ICategoryService categoryService, IImageHandler imageHandler, IImageService imageService, IMapper mapper)
         {
             NewsService = newsService;
             CategoryService = categoryService;
             ImageHandler = imageHandler;
+            ImageService = imageService;
             Mapper = mapper;
         }
 
@@ -264,7 +267,7 @@ namespace NewsIO.Api.Controllers
             {
                 News news = await NewsService.GetByIdAsync<News>(id);
 
-                if (news  != null)
+                if (news != null)
                 {
                     return Ok(news);
                 }
@@ -280,7 +283,7 @@ namespace NewsIO.Api.Controllers
         // POST - /api/News/add
         [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost("add")]
-        public async Task<IActionResult> AddNews([FromBody] News entry)
+        public async Task<IActionResult> AddNews(NewsViewModel newsVM)
         {
             try
             {
@@ -288,17 +291,54 @@ namespace NewsIO.Api.Controllers
                 var userName = JwtHelper.GetUserNameFromJwt(token);
                 var userId = JwtHelper.GetUserIdFromJwt(token);
 
+                News entry = Mapper.Map<News>(newsVM);
+
                 try
                 {
                     var category = await CategoryService.GetByIdAsync<Category>(entry.CategoryId);
 
                     if (category != null)
-                    { 
+                    {
+                        entry.Category = category;
+
+                        var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
+
+                        if (string.IsNullOrEmpty(thumbnailUrl))
+                        {
+                            return Ok(new Response
+                            {
+                                Status = ResponseType.Failed,
+                                Message = "Failed thumbnail upload"
+                            });
+                        }
+
+                        entry.ThumbnailUrl = thumbnailUrl;
+
                         int entryId = await NewsService.AddAsync(entry);
 
-                        if (!string.IsNullOrEmpty(token))
+                        if (entryId > 0)
                         {
-                            await NewsService.PublishEntity<News>(entryId, userId, userName);
+                            var images = Request.Form.Files.ToList().Skip(1);
+
+                            foreach (var image in images)
+                            {
+                                var imageUrl = await ImageHandler.UploadImage(image);
+
+                                if (!string.IsNullOrEmpty(imageUrl))
+                                {
+                                    var imageId = await ImageService.AddAsync(new Image { Url = imageUrl, NewsId = entryId });
+
+                                    if (imageId > 0 && !string.IsNullOrEmpty(token))
+                                    {
+                                        await ImageService.PublishEntity<Image>(imageId, userId, userName);
+                                    }
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                await NewsService.PublishEntity<News>(entryId, userId, userName);
+                            }
                         }
 
                         return Ok(new Response
@@ -340,23 +380,24 @@ namespace NewsIO.Api.Controllers
 
                     if (category != null)
                     {
-                        var imageUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
-
                         entry.Category = category;
 
-                        if (string.IsNullOrEmpty(imageUrl))
+                        var thumbnailUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
+
+                        if (string.IsNullOrEmpty(thumbnailUrl))
                         {
-                            return Ok(new Response {
+                            return Ok(new Response
+                            {
                                 Status = ResponseType.Failed,
                                 Message = "Failed thumbnail upload"
                             });
                         }
 
-                        entry.ThumbnailUrl = imageUrl;
+                        entry.ThumbnailUrl = thumbnailUrl;
 
                         int entryId = await NewsService.AddAsync(entry);
 
-                        if (!string.IsNullOrEmpty(token))
+                        if (!string.IsNullOrEmpty(token) && entryId > 0)
                         {
                             await NewsService.PublishEntity<News>(entryId, userId, userName);
                         }
@@ -367,7 +408,7 @@ namespace NewsIO.Api.Controllers
                             Value = entry
                         });
                     }
-                     
+
                     return Ok(new Response { Status = ResponseType.Failed });
                 }
                 catch (Exception e)
