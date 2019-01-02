@@ -22,7 +22,7 @@ namespace NewsIO.Data.Models.Application
 
         public virtual Category Category { get; set; }
 
-        public bool FromRequest { get; set; }
+        public bool? FromRequest { get; set; }
 
         public int? NewsRequestId { get; set; }
 

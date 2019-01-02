@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Utils;
+using NewsIO.Api.Utils.ImageServices.Implementations;
+using NewsIO.Api.Utils.ImageServices.Interfaces;
 using NewsIO.Data.Models.Application;
 using NewsIO.Services.Intefaces;
 using static NewsIO.Api.Utils.Models;
@@ -18,15 +20,15 @@ namespace NewsIO.Api.Controllers
     {
         private INewsService NewsService { get; set; }
 
-        private INewsRequestService NewsRequestService { get; set; }
-
         private ICategoryService CategoryService { get; set; }
 
-        public NewsController(INewsService newsService, INewsRequestService newsRequestService, ICategoryService categoryService)
+        private  readonly IImageHandler ImageHandler;
+
+        public NewsController(INewsService newsService, ICategoryService categoryService, IImageHandler imageHandler)
         {
             NewsService = newsService;
-            NewsRequestService = newsRequestService;
             CategoryService = categoryService;
+            ImageHandler = imageHandler;
         }
 
         // GET - /api/News/{pageSize?}/{pageNo?}
@@ -291,7 +293,69 @@ namespace NewsIO.Api.Controllers
 
                         if (!string.IsNullOrEmpty(token))
                         {
-                            await NewsService.PublishEntity<NewsRequest>(entryId, userId, userName);
+                            await NewsService.PublishEntity<News>(entryId, userId, userName);
+                        }
+
+                        return Ok(new Response
+                        {
+                            Status = ResponseType.Successful,
+                            Value = entry
+                        });
+                    }
+
+                    return Ok(new Response { Status = ResponseType.Failed });
+                }
+                catch (Exception e)
+                {
+                    return Ok(new Response { Status = ResponseType.Failed, Message = e.Message });
+                }
+            }
+            catch
+            {
+                return Ok(new Response { Status = ResponseType.Failed });
+            }
+        }
+
+        // POST - /api/News/addExternal
+        [Authorize(Roles = "Administrator, Moderator")]
+        [HttpPost("addExternal")]
+        public async Task<IActionResult> AddExternalNews(IFormFile file)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString();
+                var userName = JwtHelper.GetUserNameFromJwt(token);
+                var userId = JwtHelper.GetUserIdFromJwt(token);
+
+                var queryString = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(Request.Body.ToString());
+
+                News entry = Newtonsoft.Json.JsonConvert.DeserializeObject<News>(Request.Form["entry"].ToString());
+
+                try
+                {
+                    var category = await CategoryService.GetByIdAsync<Category>(entry.CategoryId);
+
+                    if (category != null)
+                    {
+                        var imageUrl = await ImageHandler.UploadImage(file);
+
+                        entry.Category = category;
+
+                        if (string.IsNullOrEmpty(imageUrl))
+                        {
+                            return Ok(new Response {
+                                Status = ResponseType.Failed,
+                                Message = "Failed thumbnail upload"
+                            });
+                        }
+
+                        entry.ThumbnailUrl = imageUrl;
+
+                        int entryId = await NewsService.AddAsync(entry);
+
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            await NewsService.PublishEntity<News>(entryId, userId, userName);
                         }
 
                         return Ok(new Response
