@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsIO.Api.Utils;
 using NewsIO.Api.Utils.ImageServices.Implementations;
 using NewsIO.Api.Utils.ImageServices.Interfaces;
+using NewsIO.Api.ViewModels;
 using NewsIO.Data.Models.Application;
 using NewsIO.Services.Intefaces;
 using static NewsIO.Api.Utils.Models;
@@ -24,11 +26,14 @@ namespace NewsIO.Api.Controllers
 
         private  readonly IImageHandler ImageHandler;
 
-        public NewsController(INewsService newsService, ICategoryService categoryService, IImageHandler imageHandler)
+        private readonly IMapper Mapper;
+
+        public NewsController(INewsService newsService, ICategoryService categoryService, IImageHandler imageHandler, IMapper mapper)
         {
             NewsService = newsService;
             CategoryService = categoryService;
             ImageHandler = imageHandler;
+            Mapper = mapper;
         }
 
         // GET - /api/News/{pageSize?}/{pageNo?}
@@ -319,7 +324,7 @@ namespace NewsIO.Api.Controllers
         // POST - /api/News/addExternal
         [Authorize(Roles = "Administrator, Moderator")]
         [HttpPost("addExternal")]
-        public async Task<IActionResult> AddExternalNews(IFormFile file)
+        public async Task<IActionResult> AddExternalNews(NewsViewModel newsVM)
         {
             try
             {
@@ -327,9 +332,7 @@ namespace NewsIO.Api.Controllers
                 var userName = JwtHelper.GetUserNameFromJwt(token);
                 var userId = JwtHelper.GetUserIdFromJwt(token);
 
-                var queryString = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(Request.Body.ToString());
-
-                News entry = Newtonsoft.Json.JsonConvert.DeserializeObject<News>(Request.Form["entry"].ToString());
+                News entry = Mapper.Map<News>(newsVM);
 
                 try
                 {
@@ -337,7 +340,7 @@ namespace NewsIO.Api.Controllers
 
                     if (category != null)
                     {
-                        var imageUrl = await ImageHandler.UploadImage(file);
+                        var imageUrl = await ImageHandler.UploadImage(newsVM.Thumbnail);
 
                         entry.Category = category;
 
@@ -364,7 +367,7 @@ namespace NewsIO.Api.Controllers
                             Value = entry
                         });
                     }
-
+                     
                     return Ok(new Response { Status = ResponseType.Failed });
                 }
                 catch (Exception e)
