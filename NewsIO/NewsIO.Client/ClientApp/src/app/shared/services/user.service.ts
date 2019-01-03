@@ -308,17 +308,15 @@ export class UserService  {
     return this.httpClient.post('http://localhost:5030/api/News/add', uploadData, options)
   }
   addExternalNews(title: string, headline: string, externalUrl: string, categoryId: number, file: File) {
-    let body = JSON.stringify({
-      title, headline, externalUrl, categoryId
-    });
+    let body = JSON.stringify({title, headline, categoryId, externalUrl});
     let uploadData = new FormData();
     uploadData.append('entry', body);
     uploadData.append('thumbnail', file);
     console.log(uploadData.get('entry'));
+    console.log(uploadData.get('thumbnail'));
     let headers = new Headers();
     console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
-    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/News/addExternal', uploadData, options);
   }
