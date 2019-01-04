@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.Extensions.FileProviders;
 using NewsIO.Api.Utils.Seed;
 using System.Threading.Tasks;
+using AspNetCore.RouteAnalyzer;
 
 namespace NewsIO.Api
 {
@@ -49,6 +50,8 @@ namespace NewsIO.Api
             services.AddJwtService();
 
             services.AddAuthorizationPolicyService();
+
+            services.AddRouteAnalyzer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,7 +82,10 @@ namespace NewsIO.Api
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRouteAnalyzer("/routes");
+            });
 
             app.UseCors("AllowSpecificOrigin");
         }

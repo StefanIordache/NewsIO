@@ -79,5 +79,66 @@ namespace NewsIO.Api.Controllers.FileUpload
             }
             
         }
+
+        // GET - /api/Images/getAllUrls/{newsId}
+        [HttpGet("getAllUrls/{newsId}")]
+        public async Task<IActionResult> GetAllUrlsByNewsId(int newsId)
+        {
+            try
+            {
+                var news = await NewsService.GetByIdAsync<News>(newsId);
+
+                if (news == null)
+                {
+                    return NotFound();
+                }
+
+                List<Image> images = (await ImageService.GetAllByNewsIdAsync(newsId)).ToList();
+
+                List<string> urls = new List<string>();
+
+                for (int i = 0; i < images.Count(); i++)
+                {
+                    urls.Add(string.Concat(Request.Scheme + "://" + Request.Host + "/Images/", images[i].Url));
+                }
+
+                if (urls.Count() <= 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(urls);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        // GET - /api/Images/getThumbnailUrl/{newsId}
+        [HttpGet("getThumbnailUrl/{newsId}")]
+        public async Task<IActionResult> GetThumbnailUrlByNewsId(int newsId)
+        {
+            try
+            {
+                var news = await NewsService.GetByIdAsync<News>(newsId);
+
+                if (news == null)
+                {
+                    return NotFound();
+                }
+
+                if (string.IsNullOrEmpty(news.ThumbnailUrl))
+                {
+                    return NotFound();
+                }
+
+                return Ok(string.Concat(Request.Scheme + "://" + Request.Host + "/Images/", news.ThumbnailUrl));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
