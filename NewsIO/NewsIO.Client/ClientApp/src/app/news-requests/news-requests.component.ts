@@ -51,7 +51,7 @@ export class NewsRequestsComponent implements OnInit {
   deleteNR() {
     this.userService.deleteNR(this.delNR).subscribe(
       () => {
-      //location.reload();
+      location.reload();
       }
     );
   }
@@ -70,7 +70,6 @@ export class NewsRequestsComponent implements OnInit {
       this.nr.isClosed, this.nr.requestDate, this.nr.requestedById, this.nr.requestedBy, this.nr.categoryId)
       .subscribe(
         () => {
-         // this.router.navigateByUrl('/')
           location.reload();
         }
       );

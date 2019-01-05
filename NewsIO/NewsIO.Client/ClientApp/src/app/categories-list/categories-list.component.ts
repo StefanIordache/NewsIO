@@ -52,7 +52,6 @@ export class CategoriesListComponent implements OnInit {
     this.userService.editCategory(this.categoryId, this.editCategoryForm.controls['title'].value,this.editCategoryForm.controls['description'].value,)
       .subscribe(
         () => {
-          // this.router.navigateByUrl('/')
           location.reload();
         }
       );
@@ -62,9 +61,9 @@ export class CategoriesListComponent implements OnInit {
   }
   deleteCategory() {
     this.userService.deleteCategory(this.delCateg).subscribe(
-      //() => {
-      //location.reload();
-      //}
+      () => {
+      location.reload();
+      }
     );
   }
 }

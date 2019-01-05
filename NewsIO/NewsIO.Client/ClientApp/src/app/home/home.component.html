@@ -1,3 +1,9 @@
+<div class="row">
+  <form [formGroup]="searchForm" class="form-inline" style="padding-left:1300px;padding-top:20px;">
+    <input style="width:130px;" class="form-control " type="search" placeholder="Search" aria-label="Search" formControlName="searchValue">
+    <button class="btn btn-primary my-2 my-sm-0" type="submit" (click)="fill()"><i class="fa fa-search clasa"></i></button>
+  </form>
+</div>
 <div class="container" style="padding-left:10px;margin-left:0px;padding-bottom:25px;">
   <div class="dropdown row text-left" style="padding-top:20px;padding-left:0px;margin-left:0px;">
     <a class="dropdown-toggle btn btn-primary btn-lg float-left" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -13,12 +19,13 @@
     </div>
   </div>
 </div>
+
 <div class="row" style="padding-top:0px;">
   <article class="card" *ngFor="let news of bigNews;">
     <div class="card__wrapper" routerLink="/news/details/{{news.id}}">
 
       <figure class="card__feature">
-        <img src="https://www.dropbox.com/s/z7gp2vanse5djxf/waves.jpg?raw=1" class="card__img" alt="waves" width="275" height="240">
+        <img [src]="'http://localhost:5030/Images/'+news.thumbnailUrl" class="card__img" alt="waves" width="275" height="240">
       </figure>
 
       <div class="card__box">

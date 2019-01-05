@@ -46,7 +46,6 @@ export class UsersComponent implements OnInit {
     this.userService.changeRole(this.id,this.changeRoleForm.controls['roleName'].value)
       .subscribe(
         () => {
-          // this.router.navigateByUrl('/')
           location.reload();
         }
       );

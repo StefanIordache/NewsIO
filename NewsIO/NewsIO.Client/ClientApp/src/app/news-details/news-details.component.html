@@ -1,10 +1,13 @@
-<div class="header"></div>
-<div class="content">
-  <h1>{{news.title}}</h1>
-  <p class="h3">{{news.headline}}</p>
-  <br><br>
-  <p>{{news.content}}</p><br>
-</div>
+
+  <img class="header" [src]="'http://localhost:5030/Images/'+news.thumbnailUrl" />
+
+  <div class="content">
+    <h1>{{news.title}}</h1>
+    <p class="h3">{{news.headline}}</p>
+    <br><br>
+    <p>{{news.content}}</p><br>
+    <a *ngIf="news.externalUrl!=null" href={{news.externalUrl}}>Click here for the full news!</a>
+  </div>
 
 <!-- From -->
 <div class="comment-form">

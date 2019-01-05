@@ -3,7 +3,7 @@
   News request successfully added!!
 </div>
 <nav class="navbar navbar-dark bg-primary" *ngIf="userService.visible">
-  <a class="navbar-brand font-weight-bold" href="#">NewsIO</a>
+  <a class="navbar-brand font-weight-bold" href="/">NewsIO</a>
   <a class="navbar-brand" *ngIf="show3" routerLink="/users">Manage users</a>
   <a class="navbar-brand" *ngIf="show3" routerLink="/categories">Manage categories</a>
   <a class="navbar-brand" *ngIf="show3" routerLink="/newsRequests">Manage news requests</a>
@@ -14,10 +14,6 @@
   <div class="" id="navbarSupportedContent">
 
     <div class="nav">
-      <form class="form-inline ">
-        <input style="width:130px;" class="form-control " type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search clasa"></i></button>
-      </form>
       <div class="dropdown ">
         <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user clasa"></i>

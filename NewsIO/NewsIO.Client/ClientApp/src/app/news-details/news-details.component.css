@@ -6,12 +6,16 @@
 }
 
 .header {
-  height: 200px;
-  width: 100%;
-  background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-0.3.5&s=462861f99339856cb2df353a1bbba831&auto=format&fit=crop&w=1355&q=80');
-  background-attachment: scroll;
+  padding-top:20px;
+  height:auto;
+  max-width:50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-0.3.5&s=462861f99339856cb2df353a1bbba831&auto=format&fit=crop&w=1355&q=80');*/
+  /*background-attachment: scroll;
   background-size: cover;
-  background-position: center;
+  position: center;*/
 }
 
 .content {

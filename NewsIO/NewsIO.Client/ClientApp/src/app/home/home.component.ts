@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit{
   categories: Category[];
   add: boolean = false;
   bigNews: News[];
+  searchForm: FormGroup;
 
  
   constructor(private route: ActivatedRoute, private homeService: HomeService, private userService: UserService, private router: Router) {
@@ -32,6 +33,17 @@ export class HomeComponent implements OnInit{
       this.add = true;
     }
     this.userService.getAllNews().subscribe((news: News[]) => { this.bigNews = news; });
+    this.initForm();
+  }
+  initForm() {
+    this.searchForm = new FormGroup({
+      'searchValue': new FormControl('')
+    });
+  }
+  fill() {
+    this.homeSubscription.unsubscribe();
+    this.homeSubscription = this.userService.getSearchedNews(this.searchForm.controls['searchValue'].value)
+      .subscribe((news: News[]) => { this.bigNews = news; });
   }
   
 }

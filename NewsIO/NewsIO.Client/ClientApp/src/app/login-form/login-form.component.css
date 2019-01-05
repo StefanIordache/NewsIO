@@ -41,6 +41,7 @@ a {
   position: relative;
   border-color: #1d5cf9;
   border-style:solid;
+  
 }
 
   .container::after {

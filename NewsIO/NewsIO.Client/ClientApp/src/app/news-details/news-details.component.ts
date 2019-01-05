@@ -63,7 +63,7 @@ export class NewsDetailsComponent implements OnInit {
   deleteComment() {
     this.userService.deleteComment(this.delComId).subscribe(
       () => {
-        //location.reload();
+        location.reload();
       }
     );
   }
@@ -78,8 +78,7 @@ export class NewsDetailsComponent implements OnInit {
     this.userService.editComment(this.comId, this.editCommentForm.controls['commentText'].value,this.id)
       .subscribe(
         () => {
-          // this.router.navigateByUrl('/')
-          location.reload();
+           location.reload();
         }
       );
   }

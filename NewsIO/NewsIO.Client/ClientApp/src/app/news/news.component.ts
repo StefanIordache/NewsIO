@@ -4,6 +4,8 @@ import { UserService } from '../shared/services/user.service';
 import { HomeService } from '../home/home.service';
 import { Category } from '../home/category.model';
 import { News } from '../home/news.model';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-news',
@@ -13,8 +15,11 @@ import { News } from '../home/news.model';
 export class NewsComponent implements OnInit {
 
   private id: number;
+  private newsSubscription: Subscription;
   category: Category;
   bigNews: News[];
+  searchForm: FormGroup;
+  image: string;
   constructor(private route: ActivatedRoute, private userService: UserService, private categoryService: HomeService) { }
 
   ngOnInit() {
@@ -23,8 +28,14 @@ export class NewsComponent implements OnInit {
     });
     this.userService.show();
     this.userService.getCategoryById(this.id).subscribe((cat: Category) => { this.category = cat; });
-    this.userService.getLatestNewsByCategoryId(this.id).subscribe((news: News[]) => { this.bigNews = news; });
- }
+    this.newsSubscription = this.userService.getLatestNewsByCategoryId(this.id).subscribe((news: News[]) => { this.bigNews = news; });
+    this.initForm();
+  }
+  initForm() {
+    this.searchForm = new FormGroup({
+      'searchValue': new FormControl('')
+    });
+  }
   getAlpha(id:number) {
     this.userService.getAlphabeticalNewsByCategoryId(id).subscribe((news: News[]) => { this.bigNews = news;  });
   }
@@ -36,5 +47,13 @@ export class NewsComponent implements OnInit {
   }
   getDesc(id: number) {
     this.userService.getOldestNewsByCategoryId(id).subscribe((news: News[]) => { this.bigNews = news;  });
+  }
+  fill() {
+    this.newsSubscription.unsubscribe();
+    this.newsSubscription = this.userService.getSearchedNews(this.searchForm.controls['searchValue'].value)
+      .subscribe((news: News[]) => { this.bigNews = news; });
+  }
+  getImage(id: number) {
+    this.userService.getImage(id).subscribe((img: string) => { this.image = img; });
   }
 }

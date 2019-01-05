@@ -291,19 +291,25 @@ export class UserService  {
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/uploadToNews/' + newsId, body, options);
   }
-  addNews(title: string, headline: string, content: string, categoryId: number,urls:string[]) {
+  addNews(title: string, headline: string, content: string, categoryId: number,file:File,urls:string[]) {
     let entry = JSON.stringify({
       title, headline, content, categoryId
     });
     let uploadData = new FormData();
     uploadData.append('entry', entry);
+    uploadData.append('thumbnail', file, file.name);
+    console.log(uploadData.get('thumbnail'));
+    console.log(uploadData.get('entry'));
+    console.log(title);
+    console.log(headline);
+    console.log(categoryId);
+    console.log(content);
     for (var i in urls) {
       uploadData.append('images', urls[i]);
     }
     let headers = new Headers();
     console.log('Bearer' + ' ' + localStorage.getItem('auth_token'));
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
-    headers.append('Content-Type', 'undefined');
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/News/add', uploadData, options)
   }
@@ -319,6 +325,14 @@ export class UserService  {
     headers.append('Authorization', 'Bearer' + ' ' + localStorage.getItem('auth_token'));
     let options = new RequestOptions({ headers: headers });
     return this.httpClient.post('http://localhost:5030/api/News/addExternal', uploadData, options);
+  }
+  getSearchedNews(searchValue: string): Observable<News[]>{
+    let Param = new HttpParams();
+    Param = Param.append('input', searchValue);
+    return this.httpi.get<News[]>('http://localhost:5030/api/News/search', { params: Param });
+  }
+  getImage(newsId: number) {
+    return this.httpi.get('http://localhost:5030/api/Images/getThumbnailUrl/' + newsId);
   }
   }
 

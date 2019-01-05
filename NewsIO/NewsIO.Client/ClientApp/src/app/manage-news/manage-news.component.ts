@@ -6,6 +6,7 @@ import { News } from '../home/news.model';
 import { Category } from '../home/category.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserList } from '../users/user-list.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-news',
@@ -13,11 +14,13 @@ import { UserList } from '../users/user-list.model';
   styleUrls: ['./manage-news.component.css']
 })
 export class ManageNewsComponent implements OnInit {
+  private newsSubscription: Subscription;
   bigNews: News[];
   categories: Category[];
   editNewsForm: FormGroup;
   addNewsForm: FormGroup;
   addExternalNewsForm: FormGroup;
+  searchForm: FormGroup;
   id: number;
   delId: number;
   newsId: number;
@@ -26,7 +29,7 @@ export class ManageNewsComponent implements OnInit {
   admin: boolean = false;
   editor: boolean = false;
   selectedFile: File;
-
+  file: File;
   urls = new Array<string>();
 
   detectFiles(event) {
@@ -51,13 +54,13 @@ export class ManageNewsComponent implements OnInit {
     console.log(this.currentUser);
     this.userService.show();
     if (this.userService.isAdmin() == true) {
-      this.userService.getAllNews().subscribe((news: News[]) => {
+      this.newsSubscription = this.userService.getAllNews().subscribe((news: News[]) => {
         this.bigNews = news;
         this.admin = true;
       });
     }
     if (this.userService.isEditor() == true) {
-      this.userService.getAllNews().subscribe((news: News[]) => {
+      this.newsSubscription =this.userService.getAllNews().subscribe((news: News[]) => {
         this.bigNews = news.filter(p => p.publishedBy === this.currentUser.userName);
         this.editor = true;
       });
@@ -83,7 +86,10 @@ export class ManageNewsComponent implements OnInit {
       'headline': new FormControl(''),
       'externalUrl': new FormControl(''),
       'category': new FormControl('')
-    })
+    });
+    this.searchForm = new FormGroup({
+      'searchValue': new FormControl('')
+    });
   }
   prepareEdit(news: News) {
     this.editNewsForm.patchValue({
@@ -107,7 +113,6 @@ export class ManageNewsComponent implements OnInit {
       this.n.thumbnailUrl, this.n.externalUrl, this.n.fromRequest, this.n.newsRequestId)
       .subscribe(
         () => {
-          this.router.navigateByUrl('/')
           location.reload();
         }
       );
@@ -124,7 +129,9 @@ export class ManageNewsComponent implements OnInit {
   }
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
+    this.file = event.target.files[0];
   }
+ 
   addExternalNews() {
     console.log(this.addExternalNewsForm.controls['title'].value);
     console.log(this.addExternalNewsForm.controls['headline'].value);
@@ -134,7 +141,16 @@ export class ManageNewsComponent implements OnInit {
       this.addExternalNewsForm.controls['externalUrl'].value, this.addExternalNewsForm.controls['category'].value, this.selectedFile).subscribe(() => { location.reload(); });
   }
   addNews() {
+    console.log(this.addNewsForm.controls['title'].value);
+    console.log(this.addNewsForm.controls['headline'].value);
+    console.log(this.addNewsForm.controls['content'].value);
+    console.log(this.addNewsForm.controls['category'].value);
     this.userService.addNews(this.addNewsForm.controls['title'].value, this.addNewsForm.controls['headline'].value,
-      this.addNewsForm.controls['content'].value, this.addNewsForm.controls['category'].value, this.urls).subscribe(() => { location.reload(); });
+      this.addNewsForm.controls['content'].value, this.addNewsForm.controls['category'].value, this.file,this.urls).subscribe(() => { location.reload(); });
+  }
+  fill() {
+    this.newsSubscription.unsubscribe();
+    this.newsSubscription=this.userService.getSearchedNews(this.searchForm.controls['searchValue'].value)
+      .subscribe((news: News[]) => { this.bigNews = news; });
   }
 }
